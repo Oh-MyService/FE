@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import CustomModal from "./Modal"; // 모달 컴포넌트를 임포트합니다.
+import CustomModal from "../components/Modal"; // 모달 컴포넌트를 임포트합니다.
 
 const Mypage = () => {
   const [profileImage, setProfileImage] = useState(null);
@@ -21,7 +21,7 @@ const Mypage = () => {
   const closeModal = () => setModalIsOpen(false); // 모달을 닫기 위한 함수
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="flex flex-col mx-0 my-auto">
         {/* 프로필 이미지 */}
         <input
@@ -47,7 +47,7 @@ const Mypage = () => {
         {/* 사용자 이메일 */}
         <div className="text-center m-3">이메일</div>
         {/* 계정 관리 버튼 */}
-        <button className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full m-3">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-3">
           계정 관리
         </button>
       </div>
@@ -62,8 +62,8 @@ const Mypage = () => {
         </div>
         <h2 class="text-2xl font-bold m-3 ml-0">컬렉션</h2>
         <div className="grid grid-cols-4 gap-12">
-          <div className="overflow-hidden w-60 h-60 bg-slate-400"></div>
-          <div className="overflow-hidden w-60 h-60 bg-slate-400"></div>
+          <div className="overflow-hidden w-60 h-60 bg-slate-400  hover:bg-slate-500 cursor-pointer"></div>
+          <div className="overflow-hidden w-60 h-60 bg-slate-400  hover:bg-slate-500 cursor-pointer"></div>
           {/* + 버튼 추가 */}
           <div
             className="flex items-center justify-center w-60 h-60 bg-gray-200 cursor-pointer hover:bg-gray-300"

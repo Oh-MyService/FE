@@ -9,12 +9,21 @@ const Header = () => {
     navigate("/mypage"); // '/mypage' 경로로 이동합니다.
   };
 
+  const goToCreateImage = () => {
+    navigate("/CreateImage"); // '/CreateImage' 경로로 이동
+  };
+
   return (
-    <header className="bg-neutral-800 py-3">
+    <header className="bg-neutral-800 py-3 fixed top-0 w-full z-10">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex-1"></div>
         <div className="flex-1 flex justify-center">
-          <img src={logo} alt="Logo" className="h-5" />
+          <img
+            src={logo}
+            alt="Logo"
+            className="h-5"
+            onClick={goToCreateImage}
+          />
         </div>
         <div className="flex-1 flex justify-end">
           <button
