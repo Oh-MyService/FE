@@ -2,12 +2,44 @@ import React, { useState } from 'react';
 
 const CreateImage = () => {
     const [inputText, setInputText] = useState('');
-    const [images, setImages] = useState([]);
+    const [imageURL, setImageURL] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log('Submitted: ' + inputText);
-        setImages(Array(4).fill('https://via.placeholder.com/150'));
+
+        try {
+            // Send the string to process_string
+            let response = await fetch('http://192.168.39.100:8000/process_string', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ string_input: inputText }),
+            });
+
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.text();
+            console.log(data);
+            setAlertMessage(data);
+            alert(data);
+
+            // Now get the image from get_image
+            response = await fetch('http://192.168.39.100:8000/get_image');
+            if (!response.ok) throw new Error('Network response was not ok');
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            setImageURL(url);
+        } catch (error) {
+            console.error('Error occurred:', error);
+        }
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleSubmit(event);
+        }
     };
 
     return (
@@ -20,6 +52,7 @@ const CreateImage = () => {
                             type="text"
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
+                            onKeyDown={handleKeyDown}
                             className="appearance-none block w-full h-40 sm:h-80 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 placeholder-top"
                             placeholder="ex) cat"
                         />
@@ -39,16 +72,7 @@ const CreateImage = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-                    {images.map((image, index) => (
-                        <img
-                            key={index}
-                            src={image}
-                            alt={`Generated Image ${index + 1}`}
-                            className="w-full h-auto max-w-xs"
-                        />
-                    ))}
-                </div>
+                {imageURL && <img id="image" src={imageURL} alt="Fetched Image" className="mt-4 max-w-xs" />}
             </div>
             <style jsx>{`
                 .placeholder-top::placeholder {
