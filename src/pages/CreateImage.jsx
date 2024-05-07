@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 
 const CreateImage = () => {
     const [inputText, setInputText] = useState('');
+    const [images, setImages] = useState([]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('Submitted: ' + inputText);
+        setImages(Array(4).fill('https://via.placeholder.com/150'));
     };
 
     return (
@@ -35,6 +37,17 @@ const CreateImage = () => {
                         <span className="block text-lg font-bold text-left text-slate-700">옵션</span>
                         <div className="w-full h-40 sm:h-80 bg-gray-200"></div>
                     </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                    {images.map((image, index) => (
+                        <img
+                            key={index}
+                            src={image}
+                            alt={`Generated Image ${index + 1}`}
+                            className="w-full h-auto max-w-xs"
+                        />
+                    ))}
                 </div>
             </div>
             <style jsx>{`
