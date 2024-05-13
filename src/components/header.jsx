@@ -21,7 +21,7 @@ const Header = () => {
           <img
             src={logo}
             alt="Logo"
-            className="h-5 cursor-pointer" // 스타일 변경
+            className="h-5 cursor-pointer"
             onClick={goToCreateImage}
           />
         </div>
@@ -33,16 +33,15 @@ const Header = () => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="none"
               viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="h-8 w-8"
+              fill="white"
+              class="w-10 h-10"
             >
+              {" "}
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5.121 17.804A13.937 13.937 0 0112 15c1.76 0 3.404.337 4.879.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                fill-rule="evenodd"
+                d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                clip-rule="evenodd"
               />
             </svg>
           </button>

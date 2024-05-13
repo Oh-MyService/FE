@@ -20,7 +20,8 @@ function App() {
           <Route path="/Modal" element={<Modal />} />
           <Route path="/LoginForm" element={<LoginForm />} />
         </Routes>
-      </div>3
+      </div>
+      3
     </Router>
   );
 }
