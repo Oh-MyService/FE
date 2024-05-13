@@ -10,7 +10,7 @@ const Header = () => {
     };
 
     const goToCreateImage = () => {
-        navigate('/CreateImage');
+        navigate('/');
     };
 
     return (
