@@ -10,10 +10,10 @@ const CustomModal = ({ isOpen, onClose }) => {
             isOpen={isOpen}
             onRequestClose={onClose}
             contentLabel="Modal"
-            className="bg-white p-6 rounded shadow-lg w-1/5"
+            className="bg-[#3A57A7] p-6 rounded shadow-lg w-1/5" // 모달 배경색을 #3A57A7로 변경
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
         >
-            <h2 className="text-lg font-bold mb-4">Create New Collection</h2>
+            <h2 className="text-lg font-bold mb-4 text-white">Create New Collection</h2>
             <form>
                 <input
                     type="text"
@@ -23,7 +23,7 @@ const CustomModal = ({ isOpen, onClose }) => {
 
                 <button
                     type="button"
-                    className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-auto block"
+                    className="mt-4 bg-[#303030] hover:bg-[#454545] text-white font-bold py-2 px-4 rounded mx-auto block"
                     onClick={onClose}
                 >
                     Create
