@@ -7,6 +7,8 @@ import MyPage from "../src/pages/MyPage";
 import Modal from "../src/components/Modal";
 import CreateImage from "../src/pages/CreateImage";
 import Header from "../src/components/header";
+import RecentGeneration from "../src/pages/RecentGeneration";
+import MyCollection from "../src/pages/MyCollection";
 
 function App() {
   return (
@@ -19,9 +21,10 @@ function App() {
           <Route path="/MyPage" element={<MyPage />} />
           <Route path="/Modal" element={<Modal />} />
           <Route path="/LoginForm" element={<LoginForm />} />
+          <Route path="/RecentGeneration" element={<RecentGeneration />} />
+          <Route path="MyCollection" element={<MyCollection />} />
         </Routes>
       </div>
-      3
     </Router>
   );
 }

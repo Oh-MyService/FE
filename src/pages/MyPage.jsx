@@ -21,6 +21,7 @@ const Mypage = () => {
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   const goToRecentGeneration = () => navigate("/RecentGeneration");
+  const goToCollection = () => navigate("/Collection");
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -45,8 +46,66 @@ const Mypage = () => {
             <span className="text-gray-500">image</span>
           )}
         </div>
-        <div className="text-center m-3">ohmyservice@gmail.com</div>
+        <div className="text-center m-3">오마이</div>
       </div>
+
+      <div className="flex flex-col text-left ml-10">
+        <div className="flex items-center">
+          <h2 className="text-2xl font-bold m-3">Recent Generation</h2>
+          <button
+            className="bg-transparent p-2 ml-neg"
+            onClick={goToRecentGeneration}
+          >
+            {/* SVG icon for navigation */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              className="w-7 h-7"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="grid grid-cols-4 gap-12">
+          <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
+          <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
+          <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
+          <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
+        </div>
+        <div className="flex items-center">
+          <h2 className="text-2xl font-bold m-3">Collection</h2>
+          <button className="bg-transparent p-2" onClick={goToCollection}>
+            {/* Possibly the same SVG icon for consistency */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              className="w-7 h-7"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="grid grid-cols-4 gap-12">
+          <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
+          <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
+        </div>
+      </div>
+      <CustomModal isOpen={modalIsOpen} onClose={closeModal} />
+      <div className="text-center m-3">ohmyservice@gmail.com</div>
 
       <div className="flex flex-col text-left ml-10">
         <div className="flex items-center">
@@ -90,8 +149,8 @@ const Mypage = () => {
             </button>
           </div>
         </div>
+        <CustomModal isOpen={modalIsOpen} onClose={closeModal} />
       </div>
-      <CustomModal isOpen={modalIsOpen} onClose={closeModal} />
     </div>
   );
 };

@@ -48,7 +48,7 @@ const CreateImage = () => {
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
           <div className="flex-1">
             <span className="block text-lg font-bold text-left text-slate-700">
-              프롬프트 작성
+              Pattern Generator
             </span>
             <input
               type="text"
@@ -64,13 +64,13 @@ const CreateImage = () => {
                 className="mt-2 sm:mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                 onClick={handleSubmit}
               >
-                이미지 생성
+                Generate
               </button>
             </div>
           </div>
           <div className="flex-1">
             <span className="block text-lg font-bold text-left text-slate-700">
-              옵션
+              Option
             </span>
             <div className="w-full h-40 sm:h-80 bg-gray-200"></div>
           </div>

@@ -10,9 +10,16 @@ const CustomModal = ({ isOpen, onClose }) => {
             isOpen={isOpen}
             onRequestClose={onClose}
             contentLabel="Modal"
-            className="bg-[#3A57A7] p-6 rounded shadow-lg w-1/5" // 모달 배경색을 #3A57A7로 변경
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+            className="bg-[#3A57A7] p-9 rounded shadow-lg w-1/5 relative" // Added relative for positioning the close button
+            overlayClassName="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center"
         >
+            <button
+                className="absolute top-0 right-0 m-3 text-white text-xl leading-none px-3 py-1 border-none bg-transparent"
+                onClick={onClose}
+                aria-label="Close Modal"
+            >
+                ×
+            </button>
             <h2 className="text-lg font-bold mb-4 text-white">Create New Collection</h2>
             <form>
                 <input
