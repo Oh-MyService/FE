@@ -2,14 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-        'Droid Sans', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: "pretendard-black";
+  src: url("./fonts/Pretendard-Black.otf");
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+@font-face {
+  font-family: "pretendard-bold";
+  src: url("./fonts/Pretendard-Bold.otf");
+}
+
+@font-face {
+  font-family: "pretendard-extrabold";
+  src: url("./fonts/Pretendard-ExtraBold.otf");
+}
+
+@font-face {
+  font-family: "pretendard-extralight";
+  src: url("./fonts/Pretendard-ExtraLight.otf");
+}
+
+@font-face {
+  font-family: "pretendard-light";
+  src: url("./fonts/Pretendard-Light.otf");
+}
+
+@font-face {
+  font-family: "pretendard-medium";
+  src: url("./fonts/Pretendard-Medium.otf");
+}
+
+@font-face {
+  font-family: "pretendard-regular";
+  src: url("./fonts/Pretendard-Regular.otf");
+}
+
+@font-face {
+  font-family: "pretendard-semibold";
+  src: url("./fonts/Pretendard-SemiBold.otf");
+}
+
+@font-face {
+  font-family: "pretendard-thin";
+  src: url("./fonts/Pretendard-Thin.otf");
 }
