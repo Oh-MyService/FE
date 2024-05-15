@@ -11,7 +11,7 @@ const CreateImage = () => {
 
     try {
       // Send the string to process_string
-      let response = await fetch("192.168.39.100:8000/process_string", {
+      let response = await fetch("http://192.168.39.100:8000/process_string", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const CreateImage = () => {
       alert(data);
 
       // Now get the image from get_image
-      response = await fetch("192.168.39.100:8000/get_image");
+      response = await fetch("http://192.168.39.100:8000/get_image");
       if (!response.ok) throw new Error("Network response was not ok");
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
