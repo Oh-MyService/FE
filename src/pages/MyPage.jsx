@@ -21,7 +21,7 @@ const Mypage = () => {
     const openModal = () => setModalIsOpen(true);
     const closeModal = () => setModalIsOpen(false);
     const goToRecentGeneration = () => navigate('/RecentGeneration');
-    const goToCollection = () => navigate('/Collection');
+    const goToCollection = () => navigate('/MyCollection');
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">

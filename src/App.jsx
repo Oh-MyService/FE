@@ -22,7 +22,7 @@ function App() {
                     <Route path="/Modal" element={<Modal />} />
                     <Route path="/LoginForm" element={<LoginForm />} />
                     <Route path="/RecentGeneration" element={<RecentGeneration />} />
-                    <Route path="MyCollection" element={<MyCollection />} />
+                    <Route path="/MyCollection" element={<MyCollection />} />
                 </Routes>
             </div>
         </Router>
