@@ -10,6 +10,12 @@ const Mypage = () => {
 
   const onChangeImage = (e) => {
     const profileImageFile = e.target.files[0];
+
+    // 만약 파일이 없거나 취소되었을 경우
+    if (!profileImageFile) {
+      return;
+    }
+
     const profileImageUrl = URL.createObjectURL(profileImageFile);
     setProfileImage(profileImageUrl);
   };
@@ -18,14 +24,12 @@ const Mypage = () => {
     fileInputRef.current.click();
   };
 
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
   const goToRecentGeneration = () => navigate("/RecentGeneration");
   const goToCollection = () => navigate("/MyCollection");
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="flex flex-col mx-0 my-auto mr-10">
+    <div className="flex justify-center items-start min-h-screen">
+      <div className="flex flex-col my-52 mr-12">
         <input
           type="file"
           ref={fileInputRef}
@@ -62,28 +66,59 @@ const Mypage = () => {
         </div>
       </div>
 
-      <div className="flex flex-col text-left ml-10">
+      <div className="flex flex-col text-left my-auto ml-10">
         <div className="flex items-center">
           <button
-            className="bg-transparent p-2 ml-neg"
+            className="bg-transparent p-2 ml-neg flex items-center"
             onClick={goToRecentGeneration}
           >
-            <h2 className="text-2xl font-['pretendard-extrabold'] m-3">
-              Recent Generation >
+            <h2 className="text-2xl font-['pretendard-extrabold'] mb-3">
+              Recent Generation
             </h2>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-8 h-8 mb-3 ml-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+              />
+            </svg>
           </button>
         </div>
-        <div className="grid grid-cols-4 gap-12">
+        <div className="grid grid-cols-4 gap-12 mb-10">
           <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
           <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
           <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
           <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
         </div>
         <div className="flex items-center">
-          <button className="bg-transparent p-2" onClick={goToCollection}>
-            <h2 className="text-2xl font-['pretendard-extrabold'] m-3">
-              Collection >
+          <button
+            className="bg-transparent p-2 ml-neg flex items-center"
+            onClick={goToCollection}
+          >
+            <h2 className="text-2xl font-['pretendard-extrabold'] mb-3 mt-10">
+              Collection
             </h2>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-8 h-8 mt-7 ml-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+              />
+            </svg>
           </button>
         </div>
         <div className="grid grid-cols-4 gap-12">
@@ -91,7 +126,6 @@ const Mypage = () => {
           <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
         </div>
       </div>
-      <CustomModal isOpen={modalIsOpen} onClose={closeModal} />
     </div>
   );
 };
