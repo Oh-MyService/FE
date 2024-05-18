@@ -3,46 +3,46 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "pretendard-black";
-  src: url("./fonts/Pretendard-Black.otf");
+    font-family: 'pretendard-black';
+    src: url('./fonts/Pretendard-Black.otf');
 }
 
 @font-face {
-  font-family: "pretendard-bold";
-  src: url("./fonts/Pretendard-Bold.otf");
+    font-family: 'pretendard-bold';
+    src: url('./fonts/Pretendard-Bold.otf');
 }
 
 @font-face {
-  font-family: "pretendard-extrabold";
-  src: url("./fonts/Pretendard-ExtraBold.otf");
+    font-family: 'pretendard-extrabold';
+    src: url('./fonts/Pretendard-ExtraBold.otf');
 }
 
 @font-face {
-  font-family: "pretendard-extralight";
-  src: url("./fonts/Pretendard-ExtraLight.otf");
+    font-family: 'pretendard-extralight';
+    src: url('./fonts/Pretendard-ExtraLight.otf');
 }
 
 @font-face {
-  font-family: "pretendard-light";
-  src: url("./fonts/Pretendard-Light.otf");
+    font-family: 'pretendard-light';
+    src: url('./fonts/Pretendard-Light.otf');
 }
 
 @font-face {
-  font-family: "pretendard-medium";
-  src: url("./fonts/Pretendard-Medium.otf");
+    font-family: 'pretendard-medium';
+    src: url('./fonts/Pretendard-Medium.otf');
 }
 
 @font-face {
-  font-family: "pretendard-regular";
-  src: url("./fonts/Pretendard-Regular.otf");
+    font-family: 'pretendard-regular';
+    src: url('./fonts/Pretendard-Regular.otf');
 }
 
 @font-face {
-  font-family: "pretendard-semibold";
-  src: url("./fonts/Pretendard-SemiBold.otf");
+    font-family: 'pretendard-semibold';
+    src: url('./fonts/Pretendard-SemiBold.otf');
 }
 
 @font-face {
-  font-family: "pretendard-thin";
-  src: url("./fonts/Pretendard-Thin.otf");
+    font-family: 'pretendard-thin';
+    src: url('./fonts/Pretendard-Thin.otf');
 }
