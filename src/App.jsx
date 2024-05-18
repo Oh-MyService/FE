@@ -11,6 +11,7 @@ import RecentGeneration from '../src/pages/RecentGeneration';
 import MyCollection from '../src/pages/MyCollection';
 import CollectionName from './pages/CollectionName';
 import DeleteModal from './components/DeleteModal';
+import EditModal from './components/EditModal';
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                     <Route path="/MyCollection" element={<MyCollection />} />
                     <Route path="/CollectionName" element={<CollectionName />} />
                     <Route path="/DeleteModal" element={<DeleteModal />} />
+                    <Route path="/EditModal" element={<EditModal />} />
                 </Routes>
             </div>
         </Router>

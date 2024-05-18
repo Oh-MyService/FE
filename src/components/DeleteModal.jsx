@@ -30,7 +30,7 @@ const DeleteModal = ({ isOpen, onRequestClose, onDelete }) => {
                     </svg>
                 </button>
                 <div className="mt-4 w-full">
-                    <h2 className="text-2xl text-white font-['pretendard-semibold'] text-center">Delete?</h2>
+                    <h2 className="text-xl text-white font-['pretendard-semibold'] text-center">Delete?</h2>
                     <div className="text-center mt-6 mb-2 w-full">
                         <button
                             type="button"
