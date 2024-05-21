@@ -24,7 +24,7 @@ const RecentGeneration = () => {
   };
 
   return (
-    <div className="mx-auto px-0 pt-24 max-w-[90%]">
+    <div className="mx-auto px-0 pt-24 max-w-[85%]">
       <div className="flex justify-between items-center py-4">
         <div className="flex items-center space-x-4">
           <button onClick={() => navigate("/MyPage")}>

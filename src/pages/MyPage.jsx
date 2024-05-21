@@ -36,6 +36,18 @@ const Mypage = () => {
       name: "Collection 2",
       images: ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg"],
     },
+    {
+      name: "Collection 3",
+      images: ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg"],
+    },
+    {
+      name: "Collection 4",
+      images: ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg"],
+    },
+    {
+      name: "Collection 5",
+      images: ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg"],
+    },
   ];
   const [collections, setCollections] = useState(dummyCollections);
   const handleCollectionClick = (collectionName) => {
@@ -107,8 +119,8 @@ const Mypage = () => {
             </svg>
           </button>
         </div>
-        <div className="grid grid-cols-4 gap-12 mb-10">
-          {[...Array(4)].map((_, index) => (
+        <div className="grid grid-cols-5 gap-4 mb-10">
+          {[...Array(5)].map((_, index) => (
             <div
               key={index}
               className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"
@@ -139,7 +151,7 @@ const Mypage = () => {
             </svg>
           </button>
         </div>
-        <div className="grid grid-cols-4 gap-12">
+        <div className="grid grid-cols-5 gap-4">
           {collections &&
             collections.map((collection, index) => (
               <div
