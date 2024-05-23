@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const AddModal = ({ onClose }) => {
-    // 최신 순 정렬을 위해 아이템에 일련번호나 날짜를 추가하면 좋습니다.
-    // 여기서는 단순성을 위해 초기값만 설정합니다.
     const initialCollections = [
         { id: 4, name: 'unique collection', isSelected: false },
         { id: 3, name: 'collection name 3', isSelected: false },
@@ -10,12 +8,12 @@ const AddModal = ({ onClose }) => {
         { id: 1, name: 'collection name 1', isSelected: false },
     ]
         .sort((a, b) => b.id - a.id)
-        .slice(0, 4); // ID에 따라 정렬하고 최신 4개만 선택
+        .slice(0, 4);
 
     const [collections, setCollections] = useState(initialCollections);
     const [searchTerm, setSearchTerm] = useState('');
     const [newCollectionName, setNewCollectionName] = useState('');
-    const [isAddingNew, setIsAddingNew] = useState(false); // 새 컬렉션 추가 UI 표시 여부
+    const [isAddingNew, setIsAddingNew] = useState(false);
 
     const handleSelect = (index) => {
         const newCollections = collections.map((collection, i) => {
@@ -47,35 +45,36 @@ const AddModal = ({ onClose }) => {
             name: newCollectionName,
             isSelected: false,
         };
-        const updatedCollections = [newCollection, ...collections].sort((a, b) => b.id - a.id).slice(0, 4);
+        const updatedCollections = [newCollection, ...collections].sort((a, b) => b.id - a.id);
         setCollections(updatedCollections);
         setNewCollectionName('');
-        setIsAddingNew(false); // 입력 필드 숨기기
+        setIsAddingNew(false);
     };
 
     const showNewCollectionInput = () => {
-        setIsAddingNew(true); // 입력 필드 표시
+        setIsAddingNew(true);
     };
 
     const hideNewCollectionInput = () => {
-        setIsAddingNew(false); // 입력 필드 숨기기
-        setNewCollectionName(''); // 입력 필드 초기화
+        setIsAddingNew(false);
+        setNewCollectionName('');
     };
 
-    const filteredCollections = collections.filter((collection) =>
-        collection.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredCollections =
+        searchTerm.length === 0
+            ? collections
+            : collections.filter((collection) => collection.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
         <div
             className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center"
             onClick={handleBackgroundClick}
         >
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full " onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
                 <input
                     type="text"
                     placeholder="검색"
-                    className="w-full p-2 border border-gray-300 rounded-md mb-4 font-['pretendard-medium']"
+                    className="w-full p-2 border border-gray-300 rounded-md mb-4"
                     value={searchTerm}
                     onChange={handleSearchChange}
                 />
@@ -84,18 +83,18 @@ const AddModal = ({ onClose }) => {
                         <input
                             type="text"
                             placeholder="새 컬렉션 이름"
-                            className="p-2 border border-gray-300 rounded-md w-full font-['pretendard-medium']"
+                            className="p-2 border border-gray-300 rounded-md w-full"
                             value={newCollectionName}
                             onChange={handleNewCollectionNameChange}
                             onKeyDown={(event) => event.key === 'Enter' && addNewCollection()}
                         />
                     </div>
                 )}
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-2 overflow-y-auto max-h-64">
                     {filteredCollections.map((collection, index) => (
                         <div
                             key={index}
-                            className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer font-['pretendard-regular']"
+                            className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer"
                             onClick={() => handleSelect(index)}
                         >
                             <span>{collection.name}</span>
@@ -135,7 +134,7 @@ const AddModal = ({ onClose }) => {
                 </div>
                 <div className="mt-4 flex justify-center">
                     <button
-                        className="px-4 py-2 bg-[#3A57A7] text-white rounded hover:bg-gray-500 font-['pretendard-medium']"
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
                         onClick={showNewCollectionInput}
                     >
                         Create new collection

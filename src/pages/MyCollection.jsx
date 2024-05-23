@@ -8,7 +8,54 @@ const MyCollection = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
-    const [collections, setCollections] = useState([]);
+
+    const [collections, setCollections] = useState([
+        {
+            name: 'Collection 1',
+            images: [
+                'path/to/collection1/image1.jpg',
+                'path/to/collection1/image2.jpg',
+                'path/to/collection1/image3.jpg',
+                'path/to/collection1/image4.jpg',
+            ],
+        },
+        {
+            name: 'Collection 2',
+            images: [
+                'path/to/collection2/image1.jpg',
+                'path/to/collection2/image2.jpg',
+                'path/to/collection2/image3.jpg',
+                'path/to/collection2/image4.jpg',
+            ],
+        },
+        {
+            name: 'Collection 3',
+            images: [
+                'path/to/collection3/image1.jpg',
+                'path/to/collection3/image2.jpg',
+                'path/to/collection3/image3.jpg',
+                'path/to/collection3/image4.jpg',
+            ],
+        },
+        {
+            name: 'Collection 4',
+            images: [
+                'path/to/collection4/image1.jpg',
+                'path/to/collection4/image2.jpg',
+                'path/to/collection4/image3.jpg',
+                'path/to/collection4/image4.jpg',
+            ],
+        },
+        {
+            name: 'Collection 5',
+            images: [
+                'path/to/collection5/image1.jpg',
+                'path/to/collection5/image2.jpg',
+                'path/to/collection5/image3.jpg',
+                'path/to/collection5/image4.jpg',
+            ],
+        },
+    ]);
 
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
@@ -33,7 +80,7 @@ const MyCollection = () => {
     };
 
     const handleCollectionClick = (collectionName) => {
-        navigate(`/CollectionName/${collectionName}`);
+        navigate(`/collection/${collectionName}`);
     };
 
     return (

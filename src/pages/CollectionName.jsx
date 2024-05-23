@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from '../components/DeleteModal'; // DeleteModal 컴포넌트를 임포트합니다.
 import EditModal from '../components/EditModal'; // EditModal 컴포넌트를 임포트합니다.
+import { useParams } from 'react-router-dom';
 
 const CollectionName = () => {
+    const { collectionName } = useParams();
     const navigate = useNavigate();
 
     const [collections, setCollections] = useState([
@@ -14,6 +16,17 @@ const CollectionName = () => {
         { images: ['https://via.placeholder.com/150'], date: '2023-06-04', name: 'Collection 5' },
         { images: ['https://via.placeholder.com/150'], date: '2023-06-04', name: 'Collection 6' },
     ]);
+    const [currentCollection, setCurrentCollection] = useState(null);
+
+    useEffect(() => {
+        const collection = collections.find((col) => col.name === collectionName);
+        if (collection) {
+            setCurrentCollection(collection);
+        } else {
+            navigate('/NotFound'); // 컬렉션이 없는 경우 Not Found 페이지로 리다이렉트
+        }
+    }, [collectionName, collections, navigate]);
+
     const [fullScreenImage, setFullScreenImage] = useState(null);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setEditModalOpen] = useState(false);

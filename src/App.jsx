@@ -31,6 +31,7 @@ function App() {
                     <Route path="/DeleteModal" element={<DeleteModal />} />
                     <Route path="/EditModal" element={<EditModal />} />
                     <Route path="/AddModal" element={<AddModal />} />
+                    <Route path="/collection/:collectionName" element={<CollectionName />} />
                 </Routes>
             </div>
         </Router>
