@@ -40,7 +40,7 @@ const DeleteModal = ({ isOpen, onRequestClose, onDelete }) => {
           <div className="text-center mt-6 mb-2 w-full">
             <button
               type="button"
-              className="bg-[#303030] hover:bg-gray-800 text-white py-1.5 px-10 md:py-2 md:px-16 rounded-full font-['pretendard-medium']"
+              className="bg-[#303030] hover:bg-red-700 text-white py-1.5 px-10 md:py-2 md:px-16 rounded-full font-['pretendard-medium']"
               onClick={() => {
                 onDelete();
                 onRequestClose();
