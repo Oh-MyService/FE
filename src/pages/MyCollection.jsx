@@ -28,7 +28,7 @@ const MyCollection = () => {
             name: collectionName,
             images: Array(4).fill(`path/to/${collectionName}/image.jpg`), // Placeholder paths
         };
-        setCollections([...collections, newCollection]);
+        setCollections([newCollection, ...collections]);
         closeModal();
     };
 
@@ -37,7 +37,7 @@ const MyCollection = () => {
     };
 
     return (
-        <div className="mx-auto px-0 pt-24 max-w-7xl">
+        <div className="mx-auto px-0 pt-24 max-w-[85%]">
             <div className="flex justify-between items-center py-4">
                 <div className="flex items-center space-x-4">
                     <button onClick={() => navigate('/MyPage')}>
@@ -66,7 +66,7 @@ const MyCollection = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
             </div>
-            <div className="grid grid-cols-4 gap-4 mt-8">
+            <div className="grid grid-cols-5 gap-4 mt-8">
                 {collections.map((collection, index) => (
                     <div
                         key={index}
