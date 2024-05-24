@@ -20,9 +20,17 @@ const CreateImage = () => {
     const openAddModal = () => setAddModalOpen(true);
     const closeAddModal = () => setAddModalOpen(false);
 
+    const [results, setResults] = useState([]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log('Submitted: ' + inputText);
+
+        const newResult = {
+            promptText: inputText,
+            date: new Date().toISOString().slice(0, 10), // 현재 날짜 설정
+        };
+        setResults([newResult, ...results]);
 
         try {
             // Send the string to process_string
@@ -54,6 +62,13 @@ const CreateImage = () => {
             console.error('Error occurred:', error);
         }
     };
+    const handleAddMore = (text) => {
+        const newResult = {
+            promptText: text,
+            date: new Date().toISOString().slice(0, 10),
+        };
+        setResults([newResult, ...results]);
+    };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -65,14 +80,12 @@ const CreateImage = () => {
         setShowOptions(!showOptions);
     };
 
-    const handleAddCollection = () => {};
-
     // 이미지 다운로드
     const handleSaveImage = () => {};
 
     return (
         <div className="flex justify-center items-center p-4 bg-gray-100 min-h-screen ">
-            <div className="flex flex-col p-4 w-[85%] absolute inset-0 top-0 pt-20 mx-auto">
+            <div className="flex flex-col p-4 w-[85%] absolute inset-0 top-0 pt-20 mx-auto ">
                 <div className="flex flex-row justify-center">
                     <div className="w-[85%]">
                         <span className="block text-lg font-['pretendard-extrabold'] text-left text-slate-700">
@@ -124,15 +137,18 @@ const CreateImage = () => {
                     </div>
                 </div>
 
-                {showResult && (
-                    <div className="flex flex-col justify-center mt-4 bg-gray-200 w-[85%] mx-auto p-6 rounded-lg">
-                        <Bubble text={promptText} />
+                {results.map((result, index) => (
+                    <div
+                        key={index}
+                        className="flex flex-col justify-center mt-4 bg-gray-200 w-[85%] mx-auto p-6 rounded-lg"
+                    >
+                        <Bubble text={result.promptText} />
                         <div className="grid grid-cols-4 gap-6 mt-8">
-                            {[...Array(4)].map((_, index) => (
-                                <div key={index} className="flex flex-col justify-between items-center w-60">
+                            {[...Array(4)].map((_, i) => (
+                                <div key={i} className="flex flex-col justify-between items-center w-60">
                                     <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
                                     <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
-                                        <p className="text-left">2024-01-01</p>
+                                        <p className="text-left">{result.date}</p>
                                         <div className="flex items-center space-x-2">
                                             <button onClick={openAddModal}>
                                                 <svg
@@ -173,24 +189,16 @@ const CreateImage = () => {
                         </div>
                         <div>
                             <button
-                                type="submit"
+                                type="button"
                                 className="mt-4 bg-[#3A57A7] hover:bg-[#303030] text-white font-['pretendard-medium'] py-2 px-12 rounded-full transition duration-200"
+                                onClick={() => handleAddMore(result.promptText)}
                             >
                                 같은 명령어로 더 생성하기
                             </button>
                         </div>
                         {isAddModalOpen && <AddModal onClose={closeAddModal} />}
                     </div>
-                )}
-
-                {/* {imageURL && (
-          <img
-            id="image"
-            src={imageURL}
-            alt="Fetched Image"
-            className="mt-4 max-w-xs"
-          />
-        )} */}
+                ))}
             </div>
             <style jsx>{`
                 .placeholder-top::placeholder {
