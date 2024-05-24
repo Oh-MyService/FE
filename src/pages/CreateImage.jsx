@@ -109,7 +109,7 @@ const CreateImage = () => {
                             </button>
                         </div>
                     </div>
-                    <div>
+                    <div className="flex flex-row justify-center items-start relative">
                         <button onClick={toggleOptions}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@ const CreateImage = () => {
                             </svg>
                         </button>
                         {showOptions && (
-                            <div className="absolute w-30 mt-2">
+                            <div className="absolute top-10 right-7 w-30 bg-white p-3 rounded-lg shadow-xl">
                                 <span className="block text-lg font-['pretendard-extrabold'] text-left text-slate-700">
                                     Option
                                 </span>
