@@ -59,7 +59,27 @@ const RecentGeneration = () => {
             key={index}
             className="flex flex-col justify-between items-center w-60"
           >
-            <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
+            <div className="relative overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer">
+              <button
+                className="absolute top-0 right-0 mr-2 mt-2 text-white"
+                onClick={openDeleteModal}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-8"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
             <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
               <p className="text-left">2024-01-01</p>
               <div className="flex items-center space-x-2">

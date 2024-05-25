@@ -136,7 +136,7 @@ const CollectionName = () => {
               className="w-full h-full object-cover"
             />
             <div className="flex justify-between items-center w-full mt-2">
-              <p className="text-sm text-gray-500">{collection.date}</p>
+              <p className="text-gray-500">{collection.date}</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
