@@ -56,7 +56,7 @@ const Mypage = () => {
   };
 
   return (
-    <div className="flex justify-center items-start min-h-screen">
+    <div className="flex justify-center items-start min-h-screen bg-[#CCCCCC]">
       <div className="flex flex-col my-52 mr-12">
         <input
           type="file"
@@ -100,7 +100,7 @@ const Mypage = () => {
             className="bg-transparent p-2 ml-neg flex items-center"
             onClick={goToRecentGeneration}
           >
-            <h2 className="text-2xl font-['pretendard-extrabold'] mb-3">
+            <h2 className="text-3xl font-['pretendard-extrabold'] mb-3">
               Recent Generation
             </h2>
             <svg
@@ -132,7 +132,7 @@ const Mypage = () => {
             className="bg-transparent p-2 ml-neg flex items-center"
             onClick={goToCollection}
           >
-            <h2 className="text-2xl font-['pretendard-extrabold'] mb-3 mt-4">
+            <h2 className="text-3xl font-['pretendard-extrabold'] mb-3 mt-4">
               My Collection
             </h2>
             <svg

@@ -2,6 +2,7 @@ import React from "react";
 import logo from "../assets/logo.png";
 import background from "../assets/login_bg.png";
 import deco from "../assets/login_deco.png";
+import { ReactComponent as DLlogo } from "../assets/designovel_icon_black.svg";
 
 const LoginForm = () => {
   const handleSubmit = (event) => {
@@ -18,6 +19,7 @@ const LoginForm = () => {
           <img src={deco} alt="" className="w-full h-full object-cover" />
         </div>
         <div className="bg-white w-[50%] h-full flex flex-col items-center justify-center">
+          <DLlogo width="100" height="100" />
           <h2 className="text-2xl font-['pretendard-extrabold'] text-center mb-8 text-black">
             로그인
           </h2>

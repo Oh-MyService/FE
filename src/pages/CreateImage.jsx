@@ -84,7 +84,7 @@ const CreateImage = () => {
   const handleSaveImage = () => {};
 
   return (
-    <div className="flex justify-center items-center p-4 bg-gray-100 min-h-screen">
+    <div className="flex justify-center items-center p-4 bg-[#CCCCCC] min-h-screen">
       <div className="flex flex-col p-4 w-[85%] absolute inset-0 top-0 pt-20 mx-auto">
         <div className="flex flex-row justify-center">
           <div className="w-[85%]">
@@ -96,7 +96,7 @@ const CreateImage = () => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="appearance-none block w-full h-40 sm:h-80 bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 placeholder-top"
+              className="appearance-none block w-full h-40 sm:h-80 bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 placeholder-top drop-shadow-lg"
               placeholder="ex) cat"
             />
             <div className="flex justify-end">
@@ -140,7 +140,7 @@ const CreateImage = () => {
         {results.map((result, index) => (
           <div
             key={index}
-            className="flex flex-col justify-center mt-4 bg-gray-200 w-[85%] mx-auto p-6 rounded-lg"
+            className="flex flex-col justify-center mt-4 bg-gray-200 w-[85%] mx-auto p-6 rounded-lg drop-shadow-lg"
           >
             <Bubble text={result.promptText} />
             <div className="grid grid-cols-4 gap-6 mt-8">
