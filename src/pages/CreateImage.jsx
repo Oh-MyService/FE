@@ -91,18 +91,18 @@ const CreateImage = () => {
             <span className="block text-lg font-['pretendard-extrabold'] text-left text-slate-700">
               Pattern Generator
             </span>
-            <input
+            <textarea
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="appearance-none block w-full h-40 sm:h-80 bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 placeholder-top drop-shadow-lg"
+              className="appearance-none block w-full h-40 bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 placeholder-top shadow-lg"
               placeholder="ex) cat"
             />
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="mt-2 sm:mt-4 bg-blue-500 hover:bg-blue-700 text-white font-['pretendard-bold'] py-2 px-4 rounded-full"
+                className="mt-2 sm:mt-4 bg-[#3A57A7] hover:bg-blue-700 text-white font-['pretendard-bold'] py-2 px-4 rounded-full"
                 onClick={handleSubmit}
               >
                 Generate
@@ -140,7 +140,7 @@ const CreateImage = () => {
         {results.map((result, index) => (
           <div
             key={index}
-            className="flex flex-col justify-center mt-4 bg-gray-200 w-[85%] mx-auto p-6 rounded-lg drop-shadow-lg"
+            className="flex flex-col justify-center mt-4 bg-gray-200 w-[85%] mx-auto p-6 rounded-lg shadow-lg"
           >
             <Bubble text={result.promptText} />
             <div className="grid grid-cols-4 gap-6 mt-8">
@@ -158,7 +158,7 @@ const CreateImage = () => {
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          stroke-width="1.5"
+                          stroke-width="2"
                           stroke="currentColor"
                           class="w-6 h-6"
                         >
@@ -174,7 +174,7 @@ const CreateImage = () => {
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          strokeWidth="1.5"
+                          strokeWidth="2"
                           stroke="currentColor"
                           className="w-6 h-6"
                         >
