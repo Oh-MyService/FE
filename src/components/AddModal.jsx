@@ -74,7 +74,7 @@ const AddModal = ({ onClose }) => {
                 <input
                     type="text"
                     placeholder="검색"
-                    className="w-full p-2 border border-gray-300 rounded-md mb-4"
+                    className="w-full p-2 border border-gray-300 rounded-md mb-4 font-['pretendard-medium']"
                     value={searchTerm}
                     onChange={handleSearchChange}
                 />
@@ -83,7 +83,7 @@ const AddModal = ({ onClose }) => {
                         <input
                             type="text"
                             placeholder="새 컬렉션 이름"
-                            className="p-2 border border-gray-300 rounded-md w-full"
+                            className="p-2 border border-gray-300 rounded-md w-full font-['pretendard-medium']"
                             value={newCollectionName}
                             onChange={handleNewCollectionNameChange}
                             onKeyDown={(event) => event.key === 'Enter' && addNewCollection()}
@@ -94,7 +94,7 @@ const AddModal = ({ onClose }) => {
                     {filteredCollections.map((collection, index) => (
                         <div
                             key={index}
-                            className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer"
+                            className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer font-['pretendard-medium']"
                             onClick={() => handleSelect(index)}
                         >
                             <span>{collection.name}</span>
@@ -134,7 +134,7 @@ const AddModal = ({ onClose }) => {
                 </div>
                 <div className="mt-4 flex justify-center">
                     <button
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                        className="px-4 py-2 bg-[#3A57A7] text-white rounded hover:bg-gray-500 font-['pretendard-medium'] "
                         onClick={showNewCollectionInput}
                     >
                         Create new collection
