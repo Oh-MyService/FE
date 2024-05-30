@@ -94,7 +94,7 @@ const CollectionName = () => {
     };
 
     return (
-        <div className="bg-neutral-300 min-h-screen">
+        <div className="bg-[#dcdcdd] min-h-screen">
             <div className="mx-auto px-0 pt-24 max-w-[85%]">
                 <div className="flex justify-between items-center py-4">
                     <div className="flex items-center space-x-4">
@@ -103,7 +103,7 @@ const CollectionName = () => {
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                strokeWidth="2.5"
+                                strokeWidth="3.5"
                                 stroke="currentColor"
                                 className="w-8 h-8"
                             >
@@ -118,7 +118,7 @@ const CollectionName = () => {
                                 viewBox="0 0 24 24"
                                 stroke-width="2"
                                 stroke="currentColor"
-                                class="size-7"
+                                class="size-8"
                             >
                                 <path
                                     stroke-linecap="round"

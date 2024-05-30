@@ -94,7 +94,7 @@ const AddModal = ({ onClose }) => {
                     {filteredCollections.map((collection, index) => (
                         <div
                             key={index}
-                            className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer font-['pretendard-medium']"
+                            className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer font-['pretendard-regular']"
                             onClick={() => handleSelect(index)}
                         >
                             <span>{collection.name}</span>

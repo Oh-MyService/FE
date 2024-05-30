@@ -56,7 +56,7 @@ const Mypage = () => {
     };
 
     return (
-        <div className="flex justify-center items-start bg-neutral-300 min-h-screen">
+        <div className="flex justify-center items-start bg-[#dcdcdd] min-h-screen">
             <div className="flex flex-col my-52 mr-12">
                 <input type="file" ref={fileInputRef} onChange={onChangeImage} className="hidden" />
                 <div
@@ -91,7 +91,7 @@ const Mypage = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="2"
+                            stroke-width="3.3"
                             stroke="currentColor"
                             class="w-8 h-8 mb-3 ml-2"
                         >
@@ -114,7 +114,7 @@ const Mypage = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="2"
+                            stroke-width="3.3"
                             stroke="currentColor"
                             class="w-8 h-8 mt-1 ml-2"
                         >

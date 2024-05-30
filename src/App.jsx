@@ -13,6 +13,7 @@ import CollectionName from './pages/CollectionName';
 import DeleteModal from './components/DeleteModal';
 import EditModal from './components/EditModal';
 import AddModal from './components/AddModal';
+import Main from './pages/Main';
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                     <Route path="/EditModal" element={<EditModal />} />
                     <Route path="/AddModal" element={<AddModal />} />
                     <Route path="/collection/:collectionName" element={<CollectionName />} />
+                    <Route path="/Main" element={<Main />} />
                 </Routes>
             </div>
         </Router>
