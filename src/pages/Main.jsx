@@ -7,7 +7,7 @@ function Main() {
 
   return (
     <div
-      className="h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center items-start p-8"
+      className="bg-[#F2F2F2] h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center items-start p-8"
       style={{ backgroundImage: `url(${BG_pattern})` }}
     >
       <h1 className="text-6xl font-['pretendard-black'] text-left pl-20">

@@ -87,7 +87,7 @@ const CreateImage = () => {
   const handleSaveImage = () => {};
 
   return (
-    <div className="flex min-h-screen bg-[#dcdcdd] pt-10 pb-10 w-full">
+    <div className="flex min-h-screen bg-[#F2F2F2] pt-10 pb-10 w-full">
       <div className="flex flex-col pt-16 w-full">
         <div className="flex flex-row justify-center">
           <div className="w-[85%]">
@@ -99,7 +99,7 @@ const CreateImage = () => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="appearance-none block w-full h-40 bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-500 placeholder-top shadow-lg"
+              className="appearance-none block w-full h-40 bg-gray-300 text-gray-700 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-gray-200 placeholder-top shadow-lg"
               placeholder="ex) cat"
             />
             <div className="flex justify-end">
@@ -143,7 +143,7 @@ const CreateImage = () => {
         {results.map((result, index) => (
           <div
             key={index}
-            className="flex flex-col justify-center mt-4 bg-gray-200 w-[85%] mx-auto p-6 rounded-lg shadow-lg"
+            className="flex flex-col justify-center mt-4 bg-gray-300 w-[85%] mx-auto p-6 rounded-lg shadow-lg"
           >
             <div className="flex">
               <DLlogo width="60" height="60" className="mr-6" />
@@ -153,8 +153,9 @@ const CreateImage = () => {
               {[...Array(4)].map((_, i) => (
                 <div
                   key={i}
-                  className="flex flex-col justify-between items-center w-60"
+                  className="flex flex-col justify-between items-center w-60 ml-10"
                 >
+                  <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
                   {imageURL && (
                     <div className="overflow-hidden w-60 h-60 cursor-pointer">
                       <img
