@@ -35,7 +35,7 @@ const CreateImage = () => {
     setResults([newResult, ...results]);
 
     try {
-      let response = await fetch("http://112.152.14.116:8000/process_string", {
+      let response = await fetch("http://223.194.20.119:8000/process_string", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +50,7 @@ const CreateImage = () => {
       alert(data);
 
       // Now get the image from get_image
-      response = await fetch("http://112.152.14.116:8000/get_image");
+      response = await fetch("http://223.194.20.119:8000/get_image");
       if (!response.ok) throw new Error("Network response was not ok");
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
@@ -155,7 +155,6 @@ const CreateImage = () => {
                   key={i}
                   className="flex flex-col justify-between items-center w-60 ml-10"
                 >
-                  <div className="overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
                   {imageURL && (
                     <div className="overflow-hidden w-60 h-60 cursor-pointer">
                       <img
