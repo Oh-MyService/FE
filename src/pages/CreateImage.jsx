@@ -99,7 +99,7 @@ const CreateImage = () => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="appearance-none block w-full h-40 bg-gray-300 text-gray-700 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-gray-200 placeholder-top shadow-lg"
+              className="appearance-none block w-full h-40 bg-gray-300 text-gray-700 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-gray-300 placeholder-top shadow-lg"
               placeholder="ex) cat"
             />
             <div className="flex justify-end">
