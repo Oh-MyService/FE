@@ -35,7 +35,7 @@ const DeleteModal = ({ isOpen, onRequestClose, onDelete }) => {
         </button>
         <div className="mt-4 w-full">
           <h2 className="text-xl text-white font-['pretendard-semibold'] text-center">
-            Delete?
+            삭제하시겠습니까?
           </h2>
           <div className="text-center mt-6 mb-2 w-full">
             <button
@@ -46,7 +46,7 @@ const DeleteModal = ({ isOpen, onRequestClose, onDelete }) => {
                 onRequestClose();
               }}
             >
-              Yes
+              삭제
             </button>
           </div>
         </div>

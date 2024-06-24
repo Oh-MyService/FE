@@ -144,7 +144,7 @@ const AddModal = ({ onClose }) => {
             className="px-4 py-2 bg-[#3A57A7] text-white rounded-full hover:bg-gray-500 font-['pretendard-medium'] "
             onClick={showNewCollectionInput}
           >
-            Create new collection
+            새 아카이브 생성
           </button>
         </div>
       </div>
