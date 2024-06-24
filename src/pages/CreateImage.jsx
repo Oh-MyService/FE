@@ -4,7 +4,7 @@ import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 
 const Bubble = ({ text }) => {
     return (
-        <div className="relative bg-[#444655] text-white pt-2 px-5 rounded-lg max-w-md h-10 font-['pretendard-medium'] mt-3 before:content-[''] before:absolute before:bg-[#444655] before:w-4 before:h-4 before:rotate-45 before:top-1/2 before:-left-1.5 before:-translate-y-1/2">
+        <div className="relative bg-[#444655] text-white pt-2 px-5 rounded-lg h-10 font-['pretendard-medium'] mt-3 before:content-[''] before:absolute before:bg-[#444655] before:w-4 before:h-4 before:rotate-45 before:top-1/2 before:-left-1.5 before:-translate-y-1/2">
             "{text}" 생성 결과
         </div>
     );
@@ -105,7 +105,7 @@ const CreateImage = () => {
                         <div className="flex justify-end">
                             <button
                                 type="submit"
-                                className="mt-2 sm:mt-4 bg-[#3A57A7] hover:bg-[#5E75C9] text-white font-['pretendard-bold'] py-4 px-6 rounded-full"
+                                className="mt-2 sm:mt-4 bg-[#3A57A7] hover:bg-blue-900 text-white font-['pretendard-bold'] py-4 px-6 rounded-full"
                                 onClick={handleSubmit}
                             >
                                 Generate

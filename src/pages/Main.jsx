@@ -93,13 +93,13 @@ function Main() {
             <div className="flex space-x-4 mt-4 pl-20 pt-10">
                 <button
                     className="text-2xl bg-[#3A57A7] hover:bg-blue-900 text-white font-['pretendard-semibold'] py-5 px-16 rounded-xl mr-4"
-                    onClick={() => navigate('/CreateImage')}
+                    onClick={() => navigate('/create-image')}
                 >
                     지금 만들어보기
                 </button>
                 <button
-                    className="text-2xl bg-[#8194EC] hover:bg-[#5E71A6] text-white font-['pretendard-semibold'] py-5 px-24 rounded-xl"
-                    onClick={() => navigate('/Login')}
+                    className="text-2xl bg-[#8194EC] hover:bg-[#B8C8FF] text-white font-['pretendard-semibold'] py-5 px-24 rounded-xl"
+                    onClick={() => navigate('/login')}
                 >
                     내 디자인
                 </button>
