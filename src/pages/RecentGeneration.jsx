@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "../components/DeleteModal";
-import AddModal from "../components/AddModal";
+import CollectionAddModal from "../components/CollectionAddModal";
 
 const RecentGeneration = () => {
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ const RecentGeneration = () => {
             </div>
           ))}
         </div>
-        {isAddModalOpen && <AddModal onClose={closeAddModal} />}
+        {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
         <DeleteModal
           isOpen={isDeleteModalOpen}
           onRequestClose={closeDeleteModal}

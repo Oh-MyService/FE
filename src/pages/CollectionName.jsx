@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteModal from "../components/DeleteModal";
-import EditModal from "../components/EditModal";
-import AddModal from "../components/AddModal";
+import EditModal from "../components/NameEditModal";
+import CollectionAddModal from "../components/CollectionAddModal";
 
 const CollectionName = () => {
   const { collectionName } = useParams();
@@ -229,7 +229,7 @@ const CollectionName = () => {
             ))
           ) : (
             <p className="text-xl text-center col-span-6">
-              No collections to display
+              저장된 패턴이 없습니다.
             </p>
           )}
         </div>
@@ -255,7 +255,7 @@ const CollectionName = () => {
           onRequestClose={closeDeleteModal}
           onDelete={deleteCollection}
         />
-        {isAddModalOpen && <AddModal onClose={closeAddModal} />}
+        {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
       </div>
     </div>
   );

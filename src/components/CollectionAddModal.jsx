@@ -78,25 +78,29 @@ const AddModal = ({ onClose }) => {
         className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full"
         onClick={(e) => e.stopPropagation()}
       >
-        <input
-          type="text"
-          placeholder="검색"
-          className="w-full p-2 border border-gray-300 rounded-md mb-4 font-['pretendard-medium']"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-        {isAddingNew && (
-          <div className="flex items-center mb-4">
-            <input
-              type="text"
-              placeholder="새 컬렉션 이름"
-              className="p-2 border border-gray-300 rounded-md w-full font-['pretendard-medium']"
-              value={newCollectionName}
-              onChange={handleNewCollectionNameChange}
-              onKeyDown={(event) => event.key === "Enter" && addNewCollection()}
+        <div className="relative w-full mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
             />
-          </div>
-        )}
+          </svg>
+          <input
+            type="text"
+            placeholder="검색"
+            className="pl-10 pr-2 py-2 w-full border border-gray-300 rounded-md font-['pretendard-medium']"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
         <div className="flex flex-col space-y-2 overflow-y-auto max-h-64">
           {filteredCollections.map((collection, index) => (
             <div
@@ -140,12 +144,33 @@ const AddModal = ({ onClose }) => {
           ))}
         </div>
         <div className="mt-4 flex justify-center">
-          <button
-            className="px-4 py-2 bg-[#3A57A7] text-white rounded-full hover:bg-gray-500 font-['pretendard-medium'] "
-            onClick={showNewCollectionInput}
-          >
-            새 아카이브 생성
-          </button>
+          {!isAddingNew ? (
+            <button
+              className="px-4 py-2 bg-[#3A57A7] text-white rounded-full hover:bg-gray-500 font-['pretendard-medium']"
+              onClick={showNewCollectionInput}
+            >
+              새 아카이브 생성
+            </button>
+          ) : (
+            <div className="flex w-full">
+              <input
+                type="text"
+                placeholder="새 아카이브 이름"
+                className="p-2 border border-gray-300 rounded-l-md w-full font-['pretendard-medium']"
+                value={newCollectionName}
+                onChange={handleNewCollectionNameChange}
+                onKeyDown={(event) =>
+                  event.key === "Enter" && addNewCollection()
+                }
+              />
+              <button
+                className="px-4 py-2 w-28 bg-[#3A57A7] text-white rounded-r-md hover:bg-gray-500 font-['pretendard-medium']"
+                onClick={addNewCollection}
+              >
+                생성하기
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

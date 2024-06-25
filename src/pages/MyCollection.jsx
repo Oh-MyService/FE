@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomModal from "../components/Modal";
+import CustomModal from "../components/NewCollectionModal";
 import DeleteModal from "../components/DeleteModal";
 
 const MyCollection = () => {
