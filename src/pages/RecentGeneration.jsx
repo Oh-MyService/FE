@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "../components/DeleteModal";
 import CollectionAddModal from "../components/CollectionAddModal";
@@ -9,15 +9,22 @@ const RecentGeneration = () => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
+  const [fullScreenImage, setFullScreenImage] = useState(null);
 
-  // 삭제 모달
+  const showFullScreenImage = (imageUrl) => {
+    setFullScreenImage(imageUrl);
+  };
+
+  const closeFullScreen = () => {
+    setFullScreenImage(null);
+  };
+
   const openDeleteModal = (index) => {
     setDeleteIndex(index);
     setDeleteModalOpen(true);
   };
   const closeDeleteModal = () => setDeleteModalOpen(false);
 
-  // 삭제 모달 확인
   const confirmDelete = () => {
     setItems((prevItems) => prevItems.filter((_, idx) => idx !== deleteIndex));
     closeDeleteModal();
@@ -26,17 +33,11 @@ const RecentGeneration = () => {
   const openAddModal = () => setAddModalOpen(true);
   const closeAddModal = () => setAddModalOpen(false);
 
-  // 이미지 다운로드
   const handleSaveImage = () => {};
-
-  // 리스트에서 이미지 삭제
-  const handleDeleteImage = () => {
-    openDeleteModal();
-  };
 
   return (
     <div className="bg-[#F2F2F2] min-h-screen">
-      <div className="mx-auto px-0 pt-24 max-w-[85%]">
+      <div className="mx-auto px-4 pt-24 max-w-[85%]">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
             <button onClick={() => navigate("/my-page")}>
@@ -60,13 +61,39 @@ const RecentGeneration = () => {
             </h1>
           </div>
         </div>
-        <div className="grid grid-cols-6 gap-8 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-8">
           {items.map((item, index) => (
             <div
               key={item}
-              className="flex flex-col justify-between items-center w-60"
+              className="flex flex-col items-center cursor-pointer relative aspect-square w-full"
+              onClick={() =>
+                showFullScreenImage(
+                  [
+                    require("../assets/slider4.webp"),
+                    require("../assets/slider8.jpg"),
+                    require("../assets/slider6.webp"),
+                    require("../assets/slider3.png"),
+                    require("../assets/slider7.webp"),
+                    require("../assets/slider4.webp"),
+                    require("../assets/slider8.jpg"),
+                  ][index]
+                )
+              }
             >
-              <div className="relative overflow-hidden w-60 h-60 bg-slate-400 hover:bg-slate-500 cursor-pointer"></div>
+              <img
+                src={
+                  [
+                    require("../assets/slider4.webp"),
+                    require("../assets/slider8.jpg"),
+                    require("../assets/slider6.webp"),
+                    require("../assets/slider3.png"),
+                    require("../assets/slider7.webp"),
+                    require("../assets/slider4.webp"),
+                    require("../assets/slider8.jpg"),
+                  ][index]
+                }
+                className="w-full h-full object-cover"
+              />
               <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
                 <p className="text-left">2024-01-01</p>
                 <div className="flex items-center space-x-2">
@@ -123,6 +150,18 @@ const RecentGeneration = () => {
             </div>
           ))}
         </div>
+        {fullScreenImage && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center p-4"
+            onClick={closeFullScreen}
+          >
+            <img
+              src={fullScreenImage}
+              alt="Full Screen"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        )}
         {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
         <DeleteModal
           isOpen={isDeleteModalOpen}
