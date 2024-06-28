@@ -56,7 +56,7 @@ const EditModal = ({ isOpen, onClose, onEdit }) => {
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                 <button
                     type="submit"
-                    className="mt-7 bg-[#303030] hover:bg-gray-500 text-white py-2 px-16 rounded-full mx-auto block font-['pretendard-medium']"
+                    className="mt-7 bg-[#303030] hover:bg-[#1D1D1D] text-white py-2 px-16 rounded-full mx-auto block font-['pretendard-medium']"
                 >
                     변경
                 </button>
