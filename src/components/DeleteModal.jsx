@@ -10,7 +10,7 @@ const DeleteModal = ({ isOpen, onRequestClose, onDelete }) => {
             onRequestClose={onRequestClose}
             contentLabel="Delete Confirmation"
             className="bg-[#3A57A7] p-4 rounded-lg shadow-lg w-full max-w-[20rem] sm:max-w-[20rem] mx-auto"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center"
         >
             <div className="flex flex-col items-center justify-center relative p-1 h-full">
                 <button
