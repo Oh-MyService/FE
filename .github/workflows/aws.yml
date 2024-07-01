@@ -58,8 +58,6 @@ jobs:
       env:
         IMAGE: ${{ steps.build-image.outputs.image }}
           - name: Deploy to Amazon Lightsail
-      env:
-        IMAGE: ${{ steps.build-image.outputs.image }}
       run: |
         ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$LIGHTSAIL_INSTANCE_IP << 'EOF'
           IMAGE=${IMAGE}
