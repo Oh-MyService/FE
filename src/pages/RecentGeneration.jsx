@@ -5,7 +5,15 @@ import CollectionAddModal from "../components/CollectionAddModal";
 
 const RecentGeneration = () => {
   const navigate = useNavigate();
-  const [items, setItems] = useState([...Array(7).keys()]);
+  const [items, setItems] = useState([
+    require("../assets/slider4.webp"),
+    require("../assets/slider8.jpg"),
+    require("../assets/slider6.webp"),
+    require("../assets/slider3.png"),
+    require("../assets/slider7.webp"),
+    require("../assets/slider4.webp"),
+    require("../assets/slider8.jpg"),
+  ]);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
@@ -23,10 +31,12 @@ const RecentGeneration = () => {
     setDeleteIndex(index);
     setDeleteModalOpen(true);
   };
+
   const closeDeleteModal = () => setDeleteModalOpen(false);
 
   const confirmDelete = () => {
     setItems((prevItems) => prevItems.filter((_, idx) => idx !== deleteIndex));
+    setDeleteIndex(null); // Reset the deleteIndex after deletion
     closeDeleteModal();
   };
 
@@ -64,36 +74,11 @@ const RecentGeneration = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-8">
           {items.map((item, index) => (
             <div
-              key={item}
+              key={index}
               className="flex flex-col items-center cursor-pointer relative aspect-square w-full"
-              onClick={() =>
-                showFullScreenImage(
-                  [
-                    require("../assets/slider4.webp"),
-                    require("../assets/slider8.jpg"),
-                    require("../assets/slider6.webp"),
-                    require("../assets/slider3.png"),
-                    require("../assets/slider7.webp"),
-                    require("../assets/slider4.webp"),
-                    require("../assets/slider8.jpg"),
-                  ][index]
-                )
-              }
+              onClick={() => showFullScreenImage(item)}
             >
-              <img
-                src={
-                  [
-                    require("../assets/slider4.webp"),
-                    require("../assets/slider8.jpg"),
-                    require("../assets/slider6.webp"),
-                    require("../assets/slider3.png"),
-                    require("../assets/slider7.webp"),
-                    require("../assets/slider4.webp"),
-                    require("../assets/slider8.jpg"),
-                  ][index]
-                }
-                className="w-full h-full object-cover"
-              />
+              <img src={item} className="w-full h-full object-cover" />
               <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
                 <p className="text-left">2024-01-01</p>
                 <div className="flex items-center space-x-2">

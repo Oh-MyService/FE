@@ -170,8 +170,8 @@ const CollectionName = () => {
                   alt={`${collection.name} Image`}
                   className="w-full h-full object-cover"
                 />
-                <div className="flex justify-between items-center w-full mt-2 text-gray-500">
-                  <p className="text-gray-500">{collection.date}</p>
+                <div className="flex justify-between items-center w-full mt-2 text-gray-600">
+                  <p className="text-gray-600">{collection.date}</p>
                   <div className="flex items-center space-x-2">
                     <button onClick={openAddModal}>
                       <svg
