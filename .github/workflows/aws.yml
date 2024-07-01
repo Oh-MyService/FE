@@ -41,7 +41,7 @@ jobs:
         REPOSITORY: ohmyservice_frontend # 본인의 repository명 입력
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
+        docker build --no-cache -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
         docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
         echo "image=$REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
@@ -65,5 +65,3 @@ jobs:
           sudo docker rm oms_FE_Deploy || true
           sudo docker run -d --name oms_FE_Deploy -p 25252:80 \$IMAGE
         EOF
-
-
