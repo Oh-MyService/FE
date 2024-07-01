@@ -97,7 +97,12 @@ const RecentGeneration = () => {
               <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
                 <p className="text-left">2024-01-01</p>
                 <div className="flex items-center space-x-2">
-                  <button onClick={openAddModal}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openAddModal();
+                    }}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -113,7 +118,12 @@ const RecentGeneration = () => {
                       />
                     </svg>
                   </button>
-                  <button onClick={() => openDeleteModal(index)}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openDeleteModal(index);
+                    }}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -129,7 +139,12 @@ const RecentGeneration = () => {
                       />
                     </svg>
                   </button>
-                  <button onClick={handleSaveImage}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSaveImage();
+                    }}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
