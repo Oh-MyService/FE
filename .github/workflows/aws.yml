@@ -6,9 +6,9 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  LIGHTSAIL_INSTANCE_IP: ${{ secrets.LIGHTSAIL_INSTANCE_IP }}  # Lightsail 인스턴스의 IP 주소
-  SSH_USERNAME: ${{ secrets.SSH_USERNAME }}  # SSH 사용자 이름
-  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH 개인 키
+  LIGHTSAIL_INSTANCE_IP: ${{ secrets.LIGHTSAIL_INSTANCE_IP }}
+  SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
 jobs:
   deploy:
@@ -57,12 +57,8 @@ jobs:
     - name: Deploy to Amazon Lightsail
       env:
         IMAGE: ${{ steps.build-image.outputs.image }}
-          - name: Deploy to Amazon Lightsail
-      env:
-        IMAGE: ${{ steps.build-image.outputs.image }}
       run: |
-        ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$LIGHTSAIL_INSTANCE_IP << EOF
-          IMAGE=${IMAGE}
+        ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$LIGHTSAIL_INSTANCE_IP << 'EOF'
           sudo docker pull $IMAGE
           sudo docker stop my_container || true
           sudo docker rm my_container || true
