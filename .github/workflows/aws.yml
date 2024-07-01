@@ -58,11 +58,12 @@ jobs:
       env:
         IMAGE: ${{ steps.build-image.outputs.image }}
       run: |
-        ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$LIGHTSAIL_INSTANCE_IP << 'EOF'
+        ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$LIGHTSAIL_INSTANCE_IP << EOF
           IMAGE=${IMAGE}
-          sudo docker pull $IMAGE
+          sudo docker pull \$IMAGE
           sudo docker stop my_container || true
           sudo docker rm my_container || true
-          sudo docker run -d --name my_container -p 20080:80 $IMAGE
+          sudo docker run -d --name my_container -p 80:80 \$IMAGE
         EOF
+
 
