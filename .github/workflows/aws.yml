@@ -1,21 +1,14 @@
-name: Deploy to Amazon ECR (Public)
+name: Deploy to Amazon Lightsail
 
 on:
   push:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
-  # ECR_REPOSITORY: MY_ECR_REPOSITORY           # set this to your Amazon ECR repository name
-  # ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-  # ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-  # ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-  #                                              # file, e.g. .aws/task-definition.json
-  # CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
-  #                                              # containerDefinitions section of your task definition
-
-# permissions:
-#   contents: read
+  AWS_REGION: us-east-1
+  LIGHTSAIL_INSTANCE_IP: ${{ secrets.LIGHTSAIL_INSTANCE_IP }}  # Lightsail 인스턴스의 IP 주소
+  SSH_USERNAME: ${{ secrets.SSH_USERNAME }}  # SSH 사용자 이름
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH 개인 키
 
 jobs:
   deploy:
@@ -48,25 +41,26 @@ jobs:
         REPOSITORY: ohmyservice_frontend # 본인의 repository명 입력
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
         docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
         docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
         echo "image=$REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-    # - name: Fill in the new image ID in the Amazon ECS task definition
-    #   id: task-def
-    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-    #   with:
-    #     task-definition: ${{ env.ECS_TASK_DEFINITION }}
-    #     container-name: ${{ env.CONTAINER_NAME }}
-    #     image: ${{ steps.build-image.outputs.image }}
+    - name: Install SSH client
+      run: sudo apt-get install -y openssh-client
 
-    # - name: Deploy Amazon ECS task definition
-    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-    #   with:
-    #     task-definition: ${{ steps.task-def.outputs.task-definition }}
-    #     service: ${{ env.ECS_SERVICE }}
-    #     cluster: ${{ env.ECS_CLUSTER }}
-    #     wait-for-service-stability: true
+    - name: Copy SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+    - name: Deploy to Amazon Lightsail
+      env:
+        IMAGE: ${{ steps.build-image.outputs.image }}
+      run: |
+        ssh -o StrictHostKeyChecking=no $SSH_USERNAME@$LIGHTSAIL_INSTANCE_IP << 'EOF'
+          docker pull $IMAGE
+          docker stop my_container || true
+          docker rm my_container || true
+          docker run -d --name my_container -p 80:80 $IMAGE
+        EOF
