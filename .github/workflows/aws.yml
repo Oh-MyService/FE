@@ -63,7 +63,7 @@ jobs:
           sudo docker pull \$IMAGE
           sudo docker stop oms_FE_Deploy || true
           sudo docker rm oms_FE_Deploy || true
-          sudo docker run -d --name oms_FE_Deploy -p 20080:80 \$IMAGE
+          sudo docker run -d --name oms_FE_Deploy -p 25252:80 \$IMAGE
         EOF
 
 
