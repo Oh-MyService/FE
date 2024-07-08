@@ -4,7 +4,7 @@ import { ReactComponent as DLlogo } from "../assets/designovel_icon_black.svg";
 
 const Bubble = ({ text }) => {
   return (
-    <div className="relative bg-[#94d0f3] text-black text-lg pt-2 px-5 rounded-lg h-auto inline-block font-['pretendard-medium'] mt-3 ml-2 before:content-[''] before:absolute before:bg-[#94d0f3] before:w-4 before:h-4 before:rotate-45 before:top-1/2 before:-left-2 before:-translate-y-1/2">
+    <div className="relative bg-[#444655] text-white text-lg pt-2 px-5 rounded-lg h-auto inline-block font-['pretendard-medium'] mt-3 ml-2 before:content-[''] before:absolute before:bg-[#444655] before:w-4 before:h-4 before:rotate-45 before:top-1/2 before:-left-2 before:-translate-y-1/2">
       "{text}" 생성 결과
     </div>
   );
@@ -65,16 +65,6 @@ const CreateImage = () => {
     }
   };
 
-  const handleAddMore = (index) => {
-    const updatedResults = results.map((result, idx) => {
-      if (idx === index) {
-        return { ...result, showButton: false }; // 클릭한 버튼만 숨김 처리
-      }
-      return result;
-    });
-    setResults(updatedResults);
-  };
-
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSubmit(event);
@@ -117,47 +107,20 @@ const CreateImage = () => {
             </div>
           </div>
           {/* 옵션 섹션 */}
-          {showOptions && (
-            <div
-              className={`w-full mt-8 rounded-lg border-3 border-[#809DEC] transition-all duration-300 ${
-                showAdvancedOptions ? "h-80" : "h-60"
-              }`}
-            >
-              <div className="relative w-full h-full">
-                <span className="m-3 block text-2xl font-['pretendard-bold'] text-left text-slate-700">
-                  옵션
-                </span>
-                <div className="absolute mb-2 inset-x-0 bottom-0 flex w-full justify-between rounded-b-lg rounded-t-lg">
-                  {!showAdvancedOptions && (
-                    <button
-                      type="button"
-                      className="w-full bg-[#abc1fea6] hover:bg-[#809DEC] text-black font-['pretendard-bold'] text-2xl py-4 rounded-b-lg flex items-center justify-center"
-                      onClick={toggleAdvancedOptions}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="size-6 mr-2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                        />
-                      </svg>
-                      고급 옵션
-                    </button>
-                  )}
-                </div>
-              </div>
+          <div
+            className={
+              "w-full h-[48vh] mt-8 rounded-lg border-3 border-[#8194EC]"
+            }
+          >
+            <div className="relative w-full h-full">
+              <span className="m-3 block text-2xl font-['pretendard-bold'] text-left text-slate-700">
+                옵션
+              </span>
             </div>
-          )}
+          </div>
         </div>
 
-        <div className="flex flex-col w-[55%] mx-2 mt-14 h-[80vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg">
+        <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg">
           {/* 생성 결과 섹션 */}
           {results.map((result, index) => (
             <div
@@ -222,17 +185,6 @@ const CreateImage = () => {
                     </div>
                   </div>
                 ))}
-              </div>
-              <div>
-                {result.showButton && (
-                  <button
-                    type="button"
-                    className="mt-4 bg-[#8194EC] hover:bg-[#B8C8FF] text-white font-['pretendard-medium'] py-2 px-12 rounded-full transition duration-200"
-                    onClick={() => handleAddMore(index)}
-                  >
-                    같은 명령어로 더 생성하기
-                  </button>
-                )}
               </div>
               {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
             </div>
