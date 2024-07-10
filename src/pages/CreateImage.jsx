@@ -14,8 +14,6 @@ const CreateImage = () => {
   const [inputText, setInputText] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
-  const [showOptions, setShowOptions] = useState(true);
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [promptText, setPromptText] = useState("");
   const [showResult, setShowResult] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -72,10 +70,6 @@ const CreateImage = () => {
   };
 
   const handleSaveImage = () => {};
-
-  const toggleAdvancedOptions = () => {
-    setShowAdvancedOptions(!showAdvancedOptions);
-  };
 
   return (
     <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">

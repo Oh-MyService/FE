@@ -1,12 +1,14 @@
 import React from "react";
-import logo from "../assets/logo.png";
 import background from "../assets/login_bg.png";
 import deco from "../assets/login_deco.png";
 import { ReactComponent as DLlogo } from "../assets/designovel_icon_black.svg";
 
 const LoginForm = () => {
-  const handleSubmit = (event) => {
+  const handleLoginSubmit = (event) => {
     event.preventDefault();
+    console.log("구글 로그인 버튼 클릭");
+
+    window.location.href = "http://inkyong.com/login";
   };
 
   return (
@@ -23,13 +25,11 @@ const LoginForm = () => {
           <h2 className="text-2xl font-['pretendard-extrabold'] text-center mb-8 text-black">
             로그인
           </h2>
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col items-center justify-center gap-4"
-          >
+          <form className="flex flex-col items-center justify-center gap-4">
             <button
               type="submit"
               className="mt-4 bg-[#ffffff] hover:bg-gray-100 text-black font-['pretendard-medium'] py-2 px-12 rounded-full transition duration-200 border border-[#3A57A7]"
+              onClick={handleLoginSubmit}
             >
               구글로 로그인
             </button>
