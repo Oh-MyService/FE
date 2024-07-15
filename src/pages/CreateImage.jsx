@@ -3,14 +3,18 @@ import CollectionAddModal from "../components/CollectionAddModal";
 import { ReactComponent as DLlogo } from "../assets/designovel_icon_black.svg";
 
 const Bubble = ({ text }) => {
-    return (
-        <div
-            className="relative bg-[#444655] text-white text-lg pt-2 px-5 rounded-xl h-auto inline-block font-['pretendard-medium'] mt-3 pb-3 ml-2 max-w-full before:content-[''] before:absolute before:w-4 before:h-4 before:rotate-45 before:top-5 before:-left-2 before:-translate-y-1/2"
-            style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', textAlign: 'justify' }}
-        >
-            "{text}" 생성 결과
-        </div>
-    );
+  return (
+    <div
+      className="relative bg-[#444655] text-white text-lg pt-2 px-5 rounded-xl h-auto inline-block font-['pretendard-medium'] mt-3 pb-3 ml-2 max-w-full before:content-[''] before:absolute before:w-4 before:h-4 before:rotate-45 before:top-5 before:-left-2 before:-translate-y-1/2"
+      style={{
+        wordBreak: "break-word",
+        whiteSpace: "pre-wrap",
+        textAlign: "justify",
+      }}
+    >
+      "{text}" 생성 결과
+    </div>
+  );
 };
 
 const applySliderStyles = (element) => {
@@ -126,6 +130,8 @@ const CreateImage = () => {
   ];
   const optionsPerPage = 5;
 
+  const userId = 14;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Submitted: " + inputText);
@@ -138,26 +144,24 @@ const CreateImage = () => {
     setResults([newResult, ...results]);
 
     try {
-      let response = await fetch("http://223.194.20.119:8000/process_string", {
+      let response = await fetch("http://43.202.57.225:28282/prompts/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ string_input: inputText }),
+        body: JSON.stringify({ content: inputText, user_id: userId }),
       });
 
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.text();
       console.log(data);
-      setAlertMessage(data);
-      alert(data);
 
       // Now get the image from get_image
-      response = await fetch("http://223.194.20.119:8000/get_image");
-      if (!response.ok) throw new Error("Network response was not ok");
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      setImageURL(url);
+      // response = await fetch("http://223.194.20.119:8000/get_image");
+      // if (!response.ok) throw new Error("Network response was not ok");
+      // const blob = await response.blob();
+      // const url = URL.createObjectURL(blob);
+      // setImageURL(url);
 
       // 말풍선에 텍스트 설정
       setPromptText(inputText);
