@@ -4,7 +4,10 @@ import { ReactComponent as DLlogo } from "../assets/designovel_icon_black.svg";
 
 const Bubble = ({ text }) => {
   return (
-    <div className="relative bg-[#444655] text-white text-lg pt-2 px-5 rounded-t-lg rounded-br-lg h-auto inline-block font-['pretendard-medium'] mt-3 ml-2 before:content-[''] before:absolute before:bg-[#444655] before:w-4 before:h-4 before:rotate-45 before:top-1/2 before:-left-2 before:-translate-y-1/2">
+    <div
+      className="relative bg-[#444655] text-white text-lg pt-2 px-5 rounded-xl h-auto inline-block font-['pretendard-medium'] mt-3 pb-3 ml-2 max-w-full before:content-[''] before:absolute before:w-4 before:h-4 before:rotate-45 before:top-5 before:-left-2 before:-translate-y-1/2"
+      style={{ wordBreak: "break-word", whiteSpace: "pre-wrap" }}
+    >
       "{text}" 생성 결과
     </div>
   );
@@ -271,13 +274,13 @@ const CreateImage = () => {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="size-6"
+                      className="size-6"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M15.75 19.5 8.25 12l7.5-7.5"
                       />
                     </svg>
@@ -303,13 +306,13 @@ const CreateImage = () => {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="size-6"
+                      className="size-6"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="m8.25 4.5 7.5 7.5-7.5 7.5"
                       />
                     </svg>
@@ -327,13 +330,13 @@ const CreateImage = () => {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="size-6"
+                      className="size-6"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M15.75 19.5 8.25 12l7.5-7.5"
                       />
                     </svg>
@@ -354,19 +357,19 @@ const CreateImage = () => {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="size-6"
+                      className="size-6"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="m8.25 4.5 7.5 7.5-7.5 7.5"
                       />
                     </svg>
                   </button>
                 </div>
-                <div className="border-t border-gray-300 my-4"></div>{" "}
+                <div className="border-t border-gray-300 my-4"></div>
                 <div className="flex items-center">
                   <label className="text-lg font-['pretendard-bold'] mr-2">
                     CFG Scale
@@ -420,7 +423,7 @@ const CreateImage = () => {
               className="flex flex-col justify-center mt-2 w-full bg-white p-4 rounded-lg shadow-md"
             >
               <div className="flex">
-                <DLlogo width="50" height="50" className="mr-3 mt-2" />
+                <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
                 <Bubble text={result.promptText} />
               </div>
               <div className="grid grid-cols-2 gap-4 mt-8">
