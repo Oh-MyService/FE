@@ -195,7 +195,7 @@ const CreateImage = () => {
   return (
     <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
       <div className="flex w-[80%] justify-center px-4 mt-10">
-        <div className="flex flex-col w-[50%] mx-2">
+        <div className="flex flex-col w-[50%] mx-2 min-w-[650px]">
           {/* 입력창 섹션 */}
           <div className="flex flex-col justify-start items-start">
             <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
@@ -251,7 +251,7 @@ const CreateImage = () => {
                   <input
                     type="text"
                     className="w-32 p-2 focus:outline-[#8194EC] rounded-lg font-['pretendard-regular']"
-                    defaultValue="red"
+                    placeholder="ex) red"
                   />
                 </div>
                 <div className="flex items-center">
@@ -412,7 +412,7 @@ const CreateImage = () => {
           </div>
         </div>
 
-        <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg">
+        <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
           {/* 생성 결과 섹션 */}
           {results.map((result, index) => (
             <div
