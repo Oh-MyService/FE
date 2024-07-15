@@ -5,8 +5,8 @@ import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 const Bubble = ({ text }) => {
     return (
         <div
-            className="relative bg-[#444655] text-white text-lg pt-2 px-5 rounded-lg h-auto inline-block font-['pretendard-medium'] mt-3 pb-3 ml-2 max-w-full before:content-[''] before:absolute before:bg-[#444655] before:w-4 before:h-4 before:rotate-45 before:top-5 before:-left-2 before:-translate-y-1/2"
-            style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}
+            className="relative bg-[#444655] text-white text-lg pt-2 px-5 rounded-xl h-auto inline-block font-['pretendard-medium'] mt-3 pb-3 ml-2 max-w-full before:content-[''] before:absolute before:w-4 before:h-4 before:rotate-45 before:top-5 before:-left-2 before:-translate-y-1/2"
+            style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap', textAlign: 'justify' }}
         >
             "{text}" 생성 결과
         </div>
