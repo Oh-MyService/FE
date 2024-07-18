@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BG_pattern from "../assets/home_empty_ver.png";
 
@@ -58,6 +58,17 @@ const styles = {
 
 function Main() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://43.202.57.225:24242/user_info")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("User Info:", data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user info:", error);
+      });
+  }, []);
 
   return (
     <div
