@@ -144,7 +144,7 @@ const CreateImage = () => {
     setResults([newResult, ...results]);
 
     try {
-      let response = await fetch("http://43.202.57.225:28282/prompts/", {
+      let response = await fetch("http://43.202.57.225:24242/prompts/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -156,7 +156,6 @@ const CreateImage = () => {
       const data = await response.text();
       console.log(data);
 
-      // Now get the image from get_image
       // response = await fetch("http://223.194.20.119:8000/get_image");
       // if (!response.ok) throw new Error("Network response was not ok");
       // const blob = await response.blob();

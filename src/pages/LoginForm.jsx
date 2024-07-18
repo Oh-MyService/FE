@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import background from "../assets/login_bg.png";
 import deco from "../assets/login_deco.png";
 import { ReactComponent as DLlogo } from "../assets/designovel_icon_black.svg";
@@ -8,8 +8,19 @@ const LoginForm = () => {
     event.preventDefault();
     console.log("구글 로그인 버튼 클릭");
 
-    window.location.href = "http://inkyong.com/login";
+    window.location.href = "http://43.202.57.225:24242/login";
   };
+
+  useEffect(() => {
+    fetch("http://43.202.57.225:24242/user_info/")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("User Info:", data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user info:", error);
+      });
+  }, []);
 
   return (
     <div
