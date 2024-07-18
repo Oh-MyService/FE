@@ -12,7 +12,7 @@ const LoginForm = () => {
   };
 
   useEffect(() => {
-    fetch("http://43.202.57.225:24242/user_info/")
+    fetch("http://43.202.57.225:24242/user_info")
       .then((response) => response.json())
       .then((data) => {
         console.log("User Info:", data);
