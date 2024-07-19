@@ -8,7 +8,7 @@ const LoginForm = () => {
     event.preventDefault();
     console.log("구글 로그인 버튼 클릭");
 
-    window.location.href = "http://43.202.57.225:24242/login";
+    window.location.href = "http://43.202.57.225:24242/login_google";
   };
 
   useEffect(() => {
