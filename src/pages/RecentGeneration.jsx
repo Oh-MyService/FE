@@ -15,7 +15,7 @@ const RecentGeneration = () => {
     const fetchAllImages = async () => {
       try {
         let response = await fetch(
-          "http://43.202.57.225:24242/results?user_id=3",
+          "http://43.202.57.225:24242/user_results?user_id=3",
           {
             method: "GET",
             headers: {
