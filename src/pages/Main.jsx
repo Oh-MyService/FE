@@ -60,7 +60,7 @@ function Main() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://43.202.57.225:25252/user_info")
+    fetch("/user_info")
       .then((response) => response.json())
       .then((data) => {
         console.log("User Info:", data);
