@@ -12,14 +12,19 @@ const LoginForm = () => {
   };
 
   useEffect(() => {
-    fetch("http://43.202.57.225:24242/user_info")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("User Info:", data);
-      })
-      .catch((error) => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await fetch("http://43.202.57.225:24242/user_info");
+        if (response.ok) {
+          const data = await response.json();
+          console.log("User Info:", data);
+        }
+      } catch (error) {
         console.error("Error fetching user info:", error);
-      });
+      }
+    };
+
+    fetchUserInfo();
   }, []);
 
   return (

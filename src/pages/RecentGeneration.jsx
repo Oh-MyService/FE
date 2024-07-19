@@ -1,23 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "../components/DeleteModal";
 import CollectionAddModal from "../components/CollectionAddModal";
 
 const RecentGeneration = () => {
   const navigate = useNavigate();
-  const [items, setItems] = useState([
-    require("../assets/slider4.webp"),
-    require("../assets/slider8.jpg"),
-    require("../assets/slider6.webp"),
-    require("../assets/slider3.png"),
-    require("../assets/slider7.webp"),
-    require("../assets/slider4.webp"),
-    require("../assets/slider8.jpg"),
-  ]);
+  const [items, setItems] = useState([]);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [fullScreenImage, setFullScreenImage] = useState(null);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await fetch(
+          "http://43.202.57.225:24242/results?user_id=3"
+        );
+        const data = await response.json();
+        setItems(data);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+
+    fetchItems();
+  }, []);
 
   const showFullScreenImage = (imageUrl) => {
     setFullScreenImage(imageUrl);
@@ -76,11 +84,14 @@ const RecentGeneration = () => {
             <div
               key={index}
               className="flex flex-col items-center cursor-pointer relative aspect-square w-full"
-              onClick={() => showFullScreenImage(item)}
+              onClick={() => showFullScreenImage(item.image_data)}
             >
-              <img src={item} className="w-full h-full object-cover" />
+              <img
+                src={item.image_data}
+                className="w-full h-full object-cover"
+              />
               <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
-                <p className="text-left">2024-01-01</p>
+                <p className="text-left">{item.created_at}</p>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={(e) => {
