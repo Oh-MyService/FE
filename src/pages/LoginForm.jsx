@@ -14,10 +14,14 @@ const LoginForm = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch("http://43.202.57.225:24242/user_info");
+        const response = await fetch("http://43.202.57.225:24242/user_info", {
+          credentials: "include",
+        });
         if (response.ok) {
           const data = await response.json();
           console.log("User Info:", data);
+        } else {
+          console.error("Failed to fetch user info:", response.statusText);
         }
       } catch (error) {
         console.error("Error fetching user info:", error);
