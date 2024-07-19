@@ -63,7 +63,9 @@ function Main() {
   useEffect(() => {
     async function fetchUserInfo() {
       try {
-        let response = await fetch("/user_info");
+        let response = await fetch("http://43.202.57.225:24242/user_info", {
+          credentials: "include", // 세션 쿠키를 포함
+        });
         if (response.ok) {
           let data = await response.json();
           console.log(data); // 사용자 정보를 콘솔에 출력
