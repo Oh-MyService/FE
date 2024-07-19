@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BG_pattern from "../assets/home_empty_ver.png";
 
@@ -58,19 +58,23 @@ const styles = {
 
 function Main() {
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    async function fetchUserInfo() {
       try {
-        const response = await fetch("http://43.202.57.225:24242/user_info");
+        let response = await fetch("/user_info");
         if (response.ok) {
-          const data = await response.json();
-          console.log("User Info:", data);
+          let data = await response.json();
+          console.log(data); // 사용자 정보를 콘솔에 출력
+          setUserInfo(data);
+        } else {
+          throw new Error("Failed to fetch user info");
         }
       } catch (error) {
-        console.error("Error fetching user info:", error);
+        alert(error);
       }
-    };
+    }
 
     fetchUserInfo();
   }, []);
