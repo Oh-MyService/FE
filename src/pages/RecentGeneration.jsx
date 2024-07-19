@@ -12,19 +12,26 @@ const RecentGeneration = () => {
   const [fullScreenImage, setFullScreenImage] = useState(null);
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const fetchAllImages = async () => {
       try {
-        const response = await fetch(
-          "http://43.202.57.225:24242/results?user_id=3"
-        );
-        const data = await response.json();
-        setItems(data);
+        let response = await fetch("http://43.202.57.225:24242/results", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          let results = await response.json();
+          setItems(results);
+        } else {
+          throw new Error("Failed to fetch images");
+        }
       } catch (error) {
         console.error("Error fetching items:", error);
       }
     };
 
-    fetchItems();
+    fetchAllImages();
   }, []);
 
   const showFullScreenImage = (imageUrl) => {
@@ -79,15 +86,21 @@ const RecentGeneration = () => {
             </h1>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-8">
+        <div
+          id="imageDisplayArea"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-8"
+        >
           {items.map((item, index) => (
             <div
               key={index}
               className="flex flex-col items-center cursor-pointer relative aspect-square w-full"
-              onClick={() => showFullScreenImage(item.image_data)}
+              onClick={() =>
+                showFullScreenImage("data:image/jpeg;base64," + item.image_data)
+              }
             >
               <img
-                src={item.image_data}
+                src={"data:image/jpeg;base64," + item.image_data}
+                alt={"Image ID: " + item.id}
                 className="w-full h-full object-cover"
               />
               <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
