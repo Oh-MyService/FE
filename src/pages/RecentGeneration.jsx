@@ -16,12 +16,15 @@ const RecentGeneration = () => {
   useEffect(() => {
     const fetchAllImages = async (userId) => {
       try {
-        let response = await fetch(`/user_results?user_id=${userId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        let response = await fetch(
+          `http://43.202.57.225:24242/results?user_id=${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (response.ok) {
           let results = await response.json();
           setItems(results);
