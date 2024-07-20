@@ -11,18 +11,17 @@ const RecentGeneration = () => {
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [fullScreenImage, setFullScreenImage] = useState(null);
 
+  const userId = 3;
+
   useEffect(() => {
-    const fetchAllImages = async () => {
+    const fetchAllImages = async (userId) => {
       try {
-        let response = await fetch(
-          "http://43.202.57.225:24242/user_results?user_id=3",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        let response = await fetch(`/user_results?user_id=${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (response.ok) {
           let results = await response.json();
           setItems(results);
@@ -34,8 +33,8 @@ const RecentGeneration = () => {
       }
     };
 
-    fetchAllImages();
-  }, []);
+    fetchAllImages(userId);
+  }, [userId]);
 
   const showFullScreenImage = (imageUrl) => {
     setFullScreenImage(imageUrl);
