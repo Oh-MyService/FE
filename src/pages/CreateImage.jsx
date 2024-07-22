@@ -137,7 +137,7 @@ const CreateImage = () => {
         setResults([newResult, ...results]);
 
         try {
-            let response = await fetch('http://43.202.57.225:24242/prompts/', {
+            let response = await fetch('http://43.202.57.225:28282/api/prompts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
