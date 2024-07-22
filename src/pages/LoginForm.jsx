@@ -8,15 +8,18 @@ const LoginForm = () => {
     event.preventDefault();
     console.log("구글 로그인 버튼 클릭");
 
-    window.location.href = "http://43.202.57.225:28282/login";
+    window.location.href = "http://43.202.57.225:28282/api/login";
   };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch("http://43.202.57.225:28282/user-info", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          "http://43.202.57.225:28282/api/user-info",
+          {
+            credentials: "include",
+          }
+        );
         if (response.ok) {
           const data = await response.json();
           console.log("User Info:", data);
