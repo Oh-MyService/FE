@@ -8,13 +8,13 @@ const LoginForm = () => {
     event.preventDefault();
     console.log("구글 로그인 버튼 클릭");
 
-    window.location.href = "http://43.202.57.225:24242/login_google";
+    window.location.href = "http://43.202.57.225:28282/login";
   };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch("http://43.202.57.225:24242/user_info", {
+        const response = await fetch("http://43.202.57.225:28282/user-info", {
           credentials: "include",
         });
         if (response.ok) {
