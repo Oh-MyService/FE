@@ -59,17 +59,6 @@ const styles = {
 function Main() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch("http://43.202.57.225:28282/api/user-info")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("User Info:", data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user info:", error);
-      });
-  }, []);
-
   return (
     <div
       className="bg-[#F2F2F2] h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center items-start p-8 relative overflow-hidden"
