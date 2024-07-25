@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import background from "../assets/login_bg.png";
 import { ReactComponent as DLlogo } from "../assets/designovel_icon_black.svg";
 import SignupForm from "./SignupForm"; // SignupForm 컴포넌트 임포트
@@ -8,6 +9,7 @@ const LoginForm = () => {
   const [isRegister, setIsRegister] = useState(false); // 회원가입 폼 전환을 위한 상태
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const navigate = useNavigate();
 
   const handleLogin = useCallback(async (e) => {
     e.preventDefault();
@@ -29,6 +31,7 @@ const LoginForm = () => {
         localStorage.setItem("token", data.access_token); // 토큰을 로컬 스토리지에 저장
         setToken(data.access_token); // 토큰 상태 업데이트
         setResult("Login successful: " + JSON.stringify(data, null, 2)); // 로그인 성공 메시지 설정
+        navigate("/"); // 로그인 성공 시 메인 페이지로 이동
       } else {
         setResult("Login failed: " + JSON.stringify(data, null, 2)); // 로그인 실패 메시지 설정
       }
@@ -38,12 +41,12 @@ const LoginForm = () => {
     setLoading(false); // 로딩 종료
   }, []);
 
-  const handleLogout = useCallback(() => {
-    // 로그아웃 처리 함수
-    localStorage.removeItem("token"); // 로컬 스토리지에서 토큰 제거
-    setToken(""); // 토큰 상태 초기화
-    setResult("Logged out"); // 로그아웃 메시지 설정
-  }, []);
+  // const handleLogout = useCallback(() => {
+  //   // 로그아웃 처리 함수
+  //   localStorage.removeItem("token"); // 로컬 스토리지에서 토큰 제거
+  //   setToken(""); // 토큰 상태 초기화
+  //   setResult("Logged out"); // 로그아웃 메시지 설정
+  // }, []);
 
   const handleRegisterSuccess = useCallback(() => {
     // 회원가입 성공 처리 함수
@@ -152,20 +155,7 @@ const LoginForm = () => {
               )}
             </>
           ) : (
-            <>
-              <button
-                onClick={handleLogout}
-                className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-12 rounded-full transition duration-200"
-              >
-                로그아웃
-              </button>
-              <div className="mt-8 bg-gray-100 p-4 rounded-md w-full text-center">
-                <h2 className="text-xl font-bold text-center mb-4 text-black">
-                  결과
-                </h2>
-                <pre className="bg-gray-200 p-4 rounded-md">{result}</pre>
-              </div>
-            </>
+            <></>
           )}
         </div>
       </div>
