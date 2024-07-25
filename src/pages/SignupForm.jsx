@@ -12,9 +12,9 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
         const response = await fetch("http://43.202.57.225:28282/register", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: JSON.stringify({ username, password }),
+          body: new URLSearchParams({ username, password }),
         });
 
         const data = await response.json();
