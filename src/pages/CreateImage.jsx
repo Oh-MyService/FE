@@ -159,7 +159,7 @@ const CreateImage = () => {
       });
 
       if (!response.ok) throw new Error("Network response was not ok");
-      const data = await response.text();
+      const data = await response.json();
       console.log(data);
 
       // response = await fetch("http://223.194.20.119:8000/get_image");
