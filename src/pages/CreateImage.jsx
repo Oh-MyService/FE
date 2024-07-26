@@ -135,9 +135,20 @@ const CreateImage = () => {
 
   const userId = 2;
 
+  const isTokenExpired = (token) => {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.exp < Date.now() / 1000;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Submitted: " + inputText);
+    const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+
+    if (isTokenExpired(token)) {
+      setAlertMessage("Session expired. Please login again.");
+      return;
+    }
 
     const newResult = {
       promptText: inputText,
@@ -145,8 +156,6 @@ const CreateImage = () => {
       showButton: true, // 초기 상태에서 버튼을 보이게 설정
     };
     setResults([newResult, ...results]);
-
-    const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
 
     try {
       let response = await fetch("http://43.202.57.225:28282/api/prompts", {
@@ -173,6 +182,7 @@ const CreateImage = () => {
       setShowResult(true);
     } catch (error) {
       console.error("Error occurred:", error);
+      setAlertMessage("Error occurred while creating prompt.");
     }
   };
 
