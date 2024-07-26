@@ -1,8 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Mypage = () => {
   const navigate = useNavigate();
+  const [recentImages, setRecentImages] = useState([]);
+  const [collections, setCollections] = useState([]);
+
+  const userId = localStorage.getItem("user_id");
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchRecentImages = async (userId) => {
+      try {
+        const response = await fetch(
+          `http://43.202.57.225:28282/api/results/user/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          // 최신 5개의 이미지 가져오기
+          const latestFiveImages = data.slice(0, 5);
+          setRecentImages(latestFiveImages);
+        } else {
+          throw new Error("Failed to fetch images");
+        }
+      } catch (error) {
+        console.error("Error fetching recent images:", error);
+      }
+    };
+
+    fetchRecentImages();
+  }, [userId, token]);
 
   const goToRecentGeneration = () => navigate("/recent-generation");
   const goToCollection = () => navigate("/my-collection");
@@ -55,8 +90,6 @@ const Mypage = () => {
     },
   ];
 
-  const [collections, setCollections] = useState(dummyCollections);
-
   const handleCollectionClick = (collectionName) => {
     console.log("Clicked on collection:", collectionName);
   };
@@ -89,18 +122,12 @@ const Mypage = () => {
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
-          {[...Array(5)].map((_, index) => (
+          {recentImages.map((image, index) => (
             <div key={index} className="overflow-hidden w-60 h-60">
               <img
-                src={
-                  [
-                    require("../assets/slider4.webp"),
-                    require("../assets/slider8.jpg"),
-                    require("../assets/slider6.webp"),
-                    require("../assets/slider3.png"),
-                    require("../assets/slider7.webp"),
-                  ][index]
-                }
+                src={"data:image/jpeg;base64," + image.image_data}
+                alt={`Recent Image ${index + 1}`}
+                className="w-full h-full object-cover"
               />
             </div>
           ))}
