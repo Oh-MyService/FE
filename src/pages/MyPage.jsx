@@ -1,48 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Mypage = () => {
   const navigate = useNavigate();
-  const [recentImages, setRecentImages] = useState([]);
-  const [collections, setCollections] = useState([]);
-
-  const userId = localStorage.getItem("user_id");
   const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    const fetchRecentImages = async (userId) => {
-      try {
-        const response = await fetch(
-          `http://43.202.57.225:28282/api/results/user/${userId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          // 최신 5개의 이미지 가져오기
-          const latestFiveImages = data.slice(0, 5);
-          setRecentImages(latestFiveImages);
-        } else {
-          throw new Error("Failed to fetch images");
-        }
-      } catch (error) {
-        console.error("Error fetching recent images:", error);
-      }
-    };
-
-    fetchRecentImages();
-  }, [userId, token]);
+  const userId = localStorage.getItem("user_id");
 
   const goToRecentGeneration = () => navigate("/recent-generation");
   const goToCollection = () => navigate("/my-collection");
 
-  const dummyCollections = [
+  const [recentImages, setRecentImages] = useState([]);
+  const [collections, setCollections] = useState([
     {
       name: "Collection 1",
       images: [
@@ -88,7 +56,34 @@ const Mypage = () => {
         require("../assets/slider3.png"),
       ],
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    const fetchRecentImages = async () => {
+      try {
+        let response = await fetch(
+          `http://43.202.57.225:28282/api/results/user/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setRecentImages(data.slice(0, 5)); // 데이터가 배열 형태로 반환된다고 가정하고 가장 최근 5개만 사용
+        } else {
+          console.error("Failed to fetch recent images");
+        }
+      } catch (error) {
+        console.error("Error fetching recent images:", error);
+      }
+    };
+
+    fetchRecentImages();
+  }, [token, userId]);
 
   const handleCollectionClick = (collectionName) => {
     console.log("Clicked on collection:", collectionName);
@@ -125,8 +120,8 @@ const Mypage = () => {
           {recentImages.map((image, index) => (
             <div key={index} className="overflow-hidden w-60 h-60">
               <img
-                src={"data:image/jpeg;base64," + image.image_data}
-                alt={`Recent Image ${index + 1}`}
+                src={image.url} // 이미지 객체가 `url` 속성을 가지고 있다고 가정
+                alt={`Recent Image ${index}`}
                 className="w-full h-full object-cover"
               />
             </div>
