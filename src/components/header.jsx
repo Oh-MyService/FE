@@ -6,7 +6,7 @@ const Header = ({ token, setToken }) => {
   const navigate = useNavigate();
 
   const goToMyPage = () => {
-    navigate("/my-page");
+    navigate(token ? "/my-page" : "/login");
   };
 
   const goToMain = () => {

@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import BG_pattern from "../assets/home_empty_ver.png";
 
 const images1 = ["slider1.jpg", "slider2.png", "slider3.png", "slider10.jpg"];
-
 const images2 = [
   "slider5.webp",
   "slider6.webp",
@@ -58,6 +57,7 @@ const styles = {
 
 function Main() {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   return (
     <div
@@ -93,13 +93,13 @@ function Main() {
       <div className="flex space-x-4 mt-4 pl-20 pt-10 z-10">
         <button
           className="btn text-2xl bg-[#3A57A7] hover:bg-[#213261] text-white font-['pretendard-semibold'] py-5 px-16 rounded-xl mr-4"
-          onClick={() => navigate("/create-image")}
+          onClick={() => navigate(token ? "/create-image" : "/login")}
         >
           지금 만들어보기
         </button>
         <button
           className="btn text-2xl bg-[#8194EC] hover:bg-[#5b6ca6] text-white font-['pretendard-semibold'] py-5 px-24 rounded-xl"
-          onClick={() => navigate("/login")}
+          onClick={() => navigate(token ? "/my-page" : "/login")}
         >
           내 디자인
         </button>
