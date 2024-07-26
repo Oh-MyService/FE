@@ -155,7 +155,7 @@ const CreateImage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ content: inputText, user_id: userId }),
+        body: JSON.stringify({ content: inputText }),
       });
 
       if (!response.ok) throw new Error("Network response was not ok");
