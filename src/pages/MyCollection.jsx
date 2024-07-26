@@ -10,13 +10,17 @@ const MyCollection = () => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
     const [collections, setCollections] = useState([]);
 
+    // Replace with actual token retrieval logic
+    const getToken = () => localStorage.getItem('authToken');
+
     useEffect(() => {
         const fetchCollections = async () => {
             try {
-                const response = await fetch('http://43.202.57.225:28282/api/user_collections/', {
+                const response = await fetch('http://43.202.57.225:24242/api/user_collections/', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${getToken()}`, // Add token to headers
                     },
                 });
 
@@ -58,6 +62,7 @@ const MyCollection = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
+                    Authorization: `Bearer ${getToken()}`, // Add token to headers
                 },
                 body: new URLSearchParams({
                     collection_name: collectionName,
