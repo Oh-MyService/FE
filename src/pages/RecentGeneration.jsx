@@ -11,7 +11,8 @@ const RecentGeneration = () => {
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [fullScreenImage, setFullScreenImage] = useState(null);
 
-  const userId = 2;
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchAllImages = async (userId) => {
@@ -22,6 +23,7 @@ const RecentGeneration = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -36,8 +38,12 @@ const RecentGeneration = () => {
       }
     };
 
-    fetchAllImages(userId);
-  }, [userId]);
+    if (userId) {
+      fetchAllImages(userId);
+    } else {
+      console.error("No userId found in localStorage");
+    }
+  }, [userId, token]);
 
   const showFullScreenImage = (imageUrl) => {
     setFullScreenImage(imageUrl);
