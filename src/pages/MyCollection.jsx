@@ -16,7 +16,7 @@ const MyCollection = () => {
     useEffect(() => {
         const fetchCollections = async () => {
             try {
-                const response = await fetch('http://43.202.57.225:24242/api/user_collections/', {
+                const response = await fetch('http://43.202.57.225:28282/api/user_collections/', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
