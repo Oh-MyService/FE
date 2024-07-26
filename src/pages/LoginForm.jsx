@@ -59,9 +59,9 @@ const LoginForm = () => {
       className="min-h-screen bg-cover bg-center flex items-center justify-center"
       style={{ backgroundImage: `url(${background})` }}
     >
-      <div className="w-[780px] h-[550px] flex items-center justify-center rounded-xl shadow-lg overflow-hidden">
+      <div className="w-[780px] h-[550px] flex items-center justify-center rounded-xl shadow-xl overflow-hidden">
         <div
-          className={`w-[50%] h-full flex flex-col items-center justify-center transition-all duration-500 ${
+          className={`w-[50%] h-full flex flex-col items-center justify-center transition-all duration-200 ${
             isRegister ? "bg-white" : "bg-[#3A57A7]"
           }`}
         >
@@ -88,7 +88,7 @@ const LoginForm = () => {
           )}
         </div>
         <div
-          className={`w-[50%] h-full flex flex-col items-center justify-center transition-all duration-500 ${
+          className={`w-[50%] h-full flex flex-col items-center justify-center transition-all duration-200 ${
             isRegister ? "bg-[#3A57A7] relative" : "bg-white"
           }`}
         >
@@ -111,7 +111,7 @@ const LoginForm = () => {
                         id="loginUsername"
                         name="loginUsername"
                         required
-                        className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:border-[#3A57A7] font-['pretendard-medium']"
+                        className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:outline-[#3A57A7] font-['pretendard-medium']"
                         placeholder="Username"
                       />
                     </div>
@@ -122,7 +122,7 @@ const LoginForm = () => {
                         id="loginPassword"
                         name="loginPassword"
                         required
-                        className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 font-['pretendard-medium']"
+                        className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:outline-[#3A57A7] font-['pretendard-medium']"
                         placeholder="Password"
                       />
                     </div>

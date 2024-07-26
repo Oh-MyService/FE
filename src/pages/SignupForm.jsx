@@ -47,7 +47,7 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
             id="registerUsername"
             name="registerUsername"
             required
-            className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:border-[#3A57A7] font-['pretendard-medium']"
+            className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:outline-[#3A57A7] font-['pretendard-medium']"
             placeholder="Username"
           />
         </div>
@@ -58,7 +58,7 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
             id="registerPassword"
             name="registerPassword"
             required
-            className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:border-[#3A57A7] font-['pretendard-medium']"
+            className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:outline-[#3A57A7] font-['pretendard-medium']"
             placeholder="Password"
           />
         </div>
