@@ -133,8 +133,6 @@ const CreateImage = () => {
   ];
   const optionsPerPage = 5;
 
-  const userId = 2;
-
   const isTokenExpired = (token) => {
     const payload = JSON.parse(atob(token.split(".")[1]));
     return payload.exp < Date.now() / 1000;
@@ -169,7 +167,6 @@ const CreateImage = () => {
       let response = await fetch("http://43.202.57.225:28282/api/prompts", {
         method: "POST",
         headers: {
-          // "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: formData,
