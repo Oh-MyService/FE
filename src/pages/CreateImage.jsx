@@ -146,11 +146,14 @@ const CreateImage = () => {
     };
     setResults([newResult, ...results]);
 
+    const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+
     try {
       let response = await fetch("http://43.202.57.225:28282/api/prompts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ content: inputText, user_id: userId }),
       });
