@@ -11,7 +11,7 @@ const RecentGeneration = () => {
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [fullScreenImage, setFullScreenImage] = useState(null);
 
-  const userId = 3;
+  const userId = 2;
 
   useEffect(() => {
     const fetchAllImages = async (userId) => {
