@@ -120,7 +120,7 @@ const Mypage = () => {
           {recentImages.map((image, index) => (
             <div key={index} className="overflow-hidden w-60 h-60">
               <img
-                src={image.url} // 이미지 객체가 `url` 속성을 가지고 있다고 가정
+                src={"data:image/jpeg;base64," + image.image_data}
                 alt={`Recent Image ${index}`}
                 className="w-full h-full object-cover"
               />
