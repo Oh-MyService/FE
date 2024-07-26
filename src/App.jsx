@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import LoginForm from "../src/pages/LoginForm";
@@ -16,16 +16,18 @@ import CollectionAddModal from "./components/CollectionAddModal";
 import Main from "./pages/Main";
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+
   return (
     <Router>
       <div className="App">
-        <Header />
+        <Header token={token} setToken={setToken} />
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/SignupForm" element={<SignupForm />} />
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/Modal" element={<Modal />} />
-          <Route path="/login" element={<LoginForm />} />
+          <Route path="/login" element={<LoginForm setToken={setToken} />} />
           <Route path="/recent-generation" element={<RecentGeneration />} />
           <Route path="/my-collection" element={<MyCollection />} />
           <Route path="/collection-name" element={<CollectionName />} />

@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ token, setToken }) => {
   const navigate = useNavigate();
-  const [token, setToken] = useState(localStorage.getItem("token") || ""); // 로컬 스토리지에서 토큰을 가져와 상태로 설정
 
   const goToMyPage = () => {
     navigate("/my-page");
@@ -19,22 +18,10 @@ const Header = () => {
   };
 
   const handleLogout = useCallback(() => {
-    // 로그아웃 처리 함수
-    localStorage.removeItem("token"); // 로컬 스토리지에서 토큰 제거
-    setToken(""); // 토큰 상태 초기화
-  }, []);
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setToken(localStorage.getItem("token") || ""); // 로컬 스토리지에서 토큰 변경 감지하여 상태 업데이트
-    };
-
-    window.addEventListener("storage", handleStorageChange); // 스토리지 변경 감지 이벤트 리스너 추가
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange); // 컴포넌트 언마운트 시 이벤트 리스너 제거
-    };
-  }, []);
+    localStorage.removeItem("token");
+    setToken("");
+    goToLogin(); // 로그아웃 후 로그인 페이지로 이동
+  }, [setToken, goToLogin]);
 
   return (
     <header className="bg-neutral-800 py-3 fixed top-0 w-full z-10 h-16 font-[pretendard-medium]">
