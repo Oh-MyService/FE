@@ -145,6 +145,11 @@ const CreateImage = () => {
     console.log("Submitted: " + inputText);
     const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
 
+    if (!token) {
+      setAlertMessage("로그인이 필요합니다.");
+      return;
+    }
+
     if (isTokenExpired(token)) {
       setAlertMessage("Session expired. Please login again.");
       return;
@@ -161,7 +166,7 @@ const CreateImage = () => {
       let response = await fetch("http://43.202.57.225:28282/api/prompts", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ content: inputText }),
