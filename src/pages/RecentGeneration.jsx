@@ -12,7 +12,7 @@ const RecentGeneration = () => {
   const [fullScreenImage, setFullScreenImage] = useState(null);
 
   const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("userId");
+  const userId = localStorage.getItem("user_id");
 
   useEffect(() => {
     const fetchAllImages = async (userId) => {
