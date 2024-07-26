@@ -163,13 +163,16 @@ const CreateImage = () => {
     setResults([newResult, ...results]);
 
     try {
+      const formData = new FormData();
+      formData.append("content", inputText);
+
       let response = await fetch("http://43.202.57.225:28282/api/prompts", {
         method: "POST",
         headers: {
           // "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ content: inputText }),
+        body: formData,
       });
 
       if (!response.ok) throw new Error("Network response was not ok");
