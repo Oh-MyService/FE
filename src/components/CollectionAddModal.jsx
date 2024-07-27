@@ -25,11 +25,14 @@ const AddModal = ({ onClose }) => {
         throw new Error("Failed to fetch collections");
       }
       const data = await response.json();
-      console.log("Fetched collections:", data); // 콘솔에 받아온 데이터 출력
+      console.log("Fetched collections:", data);
 
       const collectionList = data.collection_list || [];
+      const sortedCollectionList = collectionList.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
       setCollections(
-        collectionList.map((collection) => ({
+        sortedCollectionList.map((collection) => ({
           id: collection.collection_id,
           name: collection.collection_name,
           isSelected: false,
