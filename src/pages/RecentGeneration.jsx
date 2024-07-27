@@ -99,13 +99,13 @@ const RecentGeneration = () => {
         </div>
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh]">
-            <p className="text-center font-['pretendard-extrabold'] text-5xl mb-4 text-black">
+            <p className="text-center font-['pretendard-extrabold'] text-5xl mb-4 text-black leading-relaxed">
               생성된 패턴이 없습니다. <br />
               지금 만들러 가보세요!
             </p>
             <button
               onClick={() => navigate("/create-image")}
-              className="px-8 py-4 border bg-[#3A57A7] hover:bg-[#213261] text-white rounded-full font-['pretendard-medium'] text-xl"
+              className="px-6 py-2 border bg-[#3A57A7] hover:bg-[#213261] text-white rounded-full font-['pretendard-medium'] text-xl mt-2"
             >
               패턴 생성하기
             </button>
