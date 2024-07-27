@@ -72,7 +72,7 @@ const RecentGeneration = () => {
   const handleSaveImage = () => {};
 
   return (
-    <div className="bg-[#F2F2F2] min-h-screen">
+    <div className="bg-[#F2F2F2] min-h-screen flex flex-col justify-center items-center">
       <div className="mx-auto px-4 pt-24 max-w-[85%]">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
@@ -98,13 +98,14 @@ const RecentGeneration = () => {
           </div>
         </div>
         {items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center min-h-[60vh]">
             <p className="text-center font-['pretendard-extrabold'] text-4xl mb-4 text-black">
-              생성된 패턴이 없습니다. 지금 만들러 가보세요!
+              생성된 패턴이 없습니다. <br />
+              지금 만들러 가보세요!
             </p>
             <button
               onClick={() => navigate("/create-image")}
-              className="px-6 py-2 border bg-[#3A57A7] hover:bg-[#213261] text-white rounded-full"
+              className="px-6 py-2 border bg-[#3A57A7] hover:bg-[#213261] text-white rounded-full font-['pretendard-medium']"
             >
               패턴 생성하기
             </button>
