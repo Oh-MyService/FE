@@ -72,7 +72,7 @@ const RecentGeneration = () => {
   const handleSaveImage = () => {};
 
   return (
-    <div className="bg-[#F2F2F2] min-h-screen flex flex-col justify-center items-center">
+    <div className="bg-[#F2F2F2] min-h-screen">
       <div className="mx-auto px-4 pt-24 max-w-[85%]">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
