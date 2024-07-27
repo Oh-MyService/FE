@@ -1,35 +1,60 @@
 import React, { useState, useEffect } from "react";
 
 const AddModal = ({ onClose }) => {
-  const initialCollections = [
-    { id: 4, name: "unique collection", isSelected: false },
-    { id: 3, name: "collection name 3", isSelected: false },
-    { id: 2, name: "collection name 2", isSelected: false },
-    { id: 1, name: "collection name 1", isSelected: false },
-  ]
-    .sort((a, b) => b.id - a.id)
-    .slice(0, 4);
-
-  const [collections, setCollections] = useState(initialCollections);
+  const [collections, setCollections] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [newCollectionName, setNewCollectionName] = useState("");
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
-  const handleSelect = (index) => {
-    const newCollections = collections.map((collection, i) => {
-      if (i === index) {
-        const newIsSelected = !collection.isSelected;
-        setToastMessage(
-          newIsSelected
-            ? `${collection.name} 컬렉션에 저장되었습니다.`
-            : `${collection.name} 컬렉션에 저장이 취소되었습니다.`
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("user_id");
+
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const response = await fetch(
+          `http://43.202.57.225:28282/api/collections/user/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-        return { ...collection, isSelected: newIsSelected };
+        if (!response.ok) {
+          throw new Error("Failed to fetch collections");
+        }
+        const data = await response.json();
+        // Assuming the response is an array of collections
+        setCollections(
+          data.collection_list.map((collection) => ({
+            id: collection.id,
+            name: collection.collection_name,
+            isSelected: false, // Assuming isSelected is initially false
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching collections:", error);
+        // Handle error as needed, e.g., show a toast message
+        setToastMessage("Failed to fetch collections");
       }
-      return collection;
-    });
+    };
+
+    fetchCollections();
+  }, [token, userId]); // Fetch collections on component mount
+
+  const handleSelect = (index) => {
+    const newCollections = [...collections];
+    newCollections[index].isSelected = !newCollections[index].isSelected;
     setCollections(newCollections);
+
+    setToastMessage(
+      newCollections[index].isSelected
+        ? `${newCollections[index].name} 컬렉션에 저장되었습니다.`
+        : `${newCollections[index].name} 컬렉션에 저장이 취소되었습니다.`
+    );
 
     setTimeout(() => {
       setToastMessage("");
@@ -52,13 +77,11 @@ const AddModal = ({ onClose }) => {
 
   const addNewCollection = () => {
     const newCollection = {
-      id: Math.max(...collections.map((c) => c.id)) + 1,
+      id: Math.max(...collections.map((c) => c.id), 0) + 1,
       name: newCollectionName,
       isSelected: false,
     };
-    const updatedCollections = [newCollection, ...collections].sort(
-      (a, b) => b.id - a.id
-    );
+    const updatedCollections = [newCollection, ...collections];
     setCollections(updatedCollections);
     setNewCollectionName("");
     setIsAddingNew(false);
@@ -94,7 +117,7 @@ const AddModal = ({ onClose }) => {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
             className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5"
           >
@@ -115,7 +138,7 @@ const AddModal = ({ onClose }) => {
         <div className="flex flex-col space-y-2 overflow-y-auto max-h-64">
           {filteredCollections.map((collection, index) => (
             <div
-              key={index}
+              key={collection.id}
               className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer font-['pretendard-regular']"
               onClick={() => handleSelect(index)}
             >
