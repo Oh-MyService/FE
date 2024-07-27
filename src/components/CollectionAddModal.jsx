@@ -27,23 +27,22 @@ const AddModal = ({ onClose }) => {
           throw new Error("Failed to fetch collections");
         }
         const data = await response.json();
-        // Assuming the response is an array of collections
+
+        const collectionList = data.collection_list || [];
         setCollections(
-          data.collection_list.map((collection) => ({
+          collectionList.map((collection) => ({
             id: collection.id,
             name: collection.collection_name,
-            isSelected: false, // Assuming isSelected is initially false
+            isSelected: false,
           }))
         );
       } catch (error) {
         console.error("Error fetching collections:", error);
-        // Handle error as needed, e.g., show a toast message
-        setToastMessage("Failed to fetch collections");
       }
     };
 
     fetchCollections();
-  }, [token, userId]); // Fetch collections on component mount
+  }, [token, userId]);
 
   const handleSelect = (index) => {
     const newCollections = [...collections];
@@ -58,7 +57,7 @@ const AddModal = ({ onClose }) => {
 
     setTimeout(() => {
       setToastMessage("");
-    }, 3000); // Hide the toast message after 3 seconds
+    }, 3000);
   };
 
   const handleSearchChange = (event) => {
