@@ -107,7 +107,7 @@ const RecentGeneration = () => {
           </div>
         ) : items.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh]">
-            <p className="text-center font-['pretendard-extrabold'] text-5xl mb-4 text-black leading-normal">
+            <p className="text-center font-['pretendard-extrabold'] text-5xl mb-4 text-black leading-snug">
               생성된 패턴이 없습니다. <br />
               지금 만들러 가보세요!
             </p>
