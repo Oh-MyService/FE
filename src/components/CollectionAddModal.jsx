@@ -5,42 +5,42 @@ const AddModal = ({ onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [newCollectionName, setNewCollectionName] = useState("");
   const [isAddingNew, setIsAddingNew] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
 
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
 
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        const response = await fetch(
-          `http://43.202.57.225:28282/api/collections/user/${userId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch collections");
+  // fetchCollections 함수를 정의하여 컴포넌트 내의 다른 함수에서도 사용 가능하게 합니다.
+  const fetchCollections = async () => {
+    try {
+      const response = await fetch(
+        `http://43.202.57.225:28282/api/collections/user/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-        const data = await response.json();
-
-        const collectionList = data.collection_list || [];
-        setCollections(
-          collectionList.map((collection) => ({
-            id: collection.id,
-            name: collection.collection_name,
-            isSelected: false,
-          }))
-        );
-      } catch (error) {
-        console.error("Error fetching collections:", error);
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch collections");
       }
-    };
+      const data = await response.json();
 
+      const collectionList = data.collection_list || [];
+      setCollections(
+        collectionList.map((collection) => ({
+          id: collection.id,
+          name: collection.collection_name,
+          isSelected: false,
+        }))
+      );
+    } catch (error) {
+      console.error("Error fetching collections:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchCollections();
   }, [token, userId]);
 
@@ -48,16 +48,6 @@ const AddModal = ({ onClose }) => {
     const newCollections = [...collections];
     newCollections[index].isSelected = !newCollections[index].isSelected;
     setCollections(newCollections);
-
-    setToastMessage(
-      newCollections[index].isSelected
-        ? `${newCollections[index].name} 컬렉션에 저장되었습니다.`
-        : `${newCollections[index].name} 컬렉션에 저장이 취소되었습니다.`
-    );
-
-    setTimeout(() => {
-      setToastMessage("");
-    }, 3000);
   };
 
   const handleSearchChange = (event) => {
@@ -74,16 +64,34 @@ const AddModal = ({ onClose }) => {
     setNewCollectionName(event.target.value);
   };
 
-  const addNewCollection = () => {
-    const newCollection = {
-      id: Math.max(...collections.map((c) => c.id), 0) + 1,
-      name: newCollectionName,
-      isSelected: false,
-    };
-    const updatedCollections = [newCollection, ...collections];
-    setCollections(updatedCollections);
-    setNewCollectionName("");
-    setIsAddingNew(false);
+  const addNewCollection = async () => {
+    try {
+      // POST 요청을 통해 새 컬렉션 생성
+      const response = await fetch(
+        "http://43.202.57.225:28282/api/collections",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            collection_name: newCollectionName,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to add new collection");
+      }
+
+      // 새 컬렉션 생성 후에는 서버에서 컬렉션 리스트를 다시 받아옴
+      await fetchCollections();
+      setNewCollectionName("");
+      setIsAddingNew(false);
+    } catch (error) {
+      console.error("Error adding new collection:", error);
+    }
   };
 
   const showNewCollectionInput = () => {
@@ -205,11 +213,6 @@ const AddModal = ({ onClose }) => {
             </div>
           )}
         </div>
-        {toastMessage && (
-          <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-[#5571be] text-white px-4 py-2 rounded-md">
-            {toastMessage}
-          </div>
-        )}
       </div>
     </div>
   );
