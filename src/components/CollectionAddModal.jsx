@@ -72,9 +72,10 @@ const AddModal = ({ onClose }) => {
         {
           method: "POST",
           headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
+          body: new URLSearchParams({
             collection_name: newCollectionName,
           }),
         }
