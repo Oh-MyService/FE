@@ -9,7 +9,6 @@ const AddModal = ({ onClose }) => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
 
-  // fetchCollections 함수를 정의하여 컴포넌트 내의 다른 함수에서도 사용 가능하게 합니다.
   const fetchCollections = async () => {
     try {
       const response = await fetch(
@@ -26,6 +25,7 @@ const AddModal = ({ onClose }) => {
         throw new Error("Failed to fetch collections");
       }
       const data = await response.json();
+      console.log("Fetched collections:", data); // 콘솔에 받아온 데이터 출력
 
       const collectionList = data.collection_list || [];
       setCollections(
@@ -66,7 +66,6 @@ const AddModal = ({ onClose }) => {
 
   const addNewCollection = async () => {
     try {
-      // POST 요청을 통해 새 컬렉션 생성
       const response = await fetch(
         "http://43.202.57.225:28282/api/collections",
         {
@@ -85,7 +84,6 @@ const AddModal = ({ onClose }) => {
         throw new Error("Failed to add new collection");
       }
 
-      // 새 컬렉션 생성 후에는 서버에서 컬렉션 리스트를 다시 받아옴
       await fetchCollections();
       setNewCollectionName("");
       setIsAddingNew(false);
