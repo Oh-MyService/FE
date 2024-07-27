@@ -6,6 +6,7 @@ import CollectionAddModal from "../components/CollectionAddModal";
 const RecentGeneration = () => {
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
@@ -35,6 +36,8 @@ const RecentGeneration = () => {
         }
       } catch (error) {
         console.error("Error fetching items:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -42,6 +45,7 @@ const RecentGeneration = () => {
       fetchAllImages(userId);
     } else {
       console.error("No userId found in localStorage");
+      setIsLoading(false);
     }
   }, [userId, token]);
 
@@ -97,9 +101,13 @@ const RecentGeneration = () => {
             </h1>
           </div>
         </div>
-        {items.length === 0 ? (
+        {isLoading ? (
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <div className="loader">로딩 중...</div>
+          </div>
+        ) : items.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh]">
-            <p className="text-center font-['pretendard-extrabold'] text-5xl mb-4 text-black leading-relaxed">
+            <p className="text-center font-['pretendard-extrabold'] text-5xl mb-4 text-black leading-normal">
               생성된 패턴이 없습니다. <br />
               지금 만들러 가보세요!
             </p>
