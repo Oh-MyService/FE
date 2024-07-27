@@ -30,7 +30,7 @@ const AddModal = ({ onClose }) => {
       const collectionList = data.collection_list || [];
       setCollections(
         collectionList.map((collection) => ({
-          id: collection.id,
+          id: collection.collection_id,
           name: collection.collection_name,
           isSelected: false,
         }))
