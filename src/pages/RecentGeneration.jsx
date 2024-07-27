@@ -18,7 +18,7 @@ const RecentGeneration = () => {
   useEffect(() => {
     const fetchAllImages = async (userId) => {
       try {
-        let response = await fetch(
+        const response = await fetch(
           `http://43.202.57.225:28282/api/results/user/${userId}`,
           {
             method: "GET",

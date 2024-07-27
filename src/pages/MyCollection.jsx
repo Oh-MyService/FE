@@ -7,17 +7,17 @@ const MyCollection = () => {
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [selectedCollectionId, setSelectedCollectionId] = useState(null);
   const [collections, setCollections] = useState([]);
 
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
 
   useEffect(() => {
-    const fetchCollections = async () => {
+    const fetchCollections = async (userId) => {
       try {
         const response = await fetch(
-          "http://43.202.57.225:28282/api/user_collections",
+          `http://43.202.57.225:28282/api/collections/user/${userId}`,
           {
             method: "GET",
             headers: {
@@ -38,19 +38,19 @@ const MyCollection = () => {
       }
     };
 
-    fetchCollections();
-  }, []);
+    fetchCollections(userId);
+  }, [userId, token]);
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
-  const openDeleteModal = (index) => {
-    setSelectedImageIndex(index);
+  const openDeleteModal = (id) => {
+    setSelectedCollectionId(id);
     setDeleteModalOpen(true);
   };
   const closeDeleteModal = () => setDeleteModalOpen(false);
   const confirmDelete = () => {
     const updatedCollections = collections.filter(
-      (_, index) => index !== selectedImageIndex
+      (collection) => collection.id !== selectedCollectionId
     );
     setCollections(updatedCollections);
     closeDeleteModal();
@@ -59,7 +59,7 @@ const MyCollection = () => {
   const handleCreateCollection = async (collectionName) => {
     const newCollection = {
       name: collectionName,
-      images: Array(4).fill(require(`../assets/slider8.jpg`)), // Placeholder paths
+      images: Array(4).fill({ image_data: "" }), // Placeholder base64 data
     };
 
     try {
@@ -90,8 +90,8 @@ const MyCollection = () => {
     }
   };
 
-  const handleCollectionClick = (collectionName) => {
-    navigate(`/collection/${collectionName}`);
+  const handleCollectionClick = (collectionId) => {
+    navigate(`/collection/${collectionId}`);
   };
 
   return (
@@ -134,17 +134,17 @@ const MyCollection = () => {
           </svg>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
-          {collections.map((collection, index) => (
+          {collections.map((collection) => (
             <div
-              key={index}
+              key={collection.id}
               className="flex flex-col items-center cursor-pointer relative"
-              onClick={() => handleCollectionClick(collection.name)}
+              onClick={() => handleCollectionClick(collection.id)}
             >
               <div className="grid grid-cols-2 gap-1 aspect-square">
-                {collection.images.map((image, idx) => (
+                {collection.images.slice(0, 4).map((image, idx) => (
                   <img
                     key={idx}
-                    src={image}
+                    src={"data:image/jpeg;base64," + image.image_data}
                     alt={`${collection.name} Image ${idx}`}
                     className="w-full h-full object-cover"
                     onError={(e) =>
@@ -158,7 +158,7 @@ const MyCollection = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent navigation when the delete button is clicked
-                    openDeleteModal(index);
+                    openDeleteModal(collection.id);
                   }}
                   className="p-1 text-gray-600"
                 >
