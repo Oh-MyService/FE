@@ -73,7 +73,7 @@ const Mypage = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          setRecentImages(data.slice(0, 5)); // 데이터가 배열 형태로 반환된다고 가정하고 가장 최근 5개만 사용
+          setRecentImages(data.slice(0, 5));
         } else {
           console.error("Failed to fetch recent images");
         }
@@ -116,10 +116,26 @@ const Mypage = () => {
             </svg>
           </button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10 rounded-lg">
           {recentImages.length === 0 ? (
-            <div className="flex items-center justify-center w-60 h-60 bg-gray-300">
-              <p className="text-center">생성된 패턴이 없습니다</p>
+            <div className="flex flex-col items-center justify-center w-60 h-60 bg-gray-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-12 h-12 mb-2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"
+                />
+              </svg>
+              <p className="text-center font-['pretendard-medium']">
+                생성된 패턴이 없습니다.
+              </p>
             </div>
           ) : (
             recentImages.map((image, index) => (
