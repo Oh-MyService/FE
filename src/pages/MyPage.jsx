@@ -117,15 +117,21 @@ const Mypage = () => {
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
-          {recentImages.map((image, index) => (
-            <div key={index} className="overflow-hidden w-60 h-60">
-              <img
-                src={"data:image/jpeg;base64," + image.image_data}
-                alt={`Recent Image ${index}`}
-                className="w-full h-full object-cover"
-              />
+          {recentImages.length === 0 ? (
+            <div className="flex items-center justify-center w-60 h-60 bg-gray-300">
+              <p className="text-center">생성된 패턴이 없습니다</p>
             </div>
-          ))}
+          ) : (
+            recentImages.map((image, index) => (
+              <div key={index} className="overflow-hidden w-60 h-60">
+                <img
+                  src={"data:image/jpeg;base64," + image.image_data}
+                  alt={`Recent Image ${index}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))
+          )}
         </div>
         <div className="flex items-center">
           <button

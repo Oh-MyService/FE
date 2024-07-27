@@ -19,6 +19,7 @@ const Header = ({ token, setToken }) => {
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user_id");
     setToken("");
   }, [setToken, goToLogin]);
 
