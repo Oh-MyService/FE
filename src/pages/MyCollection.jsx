@@ -30,7 +30,7 @@ const MyCollection = () => {
         if (response.ok) {
           const data = await response.json();
           const collectionsData = await Promise.all(
-            data.collections.map(async (collection) => {
+            data.collection_list.map(async (collection) => {
               const imagesResponse = await fetch(
                 `http://43.202.57.225:28282/api/collections/${collection.collection_id}/images`,
                 {
