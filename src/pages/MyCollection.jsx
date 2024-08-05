@@ -196,19 +196,19 @@ const MyCollection = () => {
                   .map((image, idx) => (
                     <div
                       key={idx}
-                      className="relative w-full  aspect-w-1 aspect-h-1"
+                      className="relative w-full aspect-w-1 aspect-h-1"
                     >
                       {image.image_data ? (
                         <img
                           src={"data:image/jpeg;base64," + image.image_data}
                           alt={`${collection.name} Image ${idx}`}
-                          className="absolute inset-0 w-full h-full object-cover"
+                          className="w-full h-full object-cover"
                           onError={(e) =>
                             (e.target.src = "https://via.placeholder.com/150")
                           }
                         />
                       ) : (
-                        <div className="absolute inset-0 w-full h-full bg-gray-300"></div>
+                        <div className="w-full h-full bg-gray-300"></div>
                       )}
                     </div>
                   ))}
