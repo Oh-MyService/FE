@@ -44,7 +44,7 @@ const MyCollection = () => {
 
               const imagesData = imagesResponse.ok
                 ? await imagesResponse.json()
-                : { images: Array(4).fill({ image_data: "" }) };
+                : { images: [] };
 
               return {
                 id: collection.collection_id,
@@ -73,7 +73,7 @@ const MyCollection = () => {
     setDeleteModalOpen(true);
   };
   const closeDeleteModal = () => setDeleteModalOpen(false);
-  
+
   const confirmDelete = async () => {
     try {
       const response = await fetch(
@@ -197,6 +197,15 @@ const MyCollection = () => {
                     }
                   />
                 ))}
+                {collection.images.length < 4 &&
+                  Array(4 - collection.images.length)
+                    .fill(null)
+                    .map((_, idx) => (
+                      <div
+                        key={`placeholder-${idx}`}
+                        className="w-full h-full bg-gray-300"
+                      ></div>
+                    ))}
               </div>
               <div className="flex justify-between items-center w-full mt-2 text-gray-600 font-['pretendard-medium']">
                 <p>{collection.name}</p>
