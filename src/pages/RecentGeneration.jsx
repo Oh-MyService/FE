@@ -75,6 +75,7 @@ const RecentGeneration = () => {
 
   const handleSaveImage = (imageData, imageId) => {
     const link = document.createElement("a");
+    link.style.display = "none";
     link.href = `data:image/jpeg;base64,${imageData}`;
     link.download = `image_${imageId}.jpg`;
     document.body.appendChild(link);
