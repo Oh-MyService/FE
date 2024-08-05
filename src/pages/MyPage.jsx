@@ -204,22 +204,33 @@ const Mypage = () => {
                 className="flex flex-col items-center cursor-pointer relative"
               >
                 <div className="grid grid-cols-2 gap-1 w-60 h-60">
-                  {collection.images.map((image, idx) => (
-                    <div
-                      key={idx}
-                      className="w-full h-full overflow-hidden"
-                      style={{ aspectRatio: "1/1" }}
-                    >
-                      <img
-                        src={"data:image/jpeg;base64," + image.image_data}
-                        alt={`${collection.name} Image ${idx}`}
-                        className="w-full h-full object-cover"
-                        onError={(e) =>
-                          (e.target.src = "https://via.placeholder.com/120")
-                        }
-                      />
-                    </div>
-                  ))}
+                  {collection.images
+                    .concat(
+                      Array(Math.max(0, 4 - collection.images.length)).fill({
+                        image_data: "",
+                      })
+                    )
+                    .slice(0, 4)
+                    .map((image, idx) => (
+                      <div
+                        key={idx}
+                        className="relative w-full"
+                        style={{ aspectRatio: "1/1" }}
+                      >
+                        {image.image_data ? (
+                          <img
+                            src={"data:image/jpeg;base64," + image.image_data}
+                            alt={`${collection.name} Image ${idx}`}
+                            className="absolute inset-0 w-full h-full object-cover"
+                            onError={(e) =>
+                              (e.target.src = "https://via.placeholder.com/150")
+                            }
+                          />
+                        ) : (
+                          <div className="absolute inset-0 w-full h-full bg-gray-300"></div>
+                        )}
+                      </div>
+                    ))}
                 </div>
                 <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium']">
                   <p>{collection.name}</p>
