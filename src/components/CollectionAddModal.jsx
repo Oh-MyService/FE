@@ -51,13 +51,16 @@ const CollectionAddModal = ({ onClose, resultId }) => {
     const collectionId = collections[index].id;
     try {
       const response = await fetch(
-        `http://43.202.57.225:28282/api/collections/${collectionId}/add_result?result_id=${resultId}`,
+        `http://43.202.57.225:28282/api/collections/${collectionId}/add_result`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             Authorization: `Bearer ${token}`,
           },
+          body: new URLSearchParams({
+            result_id: resultId,
+          }),
         }
       );
 
