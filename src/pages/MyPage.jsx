@@ -10,53 +10,7 @@ const Mypage = () => {
   const goToCollection = () => navigate("/my-collection");
 
   const [recentImages, setRecentImages] = useState([]);
-  const [collections, setCollections] = useState([
-    {
-      name: "Collection 1",
-      images: [
-        require("../assets/slider4.webp"),
-        require("../assets/slider8.jpg"),
-        require("../assets/slider6.webp"),
-        require("../assets/slider3.png"),
-      ],
-    },
-    {
-      name: "Collection 2",
-      images: [
-        require("../assets/slider4.webp"),
-        require("../assets/slider8.jpg"),
-        require("../assets/slider6.webp"),
-        require("../assets/slider3.png"),
-      ],
-    },
-    {
-      name: "Collection 3",
-      images: [
-        require("../assets/slider4.webp"),
-        require("../assets/slider8.jpg"),
-        require("../assets/slider6.webp"),
-        require("../assets/slider3.png"),
-      ],
-    },
-    {
-      name: "Collection 4",
-      images: [
-        require("../assets/slider4.webp"),
-        require("../assets/slider8.jpg"),
-        require("../assets/slider6.webp"),
-        require("../assets/slider3.png"),
-      ],
-    },
-    {
-      name: "Collection 5",
-      images: [
-        require("../assets/slider4.webp"),
-        require("../assets/slider8.jpg"),
-        require("../assets/slider6.webp"),
-        require("../assets/slider3.png"),
-      ],
-    },
-  ]);
+  const [collections, setCollections] = useState([]);
 
   useEffect(() => {
     const fetchRecentImages = async () => {
@@ -85,9 +39,58 @@ const Mypage = () => {
     fetchRecentImages();
   }, [token, userId]);
 
-  const handleCollectionClick = (collectionName) => {
-    console.log("Clicked on collection:", collectionName);
-  };
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const response = await fetch(
+          `http://43.202.57.225:28282/api/collections/user/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          const collectionsData = await Promise.all(
+            data.collection_list.slice(0, 5).map(async (collection) => {
+              const imagesResponse = await fetch(
+                `http://43.202.57.225:28282/api/collections/${collection.collection_id}/images`,
+                {
+                  method: "GET",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+
+              const imagesData = imagesResponse.ok
+                ? await imagesResponse.json()
+                : { images: [] };
+
+              return {
+                id: collection.collection_id,
+                name: collection.collection_name,
+                images: imagesData.images,
+              };
+            })
+          );
+
+          setCollections(collectionsData);
+        } else {
+          console.error("Failed to fetch collections:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching collections:", error);
+      }
+    };
+
+    fetchCollections();
+  }, [userId, token]);
 
   return (
     <div className="flex justify-start items-start bg-[#F2F2F2] min-h-screen">
@@ -174,18 +177,41 @@ const Mypage = () => {
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {collections &&
+          {collections.length === 0 ? (
+            <div className="flex flex-col items-center justify-center w-60 h-60 bg-gray-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-12 h-12 mb-2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"
+                />
+              </svg>
+              <p className="text-center font-['pretendard-medium']">
+                생성된 아카이브가 없습니다.
+              </p>
+            </div>
+          ) : (
             collections.map((collection, index) => (
               <div
                 key={index}
                 className="flex flex-col items-center cursor-pointer relative"
-                onClick={() => handleCollectionClick(collection.name)}
               >
                 <div className="grid grid-cols-2 gap-1 w-60 h-60">
                   {collection.images.map((image, idx) => (
-                    <div key={idx} className="w-full h-full overflow-hidden">
+                    <div
+                      key={idx}
+                      className="w-full h-full overflow-hidden"
+                      style={{ aspectRatio: "1/1" }}
+                    >
                       <img
-                        src={image}
+                        src={"data:image/jpeg;base64," + image.image_data}
                         alt={`${collection.name} Image ${idx}`}
                         className="w-full h-full object-cover"
                         onError={(e) =>
@@ -199,7 +225,8 @@ const Mypage = () => {
                   <p>{collection.name}</p>
                 </div>
               </div>
-            ))}
+            ))
+          )}
         </div>
       </div>
     </div>
