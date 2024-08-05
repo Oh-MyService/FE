@@ -186,26 +186,27 @@ const MyCollection = () => {
               onClick={() => handleCollectionClick(collection.id)}
             >
               <div className="grid grid-cols-2 gap-1 aspect-square">
-                {collection.images.slice(0, 4).map((image, idx) => (
-                  <img
-                    key={idx}
-                    src={"data:image/jpeg;base64," + image.image_data}
-                    alt={`${collection.name} Image ${idx}`}
-                    className="w-full h-full object-cover"
-                    onError={(e) =>
-                      (e.target.src = "https://via.placeholder.com/150")
-                    }
-                  />
-                ))}
-                {collection.images.length < 4 &&
-                  Array(4 - collection.images.length)
-                    .fill(null)
-                    .map((_, idx) => (
-                      <div
-                        key={`placeholder-${idx}`}
-                        className="w-full h-full bg-gray-300"
-                      ></div>
-                    ))}
+                {collection.images
+                  .concat(
+                    Array(4 - collection.images.length).fill({ image_data: "" })
+                  )
+                  .slice(0, 4)
+                  .map((image, idx) => (
+                    <div key={idx} className="w-full h-full">
+                      {image.image_data ? (
+                        <img
+                          src={"data:image/jpeg;base64," + image.image_data}
+                          alt={`${collection.name} Image ${idx}`}
+                          className="w-full h-full object-cover"
+                          onError={(e) =>
+                            (e.target.src = "https://via.placeholder.com/150")
+                          }
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-300"></div>
+                      )}
+                    </div>
+                  ))}
               </div>
               <div className="flex justify-between items-center w-full mt-2 text-gray-600 font-['pretendard-medium']">
                 <p>{collection.name}</p>
