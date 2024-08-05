@@ -10,6 +10,7 @@ const RecentGeneration = () => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
+  const [addCollectionIndex, setAddCollectionIndex] = useState(null);
   const [fullScreenImage, setFullScreenImage] = useState(null);
 
   const token = localStorage.getItem("token");
@@ -89,7 +90,11 @@ const RecentGeneration = () => {
     }
   };
 
-  const openAddModal = () => setAddModalOpen(true);
+  const openAddModal = (index) => {
+    setAddCollectionIndex(index);
+    setAddModalOpen(true);
+  };
+
   const closeAddModal = () => setAddModalOpen(false);
 
   const handleSaveImage = (imageData, imageId) => {
@@ -106,7 +111,7 @@ const RecentGeneration = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    URL.revokeObjectURL(link.href); // Clean up the object URL after download
+    URL.revokeObjectURL(link.href);
   };
 
   return (
@@ -198,7 +203,7 @@ const RecentGeneration = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          openAddModal();
+                          openAddModal(index);
                         }}
                       >
                         <svg
@@ -277,7 +282,12 @@ const RecentGeneration = () => {
             />
           </div>
         )}
-        {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
+        {isAddModalOpen && (
+          <CollectionAddModal
+            onClose={closeAddModal}
+            resultId={items[addCollectionIndex].id}
+          />
+        )}
         <DeleteModal
           isOpen={isDeleteModalOpen}
           onRequestClose={closeDeleteModal}

@@ -24,6 +24,7 @@ const MyCollection = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
+            mode:'cors'
           }
         );
 

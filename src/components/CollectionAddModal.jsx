@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const AddModal = ({ onClose }) => {
+const CollectionAddModal = ({ onClose, resultId }) => {
   const [collections, setCollections] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [newCollectionName, setNewCollectionName] = useState("");
@@ -47,10 +47,35 @@ const AddModal = ({ onClose }) => {
     fetchCollections();
   }, [token, userId]);
 
-  const handleSelect = (index) => {
-    const newCollections = [...collections];
-    newCollections[index].isSelected = !newCollections[index].isSelected;
-    setCollections(newCollections);
+  const handleSelect = async (index) => {
+    const collectionId = collections[index].id;
+    try {
+      const response = await fetch(
+        `http://43.202.57.225:28282/api/collections/${collectionId}/add_result`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${token}`,
+          },
+          body: new URLSearchParams({
+            result_id: resultId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to save to collection");
+      }
+
+      const newCollections = [...collections];
+      newCollections[index].isSelected = !newCollections[index].isSelected;
+      setCollections(newCollections);
+
+      onClose();
+    } catch (error) {
+      console.error("Error saving to collection:", error);
+    }
   };
 
   const handleSearchChange = (event) => {
@@ -148,7 +173,6 @@ const AddModal = ({ onClose }) => {
             <div
               key={collection.id}
               className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer font-['pretendard-regular']"
-              onClick={() => handleSelect(index)}
             >
               <span>{collection.name}</span>
               {collection.isSelected ? (
@@ -173,6 +197,7 @@ const AddModal = ({ onClose }) => {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  onClick={() => handleSelect(index)}
                 >
                   <path
                     strokeLinecap="round"
@@ -219,4 +244,4 @@ const AddModal = ({ onClose }) => {
   );
 };
 
-export default AddModal;
+export default CollectionAddModal;
