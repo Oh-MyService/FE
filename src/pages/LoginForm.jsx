@@ -106,7 +106,7 @@ const LoginForm = ({ setToken }) => {
                       name="loginUsername"
                       required
                       className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:outline-[#3A57A7] font-['pretendard-medium']"
-                      placeholder="Username"
+                      placeholder="Id"
                     />
                   </div>
                   <div>
