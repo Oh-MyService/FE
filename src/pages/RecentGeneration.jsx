@@ -74,13 +74,20 @@ const RecentGeneration = () => {
   const closeAddModal = () => setAddModalOpen(false);
 
   const handleSaveImage = (imageData, imageId) => {
+    const byteCharacters = atob(imageData);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: "image/jpeg" });
     const link = document.createElement("a");
-    link.style.display = "none";
-    link.href = `data:image/jpeg;base64,${imageData}`;
+    link.href = URL.createObjectURL(blob);
     link.download = `image_${imageId}.jpg`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(link.href); // Clean up the object URL after download
   };
 
   return (
