@@ -24,7 +24,6 @@ const MyCollection = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            mode:'cors'
           }
         );
 
@@ -74,12 +73,32 @@ const MyCollection = () => {
     setDeleteModalOpen(true);
   };
   const closeDeleteModal = () => setDeleteModalOpen(false);
-  const confirmDelete = () => {
-    const updatedCollections = collections.filter(
-      (collection) => collection.id !== selectedCollectionId
-    );
-    setCollections(updatedCollections);
-    closeDeleteModal();
+  
+  const confirmDelete = async () => {
+    try {
+      const response = await fetch(
+        `http://43.202.57.225:28282/api/collections/${selectedCollectionId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const updatedCollections = collections.filter(
+          (collection) => collection.id !== selectedCollectionId
+        );
+        setCollections(updatedCollections);
+        closeDeleteModal();
+      } else {
+        console.error("Failed to delete collection:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting collection:", error);
+    }
   };
 
   const handleCreateCollection = async (collectionName) => {
