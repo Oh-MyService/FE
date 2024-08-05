@@ -188,21 +188,24 @@ const MyCollection = () => {
               <div className="grid grid-cols-2 gap-1 aspect-square w-full">
                 {collection.images
                   .concat(
-                    Array(4 - collection.images.length).fill({ image_data: "" })
+                    Array(Math.max(0, 4 - collection.images.length)).fill({
+                      image_data: "",
+                    })
                   )
+                  .slice(0, 4)
                   .map((image, idx) => (
-                    <div key={idx} className="w-full h-full">
+                    <div key={idx} className="relative w-full h-0 pb-[50%]">
                       {image.image_data ? (
                         <img
                           src={"data:image/jpeg;base64," + image.image_data}
                           alt={`${collection.name} Image ${idx}`}
-                          className="w-full h-full object-cover"
+                          className="absolute inset-0 w-full h-full object-cover"
                           onError={(e) =>
                             (e.target.src = "https://via.placeholder.com/150")
                           }
                         />
                       ) : (
-                        <div className="w-full h-full bg-gray-300"></div>
+                        <div className="absolute inset-0 w-full h-full bg-gray-300"></div>
                       )}
                     </div>
                   ))}
