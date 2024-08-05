@@ -73,7 +73,14 @@ const RecentGeneration = () => {
   const openAddModal = () => setAddModalOpen(true);
   const closeAddModal = () => setAddModalOpen(false);
 
-  const handleSaveImage = () => {};
+  const handleSaveImage = (imageData, imageId) => {
+    const link = document.createElement("a");
+    link.href = `data:image/jpeg;base64,${imageData}`;
+    link.download = `image_${imageId}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="bg-[#F2F2F2] min-h-screen">
@@ -188,7 +195,7 @@ const RecentGeneration = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleSaveImage();
+                          handleSaveImage(item.image_data, item.id);
                         }}
                       >
                         <svg
