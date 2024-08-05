@@ -185,7 +185,7 @@ const MyCollection = () => {
               className="flex flex-col items-center cursor-pointer relative"
               onClick={() => handleCollectionClick(collection.id)}
             >
-              <div className="grid grid-cols-2 gap-1 aspect-square w-full">
+              <div className="grid grid-cols-2 gap-1 aspect-square w-full h-0 pb-full relative">
                 {collection.images
                   .concat(
                     Array(Math.max(0, 4 - collection.images.length)).fill({
