@@ -185,7 +185,7 @@ const MyCollection = () => {
               className="flex flex-col items-center cursor-pointer relative"
               onClick={() => handleCollectionClick(collection.id)}
             >
-              <div className="grid grid-cols-2 gap-1 aspect-square w-full">
+              <div className="grid grid-cols-2 gap-1 w-full">
                 {collection.images
                   .concat(
                     Array(Math.max(0, 4 - collection.images.length)).fill({
@@ -194,7 +194,10 @@ const MyCollection = () => {
                   )
                   .slice(0, 4)
                   .map((image, idx) => (
-                    <div key={idx} className="relative w-full h-0 pb-[50%]">
+                    <div
+                      key={idx}
+                      className="relative w-full  aspect-w-1 aspect-h-1"
+                    >
                       {image.image_data ? (
                         <img
                           src={"data:image/jpeg;base64," + image.image_data}
