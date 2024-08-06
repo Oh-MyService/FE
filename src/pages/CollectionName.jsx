@@ -15,6 +15,7 @@ const CollectionName = () => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
+  const [addCollectionIndex, setAddCollectionIndex] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [deleteIndex, setDeleteIndex] = useState(null);
 
@@ -44,8 +45,8 @@ const CollectionName = () => {
     setEditModalOpen(false);
   };
 
-  const openAddModal = (e) => {
-    e.stopPropagation();
+  const openAddModal = (index) => {
+    setAddCollectionIndex(index);
     setAddModalOpen(true);
   };
 
@@ -152,7 +153,9 @@ const CollectionName = () => {
                   className="w-full h-full object-cover"
                 />
                 <div className="flex justify-between items-center w-full mt-2 text-gray-600">
-                  <p className="text-gray-600">{image.date}</p>
+                  <p className="text-gray-600">
+                    {image.created_at.split("T")[0]}
+                  </p>
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={openAddModal}
