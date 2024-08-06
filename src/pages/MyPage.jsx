@@ -28,7 +28,10 @@ const Mypage = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          setRecentImages(data.slice(0, 5));
+          const sortedImages = data.sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at)
+          );
+          setRecentImages(sortedImages.slice(0, 5));
         } else {
           console.error("Failed to fetch recent images");
         }
@@ -53,7 +56,7 @@ const Mypage = () => {
         if (response.ok) {
           const data = await response.json();
           const collectionsData = await Promise.all(
-            data.collection_list.slice(0, 5).map(async (collection) => {
+            data.collection_list.map(async (collection) => {
               const imagesResponse = await fetch(
                 `http://43.202.57.225:28282/api/collections/${collection.collection_id}/images`,
                 {
@@ -82,7 +85,9 @@ const Mypage = () => {
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
 
-          setCollections(collectionsData);
+          // 최신 5개의 컬렉션만 설정
+          setCollections(collectionsData.slice(0, 5));
+
         } else {
           console.error("Failed to fetch collections:", response.statusText);
         }
