@@ -63,7 +63,6 @@ const CollectionName = () => {
   };
 
   const deleteCollection = () => {
-    // 서버에서 컬렉션 삭제 로직 구현
     closeDeleteModal();
   };
 
