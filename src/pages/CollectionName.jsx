@@ -158,7 +158,10 @@ const CollectionName = () => {
                   </p>
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={openAddModal}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openAddModal(index);
+                      }}
                       className="focus:outline-none"
                     >
                       <svg
@@ -259,7 +262,12 @@ const CollectionName = () => {
           onRequestClose={closeDeleteModal}
           onDelete={deleteCollection}
         />
-        {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
+        {isAddModalOpen && (
+          <CollectionAddModal
+            onClose={closeAddModal}
+            resultId={images[addCollectionIndex].id}
+          />
+        )}
       </div>
     </div>
   );
