@@ -185,16 +185,16 @@ const RecentGeneration = () => {
                 <div
                   key={index}
                   className="flex flex-col items-center cursor-pointer relative aspect-square w-full"
-                  onClick={() =>
-                    showFullScreenImage(
-                      "data:image/jpeg;base64," + item.image_data
-                    )
-                  }
                 >
                   <img
                     src={"data:image/jpeg;base64," + item.image_data}
                     alt={"Image ID: " + item.id}
                     className="w-full h-full object-cover"
+                    onClick={() =>
+                      showFullScreenImage(
+                        "data:image/jpeg;base64," + item.image_data
+                      )
+                    }
                   />
                   <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
                     <p className="text-left">{formattedDate}</p>
