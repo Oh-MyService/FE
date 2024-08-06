@@ -51,8 +51,13 @@ const MyCollection = () => {
                 id: collection.collection_id,
                 name: collection.collection_name,
                 images: imagesData.images,
+                createdAt: collection.created_at,
               };
             })
+          );
+
+          collectionsData.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
 
           setCollections(collectionsData);
