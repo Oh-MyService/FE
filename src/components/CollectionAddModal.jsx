@@ -5,6 +5,7 @@ const CollectionAddModal = ({ onClose, resultId }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [newCollectionName, setNewCollectionName] = useState("");
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
@@ -73,7 +74,16 @@ const CollectionAddModal = ({ onClose, resultId }) => {
       newCollections[index].isSelected = !newCollections[index].isSelected;
       setCollections(newCollections);
 
-      onClose();
+      setToastMessage(
+        newCollections[index].isSelected
+          ? `${collections[index].name} 컬렉션에 저장되었습니다.`
+          : `${collections[index].name} 컬렉션에 저장이 취소되었습니다.`
+      );
+
+      setTimeout(() => {
+        setToastMessage("");
+      }, 3000);
+
     } catch (error) {
       console.error("Error saving to collection:", error);
     }
@@ -240,6 +250,11 @@ const CollectionAddModal = ({ onClose, resultId }) => {
             </div>
           )}
         </div>
+        {toastMessage && (
+          <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-[#5571be] text-white px-4 py-2 rounded-md">
+            {toastMessage}
+          </div>
+        )}
       </div>
     </div>
   );
