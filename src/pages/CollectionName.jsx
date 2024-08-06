@@ -222,9 +222,11 @@ const CollectionName = () => {
             ))}
           </div>
         ) : (
-          <p className="text-5xl font-['pretendard-extrabold'] items-center justify-center text-center col-span-6">
-            저장된 패턴이 없습니다.
-          </p>
+          <div className="flex flex-col items-center justify-center min-h-[60vh]">
+            <p className="text-center font-['pretendard-extrabold'] text-5xl mb-4 text-black leading-snug">
+              저장된 패턴이 없습니다.
+            </p>
+          </div>
         )}
         {fullScreenImage && (
           <div
