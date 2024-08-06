@@ -34,7 +34,7 @@ function App() {
           <Route path="/recent-generation" element={<RecentGeneration />} />
           <Route path="/my-collection" element={<MyCollection />} />
           <Route
-            path="/collection/:collectionName"
+            path="/collection/:collectionId"
             element={<CollectionName />}
           />
           <Route path="/DeleteModal" element={<DeleteModal />} />
