@@ -135,8 +135,8 @@ const MyCollection = () => {
     }
   };
 
-  const handleCollectionClick = (collectionId) => {
-    navigate(`/collection/${collectionId}`);
+  const handleCollectionClick = (collection) => {
+    navigate(`/collection/${collection.id}`, { state: { collection } });
   };
 
   return (
@@ -197,7 +197,7 @@ const MyCollection = () => {
               <div
                 key={collection.id}
                 className="flex flex-col items-center cursor-pointer relative"
-                onClick={() => handleCollectionClick(collection.id)}
+                onClick={() => handleCollectionClick(collection)}
               >
                 <div className="grid grid-cols-2 gap-1 w-full">
                   {collection.images
