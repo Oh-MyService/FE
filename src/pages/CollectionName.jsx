@@ -226,6 +226,12 @@ const CollectionName = () => {
             <p className="text-center font-['pretendard-extrabold'] text-5xl mb-4 text-black leading-snug">
               저장된 패턴이 없습니다.
             </p>
+            <button
+              onClick={() => navigate("/recent-generation")}
+              className="px-6 py-2 border bg-[#3A57A7] hover:bg-[#213261] text-white rounded-full font-['pretendard-medium'] text-xl mt-2"
+            >
+              패턴 추가하기
+            </button>
           </div>
         )}
         {fullScreenImage && (

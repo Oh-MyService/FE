@@ -185,10 +185,10 @@ const MyCollection = () => {
               지금 아카이브 해보세요!
             </p>
             <button
-              onClick={() => navigate("/recent-generation")}
+              onClick={openModal}
               className="px-6 py-2 border bg-[#3A57A7] hover:bg-[#213261] text-white rounded-full font-['pretendard-medium'] text-xl mt-2"
             >
-              최근 생성 패턴 보러가기
+              아카이브 생성하기
             </button>
           </div>
         ) : (
