@@ -75,6 +75,7 @@ const CollectionName = () => {
           name: newName,
         }));
         closeEditModal();
+        window.location.reload();
       } else {
         console.error("Failed to update collection name");
       }
