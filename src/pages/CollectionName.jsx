@@ -19,6 +19,8 @@ const CollectionName = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [deleteIndex, setDeleteIndex] = useState(null);
 
+  const token = localStorage.getItem("token");
+
   const showFullScreenImage = (imageUrl) => {
     setFullScreenImage(imageUrl);
   };
@@ -54,12 +56,34 @@ const CollectionName = () => {
     setAddModalOpen(false);
   };
 
-  const editCollection = (newName) => {
-    setCollection((prevCollection) => ({
-      ...prevCollection,
-      name: newName,
-    }));
-    closeEditModal();
+  const editCollection = async (newName) => {
+    try {
+      const response = await fetch(
+        `http://43.202.57.225:28282/api/collections/${collectionId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${token}`,
+          },
+          body: new URLSearchParams({ new_name: newName }),
+        }
+      );
+      if (response.ok) {
+        setCollection((prevCollection) => ({
+          ...prevCollection,
+          name: newName,
+        }));
+        closeEditModal();
+      } else {
+        console.error("Failed to update collection name");
+      }
+    } catch (error) {
+      console.error(
+        "An error occurred while updating the collection name:",
+        error
+      );
+    }
   };
 
   const deleteCollection = () => {
