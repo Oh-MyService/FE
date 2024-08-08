@@ -21,35 +21,6 @@ const CollectionName = () => {
 
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const fetchCollection = async () => {
-      try {
-        const response = await fetch(
-          `http://43.202.57.225:28282/api/collections/${collectionId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setCollection(data);
-          setImages(data.images);
-        } else {
-          console.error("Failed to fetch collection data");
-        }
-      } catch (error) {
-        console.error(
-          "An error occurred while fetching the collection data:",
-          error
-        );
-      }
-    };
-
-    fetchCollection();
-  }, [collectionId, token]);
-
   const showFullScreenImage = (imageUrl) => {
     setFullScreenImage(imageUrl);
   };
