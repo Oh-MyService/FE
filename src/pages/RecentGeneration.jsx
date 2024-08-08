@@ -80,7 +80,7 @@ const RecentGeneration = () => {
 
       if (response.ok) {
         setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-        setDeleteIndex(null); // 삭제 후 deleteIndex 리셋
+        setDeleteIndex(null);
         closeDeleteModal();
       } else {
         console.error("Failed to delete images");
@@ -127,6 +127,9 @@ const RecentGeneration = () => {
   };
 
   const groupedItems = groupItemsByDate(items);
+  const sortedDates = Object.keys(groupedItems).sort(
+    (a, b) => new Date(b) - new Date(a)
+  );
 
   return (
     <div className="bg-[#F2F2F2] min-h-screen">
@@ -189,10 +192,10 @@ const RecentGeneration = () => {
             </button>
           </div>
         ) : (
-          Object.keys(groupedItems).map((date, dateIndex) => (
+          sortedDates.map((date, dateIndex) => (
             <div key={dateIndex}>
-              <div className="flex items-center justify-center mb-4">
-                <div className="bg-blue-200 rounded-full px-4 py-1 text-xl font-bold">
+              <div className="flex items-start justify-center mb-4">
+                <div className="bg-[#8194EC] rounded-2xl px-4 py-1 text-xl font-bold">
                   {date}
                 </div>
               </div>
@@ -213,9 +216,7 @@ const RecentGeneration = () => {
                       }
                     />
                     <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
-                      <p className="text-left">
-                        {item.created_at.split("T")[1].split(".")[0]}
-                      </p>
+                      <p className="text-left">{date}</p>
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={(e) => {
