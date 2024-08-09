@@ -86,8 +86,32 @@ const CollectionName = () => {
     }
   };
 
-  const deleteCollection = () => {
-    closeDeleteModal();
+  const deleteCollection = async () => {
+    if (deleteIndex !== null) {
+      const resultId = images[deleteIndex].id;
+      try {
+        const response = await fetch(
+          `http://43.202.57.225:28282/api/collections/${collectionId}/results/${resultId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          setImages((prevImages) =>
+            prevImages.filter((_, index) => index !== deleteIndex)
+          );
+          closeDeleteModal();
+        } else {
+          console.error("Failed to delete image");
+        }
+      } catch (error) {
+        console.error("An error occurred while deleting the image:", error);
+      }
+    }
   };
 
   const handleSaveImage = async (imageUrl, e) => {
