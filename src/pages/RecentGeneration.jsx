@@ -132,8 +132,8 @@ const RecentGeneration = () => {
   );
 
   return (
-    <div className="bg-[#F2F2F2] min-h-screen">
-      <div className="mx-auto px-4 pt-24 max-w-[85%]">
+    <div className="flex flex-col bg-[#F2F2F2] min-h-screen">
+      <div className="flex-grow mx-auto px-4 pt-24 max-w-[85%]">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
             <button onClick={() => navigate("/my-page")}>
@@ -195,7 +195,7 @@ const RecentGeneration = () => {
           sortedDates.map((date, dateIndex) => (
             <div
               key={dateIndex}
-              className="flex flex-col justify-center mt-2 w-full bg-white p-5 rounded-lg shadow-md my-3"
+              className="flex flex-col justify-center mt-2 w-full bg-white p-5 rounded-lg shadow-md my-4"
             >
               <div className="flex items-start justify-start mb-4">
                 <div className="rounded-full border-2 border-[#303030] px-4 py-1 text-base text-black font-['pretendard-semibold']">
