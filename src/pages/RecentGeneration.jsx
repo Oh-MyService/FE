@@ -132,7 +132,7 @@ const RecentGeneration = () => {
   );
 
   return (
-    <div className="bg-[#F2F2F2] min-h-screen mb-5">
+    <div className="bg-[#F2F2F2] min-h-screen pb-5">
       <div className="mx-auto px-4 pt-24 max-w-[85%]">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
