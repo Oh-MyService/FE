@@ -193,9 +193,12 @@ const RecentGeneration = () => {
           </div>
         ) : (
           sortedDates.map((date, dateIndex) => (
-            <div key={dateIndex}>
+            <div
+              key={dateIndex}
+              className="flex flex-col justify-center mt-2 w-full bg-white p-4 rounded-lg shadow-md"
+            >
               <div className="flex items-start justify-start mb-4">
-                <div className="rounded-full border-2 border-[#8194EC] p-4 text-base text-black font-['pretendard-semibold']">
+                <div className="rounded-full border-2 border-[#303030] px-4 py-1 text-base text-black font-['pretendard-semibold']">
                   {date}
                 </div>
               </div>
