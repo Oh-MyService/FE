@@ -475,7 +475,7 @@ const CreateImage = () => {
                         />
                       </div>
                     )}
-                    <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
+                    <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text--gray-600">
                       <p className="text-left">{result.date}</p>
                       <div className="flex items-center space-x-2">
                         <button onClick={openAddModal}>
