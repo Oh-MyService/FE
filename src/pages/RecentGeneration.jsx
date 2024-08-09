@@ -195,14 +195,14 @@ const RecentGeneration = () => {
           sortedDates.map((date, dateIndex) => (
             <div
               key={dateIndex}
-              className="flex flex-col justify-center mt-2 w-full bg-white p-4 rounded-lg shadow-md"
+              className="flex flex-col justify-center mt-2 w-full bg-white p-5 rounded-lg shadow-md"
             >
               <div className="flex items-start justify-start mb-4">
                 <div className="rounded-full border-2 border-[#303030] px-4 py-1 text-base text-black font-['pretendard-semibold']">
                   {date}
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-2">
                 {groupedItems[date].map((item, index) => (
                   <div
                     key={index}
@@ -289,9 +289,9 @@ const RecentGeneration = () => {
                   </div>
                 ))}
               </div>
-              {dateIndex < Object.keys(groupedItems).length - 1 && (
+              {/* {dateIndex < Object.keys(groupedItems).length - 1 && (
                 <hr className="my-8" />
-              )}
+              )} */}
             </div>
           ))
         )}
