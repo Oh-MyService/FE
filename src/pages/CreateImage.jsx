@@ -5,7 +5,7 @@ import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 const Bubble = ({ text }) => {
     const handleCopy = () => {
         const tempInput = document.createElement('textarea');
-        tempInput.value = `"${text}" 생성 결과`;
+        tempInput.value = `"${text}"`;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand('copy');
