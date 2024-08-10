@@ -16,7 +16,7 @@ const Bubble = ({ text }) => {
 
         setTimeout(() => {
             setCopySuccess(false);
-        }, 2000); // 2초 후에 자동으로 사라지도록 설정
+        }, 1000);
     };
 
     return (
@@ -46,7 +46,7 @@ const Bubble = ({ text }) => {
                 </svg>
             </button>
             {copySuccess && (
-                <div className="absolute bottom-11 right-8 mb-2 mr-2 p-2 bg-[#3A57A7] text-white text-sm rounded">
+                <div className="absolute bottom-11 right-12 mb-2 mr-2 p-2 bg-[#3A57A7] text-white text-sm rounded">
                     복사되었습니다
                 </div>
             )}
