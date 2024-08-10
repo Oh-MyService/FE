@@ -7,7 +7,7 @@ const Bubble = ({ text }) => {
 
     const handleCopy = () => {
         const tempInput = document.createElement('textarea');
-        tempInput.value = `"${text}"`;
+        tempInput.value = `${text}`;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand('copy');
@@ -46,7 +46,7 @@ const Bubble = ({ text }) => {
                 </svg>
             </button>
             {copySuccess && (
-                <div className="absolute bottom-6 right-6 mb-2 mr-2 p-2 bg-[#3A57A7] text-white text-sm rounded">
+                <div className="absolute bottom-11 right-8 mb-2 mr-2 p-2 bg-[#3A57A7] text-white text-sm rounded">
                     복사되었습니다
                 </div>
             )}
