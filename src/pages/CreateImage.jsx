@@ -3,6 +3,8 @@ import CollectionAddModal from '../components/CollectionAddModal';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 
 const Bubble = ({ text }) => {
+    const [copySuccess, setCopySuccess] = useState(false);
+
     const handleCopy = () => {
         const tempInput = document.createElement('textarea');
         tempInput.value = `"${text}"`;
