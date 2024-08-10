@@ -10,7 +10,11 @@ const Bubble = ({ text }) => {
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
-        alert('생성 결과가 복사되었습니다!');
+        setCopySuccess(true);
+
+        setTimeout(() => {
+            setCopySuccess(false);
+        }, 2000); // 2초 후에 자동으로 사라지도록 설정
     };
 
     return (
@@ -39,6 +43,11 @@ const Bubble = ({ text }) => {
                     />
                 </svg>
             </button>
+            {copySuccess && (
+                <div className="absolute bottom-0 right-0 mb-2 mr-2 p-2 bg-green-500 text-white text-sm rounded">
+                    복사되었습니다.
+                </div>
+            )}
         </div>
     );
 };
