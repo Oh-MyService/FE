@@ -46,8 +46,8 @@ const Bubble = ({ text }) => {
                 </svg>
             </button>
             {copySuccess && (
-                <div className="absolute bottom-0 right-6 mb-2 mr-2 p-2 bg-[#3A57A7] text-white text-sm rounded">
-                    복사되었습니다.
+                <div className="absolute bottom-6 right-6 mb-2 mr-2 p-2 bg-[#3A57A7] text-white text-sm rounded">
+                    복사되었습니다
                 </div>
             )}
         </div>
