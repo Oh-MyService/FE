@@ -16,7 +16,7 @@ const Bubble = ({ text }) => {
 
         setTimeout(() => {
             setCopySuccess(false);
-        }, 2000); // 2초 후에 아이콘을 원래대로 되돌림
+        }, 1000);
     };
 
     return (
@@ -36,7 +36,7 @@ const Bubble = ({ text }) => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            strokeWidth="1.5"
+                            strokeWidth="2"
                             stroke="currentColor"
                             className="inline-block w-5 h-5"
                         >
