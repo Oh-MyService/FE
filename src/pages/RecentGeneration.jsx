@@ -90,8 +90,8 @@ const RecentGeneration = () => {
     }
   };
 
-  const openAddModal = (index) => {
-    setAddCollectionIndex(index);
+  const openAddModal = (id) => {
+    setAddCollectionIndex(id);
     setAddModalOpen(true);
   };
 
@@ -307,7 +307,7 @@ const RecentGeneration = () => {
         {isAddModalOpen && (
           <CollectionAddModal
             onClose={closeAddModal}
-            resultId={items[addCollectionIndex].id}
+            resultId={addCollectionIndex}
           />
         )}
         <DeleteModal
