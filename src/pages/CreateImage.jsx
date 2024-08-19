@@ -260,7 +260,7 @@ const CreateImage = () => {
                 } catch (error) {
                     console.error('Error occurred while fetching the image:', error);
                 }
-            }, 5000); // 5초마다 이미지 불러오기
+            }, 1000); // 5초마다 이미지 불러오기
 
             return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
         }
