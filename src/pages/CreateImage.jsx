@@ -267,7 +267,7 @@ const CreateImage = () => {
     }, [promptId]); // promptId가 변경될 때마다 실행
 
     return (
-        <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
+        <div className="flex min-h-screen bg-[#F2F2F2] mt-20 pb-10 w-full justify-center">
             <div className="flex w-[80%] justify-center px-4 mt-10">
                 <div className="flex flex-col w-[50%] mx-2 min-w-[650px]">
                     {/* 입력창 섹션 */}
