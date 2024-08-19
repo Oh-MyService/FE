@@ -253,9 +253,17 @@ const CreateImage = () => {
         if (promptId) {
             const interval = setInterval(async () => {
                 try {
-                    const response = await fetch(`http://43.202.57.225:28282/api/results/${promptId}`);
+                    const token = localStorage.getItem('token'); // GET 요청에도 토큰을 포함해야 합니다.
+
+                    const response = await fetch(`http://43.202.57.225:28282/api/results/${promptId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+
                     if (!response.ok) throw new Error('Network response was not ok');
                     const data = await response.json();
+                    console.log('Received Image Data:', data); // 이미지 데이터 확인
                     setImageDataList((prevList) => [...prevList, data.image_data]); // 받아온 이미지 데이터를 배열에 추가
                 } catch (error) {
                     console.error('Error occurred while fetching the image:', error);
@@ -267,7 +275,7 @@ const CreateImage = () => {
     }, [promptId]); // promptId가 변경될 때마다 실행
 
     return (
-        <div className="flex min-h-screen bg-[#F2F2F2] mt-20 pb-10 w-full justify-center">
+        <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
             <div className="flex w-[80%] justify-center px-4 mt-10">
                 <div className="flex flex-col w-[50%] mx-2 min-w-[650px]">
                     {/* 입력창 섹션 */}
