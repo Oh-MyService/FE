@@ -127,7 +127,6 @@ const applySliderStyles = (element) => {
 
 const CreateImage = () => {
     const [inputText, setInputText] = useState('');
-    const [imageURL, setImageURL] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [promptText, setPromptText] = useState('');
     const [showResult, setShowResult] = useState(false);
@@ -136,6 +135,8 @@ const CreateImage = () => {
     const closeAddModal = () => setAddModalOpen(false);
 
     const [results, setResults] = useState([]);
+    const [promptId, setPromptId] = useState(null); // prompt ID를 저장할 상태 추가
+    const [imageDataList, setImageDataList] = useState([]); // Base64 이미지 데이터를 저장할 상태 추가
 
     const [cfgScale, setCfgScale] = useState(10); // 초기값 설정
     const [samplingSteps, setSamplingSteps] = useState(50); // 초기값 설정
@@ -190,13 +191,6 @@ const CreateImage = () => {
             return;
         }
 
-        const newResult = {
-            promptText: inputText,
-            date: new Date().toISOString().slice(0, 10), // 현재 날짜 설정
-            showButton: true, // 초기 상태에서 버튼을 보이게 설정
-        };
-        setResults([newResult, ...results]);
-
         try {
             const formData = new FormData();
             formData.append('content', inputText);
@@ -213,14 +207,18 @@ const CreateImage = () => {
             const data = await response.json();
             console.log(data);
 
-            // response = await fetch("http://223.194.20.119:8000/get_image");
-            // if (!response.ok) throw new Error("Network response was not ok");
-            // const blob = await response.blob();
-            // const url = URL.createObjectURL(blob);
-            // setImageURL(url);
+            const newResult = {
+                id: data.id,
+                content: data.content,
+                created_at: data.created_at,
+                user_id: data.user_id,
+            };
+            setResults([newResult, ...results]);
 
-            // 말풍선에 텍스트 설정
-            setPromptText(inputText);
+            // prompt ID를 상태에 저장
+            setPromptId(data.id);
+
+            setPromptText(data.content);
             setShowResult(true);
         } catch (error) {
             console.error('Error occurred:', error);
@@ -250,6 +248,23 @@ const CreateImage = () => {
     );
 
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
+
+    useEffect(() => {
+        if (promptId) {
+            const interval = setInterval(async () => {
+                try {
+                    const response = await fetch(`http://43.202.57.225:28282/api/results/${promptId}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const data = await response.json();
+                    setImageDataList((prevList) => [...prevList, data.image_data]); // 받아온 이미지 데이터를 배열에 추가
+                } catch (error) {
+                    console.error('Error occurred while fetching the image:', error);
+                }
+            }, 5000); // 5초마다 이미지 불러오기
+
+            return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
+        }
+    }, [promptId]); // promptId가 변경될 때마다 실행
 
     return (
         <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
@@ -465,22 +480,20 @@ const CreateImage = () => {
                         >
                             <div className="flex">
                                 <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
-                                <Bubble text={result.promptText} />
+                                <Bubble text={result.content} />
                             </div>
                             <div className="grid grid-cols-2 gap-4 mt-8">
-                                {[...Array(4)].map((_, i) => (
-                                    <div key={i} className="flex flex-col justify-between items-center w-40">
-                                        {imageURL && (
-                                            <div className="overflow-hidden w-40 h-40 cursor-pointer">
-                                                <img
-                                                    src={imageURL}
-                                                    alt="Generated Image"
-                                                    className="w-full h-full object-cover rounded-lg"
-                                                />
-                                            </div>
-                                        )}
+                                {imageDataList.map((imageData, idx) => (
+                                    <div key={idx} className="flex flex-col justify-between items-center w-40">
+                                        <div className="overflow-hidden w-40 h-40 cursor-pointer">
+                                            <img
+                                                src={'data:image/jpeg;base64,' + imageData}
+                                                alt="Generated Image"
+                                                className="w-full h-full object-cover rounded-lg"
+                                            />
+                                        </div>
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
-                                            <p className="text-left">{result.date}</p>
+                                            <p className="text-left">{result.created_at}</p>
                                             <div className="flex items-center space-x-2">
                                                 <button onClick={openAddModal}>
                                                     <svg
