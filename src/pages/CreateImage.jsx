@@ -128,14 +128,11 @@ const applySliderStyles = (element) => {
 const CreateImage = () => {
     const [inputText, setInputText] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
-    const [showResult, setShowResult] = useState(false);
     const [isAddModalOpen, setAddModalOpen] = useState(false);
     const openAddModal = () => setAddModalOpen(true);
     const closeAddModal = () => setAddModalOpen(false);
 
     const [results, setResults] = useState([]);
-    const [promptId, setPromptId] = useState(null);
-
     const [cfgScale, setCfgScale] = useState(10);
     const [samplingSteps, setSamplingSteps] = useState(50);
 
@@ -211,17 +208,54 @@ const CreateImage = () => {
                 content: data.content,
                 created_at: data.created_at,
                 user_id: data.user_id,
-                images: [], // 새로운 결과에 대한 이미지를 저장할 배열
+                images: [], // 각 결과에 대한 이미지를 저장할 배열
             };
-            setResults([newResult, ...results]);
+            setResults((prevResults) => [newResult, ...prevResults]);
 
-            setPromptId(data.id);
-
-            setShowResult(true);
+            // 이미지 수신을 위한 polling 시작
+            pollForImages(data.id, newResult);
         } catch (error) {
             console.error('Error occurred:', error);
             setAlertMessage('Error occurred while creating prompt.');
         }
+    };
+
+    const pollForImages = (promptId, newResult) => {
+        const interval = setInterval(async () => {
+            try {
+                const response = await fetch(`http://43.202.57.225:28282/api/results/${promptId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                console.log('Received Image Data:', data);
+
+                if (data.results.length > 0) {
+                    setResults((prevResults) =>
+                        prevResults.map((result) =>
+                            result.id === promptId
+                                ? {
+                                      ...result,
+                                      images: [...result.images, ...data.results.map((r) => r.image_data)],
+                                  }
+                                : result
+                        )
+                    );
+                }
+
+                // 모든 이미지가 수신되면 polling 종료
+                if (data.results.length >= 4) {
+                    clearInterval(interval);
+                }
+            } catch (error) {
+                console.error('Error occurred while fetching the image:', error);
+                clearInterval(interval);
+            }
+        }, 10000);
     };
 
     const handleKeyDown = (event) => {
@@ -246,38 +280,6 @@ const CreateImage = () => {
     );
 
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
-
-    useEffect(() => {
-        if (promptId) {
-            const interval = setInterval(async () => {
-                try {
-                    const response = await fetch(`http://43.202.57.225:28282/api/results/${promptId}`, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    const data = await response.json();
-                    console.log('Received Image Data:', data); // 이미지 데이터 확인
-
-                    // 해당 promptId에 해당하는 결과에 이미지 추가
-                    setResults((prevResults) =>
-                        prevResults.map((result) =>
-                            result.id === promptId
-                                ? { ...result, images: data.results.map((r) => r.image_data) }
-                                : result
-                        )
-                    );
-                } catch (error) {
-                    console.error('Error occurred while fetching the image:', error);
-                }
-            }, 60000);
-
-            return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
-        }
-    }, [promptId, token]);
 
     return (
         <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
