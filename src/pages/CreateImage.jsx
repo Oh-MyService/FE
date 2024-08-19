@@ -138,6 +138,12 @@ const CreateImage = () => {
     const [promptId, setPromptId] = useState(null);
     const [imageDataList, setImageDataList] = useState([]);
 
+    const [cfgScale, setCfgScale] = useState(10);
+    const [samplingSteps, setSamplingSteps] = useState(50);
+
+    const sliderRef1 = useRef(null);
+    const sliderRef2 = useRef(null);
+
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -257,11 +263,9 @@ const CreateImage = () => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     const data = await response.json();
                     console.log('Received Image Data:', data); // 이미지 데이터 확인
-                    setImageDataList((prevList) => {
-                        // 기존 이미지 데이터가 4개를 넘으면 더 추가하지 않도록 설정
-                        if (prevList.length >= 4) return prevList;
-                        return [...prevList, data.image_data];
-                    });
+
+                    // 여기서 data.results 배열을 imageDataList에 추가
+                    setImageDataList(data.results.map((result) => result.image_data));
                 } catch (error) {
                     console.error('Error occurred while fetching the image:', error);
                 }
@@ -269,7 +273,7 @@ const CreateImage = () => {
 
             return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
         }
-    }, [promptId, token]); // token도 종속성으로 추가
+    }, [promptId, token]);
 
     return (
         <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
@@ -285,6 +289,7 @@ const CreateImage = () => {
                                 type="text"
                                 value={inputText}
                                 onChange={(e) => setInputText(e.target.value)}
+                                onKeyDown={handleKeyDown}
                                 className="appearance-none block w-full h-56 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 leading-tight focus:outline-none border-3 border-[#3A57A7] mb-0"
                                 placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                             />
