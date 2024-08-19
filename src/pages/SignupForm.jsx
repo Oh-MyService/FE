@@ -1,12 +1,26 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { ReactComponent as DLlogo } from "../assets/designovel_icon_black.svg";
 
 const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
+
   const handleRegister = useCallback(
     async (e) => {
       e.preventDefault();
+      setPasswordErrorMessage(""); // 이전 에러 메시지 초기화
+      setUsernameErrorMessage(""); // 이전 에러 메시지 초기화
+
       const username = e.target.registerUsername.value;
       const password = e.target.registerPassword.value;
+      const confirmPassword = e.target.confirmPassword.value;
+
+      if (password !== confirmPassword) {
+        setPasswordErrorMessage(
+          "비밀번호가 일치하지 않습니다. 다시 확인해주세요."
+        );
+        return;
+      }
 
       try {
         const response = await fetch("http://43.202.57.225:28282/register", {
@@ -20,6 +34,8 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
         const data = await response.json();
         if (response.ok) {
           onRegisterSuccess();
+        } else if (data.message === "Duplicate username") {
+          setUsernameErrorMessage("중복된 아이디입니다.");
         } else {
           console.error("Registration failed: ", data);
         }
@@ -50,6 +66,9 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
             className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:outline-[#3A57A7] font-['pretendard-medium']"
             placeholder="Id"
           />
+          {usernameErrorMessage && (
+            <p className="text-red-500 text-sm mt-1">{usernameErrorMessage}</p>
+          )}
         </div>
         <div>
           <input
@@ -61,6 +80,20 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
             className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:outline-[#3A57A7] font-['pretendard-medium']"
             placeholder="Password"
           />
+        </div>
+        <div>
+          <input
+            type="password"
+            htmlFor="confirmPassword"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+            className="mt-1 block w-full bg-gray-200 rounded-md shadow-sm p-2 focus:outline-[#3A57A7] font-['pretendard-medium']"
+            placeholder="Confirm Password"
+          />
+          {passwordErrorMessage && (
+            <p className="text-red-500 text-sm mt-1">{passwordErrorMessage}</p>
+          )}
         </div>
         <button
           type="submit"
