@@ -87,7 +87,6 @@ const Mypage = () => {
 
           // 최신 5개의 컬렉션만 설정
           setCollections(collectionsData.slice(0, 5));
-
         } else {
           console.error("Failed to fetch collections:", response.statusText);
         }
@@ -236,10 +235,7 @@ const Mypage = () => {
             </div>
           ) : (
             collections.map((collection, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center cursor-pointer relative"
-              >
+              <div key={index} className="flex flex-col items-center relative">
                 <div className="grid grid-cols-2 gap-1 w-60 h-60">
                   {collection.images
                     .concat(
