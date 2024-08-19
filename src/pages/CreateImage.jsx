@@ -128,7 +128,6 @@ const applySliderStyles = (element) => {
 const CreateImage = () => {
     const [inputText, setInputText] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
-    const [promptText, setPromptText] = useState('');
     const [showResult, setShowResult] = useState(false);
     const [isAddModalOpen, setAddModalOpen] = useState(false);
     const openAddModal = () => setAddModalOpen(true);
@@ -136,7 +135,6 @@ const CreateImage = () => {
 
     const [results, setResults] = useState([]);
     const [promptId, setPromptId] = useState(null);
-    const [imageDataList, setImageDataList] = useState([]);
 
     const [cfgScale, setCfgScale] = useState(10);
     const [samplingSteps, setSamplingSteps] = useState(50);
@@ -213,12 +211,12 @@ const CreateImage = () => {
                 content: data.content,
                 created_at: data.created_at,
                 user_id: data.user_id,
+                images: [], // 새로운 결과에 대한 이미지를 저장할 배열
             };
             setResults([newResult, ...results]);
 
             setPromptId(data.id);
 
-            setPromptText(data.content);
             setShowResult(true);
         } catch (error) {
             console.error('Error occurred:', error);
@@ -264,8 +262,14 @@ const CreateImage = () => {
                     const data = await response.json();
                     console.log('Received Image Data:', data); // 이미지 데이터 확인
 
-                    // 여기서 data.results 배열을 imageDataList에 추가
-                    setImageDataList(data.results.map((result) => result.image_data));
+                    // 해당 promptId에 해당하는 결과에 이미지 추가
+                    setResults((prevResults) =>
+                        prevResults.map((result) =>
+                            result.id === promptId
+                                ? { ...result, images: data.results.map((r) => r.image_data) }
+                                : result
+                        )
+                    );
                 } catch (error) {
                     console.error('Error occurred while fetching the image:', error);
                 }
@@ -492,7 +496,7 @@ const CreateImage = () => {
                                 <Bubble text={result.content} />
                             </div>
                             <div className="grid grid-cols-2 gap-4 mt-8">
-                                {imageDataList.map((imageData, idx) => (
+                                {result.images.map((imageData, idx) => (
                                     <div key={idx} className="flex flex-col justify-between items-center w-40">
                                         <div className="overflow-hidden w-40 h-40 cursor-pointer">
                                             <img
