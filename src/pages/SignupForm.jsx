@@ -8,17 +8,15 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
   const handleRegister = useCallback(
     async (e) => {
       e.preventDefault();
-      setPasswordErrorMessage(""); // 이전 에러 메시지 초기화
-      setUsernameErrorMessage(""); // 이전 에러 메시지 초기화
+      setPasswordErrorMessage("");
+      setUsernameErrorMessage("");
 
       const username = e.target.registerUsername.value;
       const password = e.target.registerPassword.value;
       const confirmPassword = e.target.confirmPassword.value;
 
       if (password !== confirmPassword) {
-        setPasswordErrorMessage(
-          "비밀번호가 일치하지 않습니다. 다시 확인해주세요."
-        );
+        setPasswordErrorMessage("비밀번호가 일치하지 않습니다.");
         return;
       }
 
@@ -34,7 +32,7 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
         const data = await response.json();
         if (response.ok) {
           onRegisterSuccess();
-        } else if (data.message === "Duplicate username") {
+        } else if (data.detail === "Username already registered") {
           setUsernameErrorMessage("중복된 아이디입니다.");
         } else {
           console.error("Registration failed: ", data);
@@ -67,7 +65,9 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
             placeholder="Id"
           />
           {usernameErrorMessage && (
-            <p className="text-red-500 text-sm mt-1">{usernameErrorMessage}</p>
+            <p className="text-red-500 font-['pretendard-medium'] text-sm mt-1">
+              {usernameErrorMessage}
+            </p>
           )}
         </div>
         <div>
@@ -92,7 +92,9 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
             placeholder="Confirm Password"
           />
           {passwordErrorMessage && (
-            <p className="text-red-500 text-sm mt-1">{passwordErrorMessage}</p>
+            <p className="text-red-500 font-['pretendard-medium'] text-sm mt-1">
+              {passwordErrorMessage}
+            </p>
           )}
         </div>
         <button
