@@ -9,8 +9,8 @@ const RecentGeneration = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
-  const [deleteIndex, setDeleteIndex] = useState(null);
-  const [addCollectionIndex, setAddCollectionIndex] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [addCollectionId, setAddCollectionId] = useState(null);
   const [fullScreenImage, setFullScreenImage] = useState(null);
 
   const token = localStorage.getItem("token");
@@ -58,8 +58,8 @@ const RecentGeneration = () => {
     setFullScreenImage(null);
   };
 
-  const openDeleteModal = (index) => {
-    setDeleteIndex(index);
+  const openDeleteModal = (id) => {
+    setDeleteId(id);
     setDeleteModalOpen(true);
   };
 
@@ -80,7 +80,7 @@ const RecentGeneration = () => {
 
       if (response.ok) {
         setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-        setDeleteIndex(null);
+        setDeleteId(null);
         closeDeleteModal();
       } else {
         console.error("Failed to delete images");
@@ -91,7 +91,7 @@ const RecentGeneration = () => {
   };
 
   const openAddModal = (id) => {
-    setAddCollectionIndex(id);
+    setAddCollectionId(id);
     setAddModalOpen(true);
   };
 
@@ -203,7 +203,7 @@ const RecentGeneration = () => {
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-2">
-                {groupedItems[date].map((item, index) => (
+                {groupedItems[date].reverse().map((item, index) => (
                   <div
                     key={index}
                     className="flex flex-col items-center cursor-pointer relative aspect-square w-full"
@@ -224,7 +224,7 @@ const RecentGeneration = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            openAddModal(index);
+                            openAddModal(item.id);
                           }}
                         >
                           <svg
@@ -245,7 +245,7 @@ const RecentGeneration = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            openDeleteModal(index);
+                            openDeleteModal(item.id);
                           }}
                         >
                           <svg
@@ -307,13 +307,13 @@ const RecentGeneration = () => {
         {isAddModalOpen && (
           <CollectionAddModal
             onClose={closeAddModal}
-            resultId={addCollectionIndex}
+            resultId={addCollectionId}
           />
         )}
         <DeleteModal
           isOpen={isDeleteModalOpen}
           onRequestClose={closeDeleteModal}
-          onDelete={() => handleDelete(items[deleteIndex].id)}
+          onDelete={() => handleDelete(deleteId)}
         />
       </div>
     </div>

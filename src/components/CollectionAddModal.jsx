@@ -50,6 +50,8 @@ const CollectionAddModal = ({ onClose, resultId }) => {
 
   const handleSelect = async (index) => {
     const collectionId = collections[index].id;
+
+    console.log("Result ID:", resultId); // 전달된 result ID 확인
     try {
       const response = await fetch(
         `http://43.202.57.225:28282/api/collections/${collectionId}/add_result`,
@@ -83,7 +85,6 @@ const CollectionAddModal = ({ onClose, resultId }) => {
       setTimeout(() => {
         setToastMessage("");
       }, 3000);
-
     } catch (error) {
       console.error("Error saving to collection:", error);
     }
