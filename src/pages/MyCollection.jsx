@@ -77,6 +77,7 @@ const MyCollection = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
+  // id 사용
   const openDeleteModal = (id) => {
     setSelectedCollectionId(id);
     setDeleteModalOpen(true);

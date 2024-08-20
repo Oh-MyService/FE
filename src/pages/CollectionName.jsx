@@ -21,19 +21,6 @@ const CollectionName = () => {
 
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const groupImages = (imageArray, groupSize) => {
-      const grouped = [];
-      for (let i = 0; i < imageArray.length; i += groupSize) {
-        grouped.push(imageArray.slice(i, i + groupSize));
-      }
-      return grouped.reverse().flat();
-    };
-
-    const groupedImages = groupImages(collection.images, 4);
-    setImages(groupedImages);
-  }, [collection.images, collection]);
-
   const showFullScreenImage = (imageUrl) => {
     setFullScreenImage(imageUrl);
   };
@@ -60,6 +47,7 @@ const CollectionName = () => {
     setEditModalOpen(false);
   };
 
+  // id 사용
   const openAddModal = (id) => {
     setAddCollectionId(id);
     setAddModalOpen(true);
@@ -120,6 +108,7 @@ const CollectionName = () => {
     }
   };
 
+  // id 사용
   const handleDeleteImage = (id, e) => {
     e.stopPropagation();
     openDeleteModal(id);

@@ -31,7 +31,9 @@ const RecentGeneration = () => {
         );
         if (response.ok) {
           let results = await response.json();
-          setItems(results);
+          // 그룹을 만들어서 역순으로 정렬
+          const groupedItems = groupItems(results, 4);
+          setItems(groupedItems);
         } else {
           throw new Error("Failed to fetch images");
         }
@@ -49,6 +51,15 @@ const RecentGeneration = () => {
       setIsLoading(false);
     }
   }, [userId, token]);
+
+  // 그룹화된 이미지를 처리하는 함수
+  const groupItems = (items, groupSize) => {
+    const groups = [];
+    for (let i = 0; i < items.length; i += groupSize) {
+      groups.push(items.slice(i, i + groupSize));
+    }
+    return groups.reverse().flat(); // 그룹을 역순으로 정렬하고 평탄화
+  };
 
   const showFullScreenImage = (imageUrl) => {
     setFullScreenImage(imageUrl);
