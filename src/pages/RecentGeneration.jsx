@@ -57,8 +57,7 @@ const RecentGeneration = () => {
 
     // 그룹으로 나누기
     for (let i = 0; i < items.length; i += groupSize) {
-      // 각 그룹을 정렬하여 순서 유지
-      const group = items.slice(i, i + groupSize).sort((a, b) => a.id - b.id);
+      const group = items.slice(i, i + groupSize);
       groups.push(group);
     }
 
