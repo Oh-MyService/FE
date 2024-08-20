@@ -15,11 +15,24 @@ const CollectionName = () => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
-  const [addCollectionIndex, setAddCollectionIndex] = useState(null);
+  const [addCollectionId, setAddCollectionId] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
-  const [deleteIndex, setDeleteIndex] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
 
   const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const groupImages = (imageArray, groupSize) => {
+      const grouped = [];
+      for (let i = 0; i < imageArray.length; i += groupSize) {
+        grouped.push(imageArray.slice(i, i + groupSize));
+      }
+      return grouped.reverse().flat();
+    };
+
+    const groupedImages = groupImages(collection.images, 4);
+    setImages(groupedImages);
+  }, [collection.images, collection]);
 
   const showFullScreenImage = (imageUrl) => {
     setFullScreenImage(imageUrl);
@@ -29,8 +42,8 @@ const CollectionName = () => {
     setFullScreenImage(null);
   };
 
-  const openDeleteModal = (index) => {
-    setDeleteIndex(index);
+  const openDeleteModal = (id) => {
+    setDeleteId(id);
     setDeleteModalOpen(true);
   };
 
@@ -47,8 +60,8 @@ const CollectionName = () => {
     setEditModalOpen(false);
   };
 
-  const openAddModal = (index) => {
-    setAddCollectionIndex(index);
+  const openAddModal = (id) => {
+    setAddCollectionId(id);
     setAddModalOpen(true);
   };
 
@@ -107,9 +120,9 @@ const CollectionName = () => {
     }
   };
 
-  const handleDeleteImage = (index, e) => {
+  const handleDeleteImage = (id, e) => {
     e.stopPropagation();
-    openDeleteModal(index);
+    openDeleteModal(id);
   };
 
   return (
@@ -185,7 +198,7 @@ const CollectionName = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        openAddModal(index);
+                        openAddModal(image.id);
                       }}
                       className="focus:outline-none"
                     >
@@ -205,7 +218,7 @@ const CollectionName = () => {
                       </svg>
                     </button>
                     <button
-                      onClick={(e) => handleDeleteImage(index, e)}
+                      onClick={(e) => handleDeleteImage(image.id, e)}
                       className="focus:outline-none"
                     >
                       <svg
@@ -290,7 +303,7 @@ const CollectionName = () => {
         {isAddModalOpen && (
           <CollectionAddModal
             onClose={closeAddModal}
-            resultId={images[addCollectionIndex].id}
+            resultId={addCollectionId}
           />
         )}
       </div>

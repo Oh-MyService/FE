@@ -85,7 +85,6 @@ const Mypage = () => {
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
 
-          // 최신 5개의 컬렉션만 설정
           setCollections(collectionsData.slice(0, 5));
         } else {
           console.error("Failed to fetch collections:", response.statusText);

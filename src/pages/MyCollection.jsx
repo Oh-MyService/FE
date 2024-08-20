@@ -76,10 +76,12 @@ const MyCollection = () => {
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
+
   const openDeleteModal = (id) => {
     setSelectedCollectionId(id);
     setDeleteModalOpen(true);
   };
+
   const closeDeleteModal = () => setDeleteModalOpen(false);
 
   const confirmDelete = async () => {
@@ -261,7 +263,7 @@ const MyCollection = () => {
                   <p>{collection.name}</p>
                   <button
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent navigation when the delete button is clicked
+                      e.stopPropagation();
                       openDeleteModal(collection.id);
                     }}
                     className="p-1 text-gray-600"

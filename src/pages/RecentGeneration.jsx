@@ -203,7 +203,7 @@ const RecentGeneration = () => {
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-2">
-                {groupedItems[date].reverse().map((item, index) => (
+                {groupedItems[date].map((item, index) => (
                   <div
                     key={index}
                     className="flex flex-col items-center cursor-pointer relative aspect-square w-full"
