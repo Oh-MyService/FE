@@ -52,13 +52,18 @@ const RecentGeneration = () => {
     }
   }, [userId, token]);
 
-  // 그룹화된 이미지를 처리하는 함수
   const groupItems = (items, groupSize) => {
     const groups = [];
+
+    // 그룹으로 나누기
     for (let i = 0; i < items.length; i += groupSize) {
-      groups.push(items.slice(i, i + groupSize));
+      // 각 그룹을 정렬하여 순서 유지
+      const group = items.slice(i, i + groupSize).sort((a, b) => a.id - b.id);
+      groups.push(group);
     }
-    return groups.reverse().flat(); // 그룹을 역순으로 정렬하고 평탄화
+
+    // 그룹 전체를 역순으로 정렬하고 평탄화
+    return groups.reverse().flat();
   };
 
   const showFullScreenImage = (imageUrl) => {
