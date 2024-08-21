@@ -148,6 +148,12 @@ const CreateImage = () => {
 
     const handleDownloadImage = (imageData, index) => {
         try {
+            const isValidBase64 = imageData.startsWith('data:image/');
+            if (!isValidBase64) {
+                console.error('Invalid image data');
+                return;
+            }
+
             const link = document.createElement('a');
             link.href = imageData; // 전체 데이터 URL 사용
             link.download = `image_${index + 1}.jpeg`;
