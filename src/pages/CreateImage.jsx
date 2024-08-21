@@ -522,7 +522,7 @@ const CreateImage = () => {
                                         {/* 오른쪽으로 이동시키는 ml-4 */}
                                         <div
                                             className="overflow-hidden"
-                                            style={{ width: '65px', height: '65px', cursor: 'pointer' }}
+                                            style={{ width: '270px', height: '270px', cursor: 'pointer' }}
                                         >
                                             {' '}
                                             {/* 커스텀 크기 적용 */}
