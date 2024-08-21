@@ -510,7 +510,7 @@ const CreateImage = () => {
 
                 {/* 생성 결과 섹션 */}
                 <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
-                    {isLoading ? ( // Display loading spinner if images are still being fetched
+                    {isLoading ? (
                         <div role="status" className="flex justify-center items-center h-full">
                             <svg
                                 aria-hidden="true"
@@ -540,11 +540,11 @@ const CreateImage = () => {
                                     <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
                                     <Bubble text={result.content} />
                                 </div>
-                                <div className="grid grid-cols-2 gap-2 mt-8">
+                                <div className="grid grid-cols-2 gap-2 mt-6">
                                     {result.images.map((imageData, idx) => (
                                         <div
                                             key={idx}
-                                            className="flex flex-col justify-between items-center w-40 ml-16"
+                                            className="flex flex-col justify-between items-center w-full ml-16"
                                         >
                                             <div
                                                 className="overflow-hidden"
