@@ -129,12 +129,10 @@ const CreateImage = () => {
     const [inputText, setInputText] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [isAddModalOpen, setAddModalOpen] = useState(false);
-    const openAddModal = () => setAddModalOpen(true);
-    const closeAddModal = () => setAddModalOpen(false);
-
     const [results, setResults] = useState([]);
     const [cfgScale, setCfgScale] = useState(10);
     const [samplingSteps, setSamplingSteps] = useState(50);
+    const [selectedImageId, setSelectedImageId] = useState(null);
 
     const sliderRef1 = useRef(null);
     const sliderRef2 = useRef(null);
@@ -301,6 +299,13 @@ const CreateImage = () => {
     );
 
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
+
+    const openAddModal = (imageId) => {
+        setSelectedImageId(imageId);
+        setAddModalOpen(true);
+    };
+
+    const closeAddModal = () => setAddModalOpen(false);
 
     return (
         <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
@@ -528,7 +533,7 @@ const CreateImage = () => {
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
                                             <p className="text-left">{result.created_at}</p>
                                             <div className="flex items-center space-x-2">
-                                                <button onClick={openAddModal}>
+                                                <button onClick={() => openAddModal(result.id + '_' + idx)}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
@@ -567,11 +572,11 @@ const CreateImage = () => {
                                     </div>
                                 ))}
                             </div>
-                            {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
                         </div>
                     ))}
                 </div>
             </div>
+            {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} resultId={selectedImageId} />}
         </div>
     );
 };
