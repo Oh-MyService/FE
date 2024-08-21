@@ -529,10 +529,11 @@ const CreateImage = () => {
                                             />
                                         </div>
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
-                                            <p className="text-left">{result.created_at}</p> {/* 왼쪽 정렬 */}
+                                            <div className="flex justify-start w-full">
+                                                <p className="text-left">{result.created_at}</p>{' '}
+                                                {/* 날짜를 왼쪽 정렬 */}
+                                            </div>
                                             <div className="flex items-center space-x-2 ml-auto">
-                                                {' '}
-                                                {/* 오른쪽 정렬 */}
                                                 <button onClick={openAddModal}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
