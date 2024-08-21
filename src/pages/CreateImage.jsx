@@ -148,18 +148,35 @@ const CreateImage = () => {
 
     const handleDownloadImage = (imageData, index) => {
         try {
-            const isValidBase64 = imageData.startsWith('data:image/');
-            if (!isValidBase64) {
-                console.error('Invalid image data');
-                return;
+            // Base64 데이터만 추출 (data:image/jpeg;base64, 부분을 제거)
+            const base64Data = imageData.split(',')[1];
+
+            // Base64 데이터를 바이너리 데이터로 변환
+            const byteString = atob(base64Data);
+            const mimeString = imageData.split(',')[0].split(':')[1].split(';')[0];
+
+            // 바이너리 데이터를 ArrayBuffer로 변환
+            const arrayBuffer = new ArrayBuffer(byteString.length);
+            const intArray = new Uint8Array(arrayBuffer);
+
+            for (let i = 0; i < byteString.length; i++) {
+                intArray[i] = byteString.charCodeAt(i);
             }
 
-            const link = document.createElement('a');
-            link.href = imageData; // 전체 데이터 URL 사용
-            link.download = `image_${index + 1}.jpeg`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // Blob 생성
+            const blob = new Blob([arrayBuffer], { type: mimeString });
+            const url = URL.createObjectURL(blob);
+
+            // 링크 생성 및 클릭을 통한 다운로드
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `image_${index + 1}.jpeg`;
+            document.body.appendChild(a);
+            a.click();
+
+            // 리소스 해제
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Failed to download the image:', error);
         }
