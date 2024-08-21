@@ -504,7 +504,6 @@ const CreateImage = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
                     {results.map((result, index) => (
                         <div
@@ -529,10 +528,12 @@ const CreateImage = () => {
                                             />
                                         </div>
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
-                                            <div className="flex justify-start w-full">
-                                                <p className="text-left">{result.created_at}</p>{' '}
-                                                {/* 날짜를 왼쪽 정렬 */}
+                                            {/* 이미지와 날짜를 왼쪽 정렬 */}
+                                            <div className="flex justify-start w-auto">
+                                                <p className="text-left ml-0">{result.created_at}</p>{' '}
+                                                {/* ml-0으로 왼쪽 정렬 */}
                                             </div>
+                                            {/* 아이콘을 오른쪽 정렬 */}
                                             <div className="flex items-center space-x-2 ml-auto">
                                                 <button onClick={openAddModal}>
                                                     <svg
