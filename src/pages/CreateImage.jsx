@@ -517,8 +517,15 @@ const CreateImage = () => {
                             </div>
                             <div className="grid grid-cols-2 gap-4 mt-8">
                                 {result.images.map((imageData, idx) => (
-                                    <div key={idx} className="flex flex-col justify-between items-center w-40 ml-15">
-                                        <div className="overflow-hidden w-70 h-70 cursor-pointer">
+                                    <div key={idx} className="flex flex-col justify-between items-center w-40 ml-4">
+                                        {' '}
+                                        {/* 오른쪽으로 이동시키는 ml-4 */}
+                                        <div
+                                            className="overflow-hidden"
+                                            style={{ width: '65px', height: '65px', cursor: 'pointer' }}
+                                        >
+                                            {' '}
+                                            {/* 커스텀 크기 적용 */}
                                             <img
                                                 src={`data:image/jpeg;base64,${imageData}`}
                                                 alt="Generated Image"
