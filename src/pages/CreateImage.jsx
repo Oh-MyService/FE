@@ -517,12 +517,12 @@ const CreateImage = () => {
                             </div>
                             <div className="grid grid-cols-2 gap-4 mt-8">
                                 {result.images.map((imageData, idx) => (
-                                    <div key={idx} className="flex flex-col justify-between items-center w-40 ml-4">
+                                    <div key={idx} className="flex flex-col justify-between items-center w-40 ml-6">
                                         {' '}
                                         {/* 오른쪽으로 이동시키는 ml-4 */}
                                         <div
                                             className="overflow-hidden"
-                                            style={{ width: '270px', height: '270px', cursor: 'pointer' }}
+                                            style={{ width: '260px', height: '260px', cursor: 'pointer' }}
                                         >
                                             {' '}
                                             {/* 커스텀 크기 적용 */}
