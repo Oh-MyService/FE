@@ -146,46 +146,6 @@ const CreateImage = () => {
         if (sliderRef2.current) applySliderStyles(sliderRef2.current);
     }, []);
 
-    const handleDownloadImage = (imageData, index) => {
-        try {
-            if (!imageData) {
-                throw new Error('Invalid image data');
-            }
-
-            // 접두사 추가
-            const base64Data = `data:image/jpeg;base64,${imageData}`;
-
-            // Base64 데이터를 바이너리 데이터로 변환
-            const byteString = atob(imageData);
-            const mimeString = 'image/jpeg'; // 이미지가 JPEG 형식이라고 가정
-
-            // 바이너리 데이터를 ArrayBuffer로 변환
-            const arrayBuffer = new ArrayBuffer(byteString.length);
-            const intArray = new Uint8Array(arrayBuffer);
-
-            for (let i = 0; i < byteString.length; i++) {
-                intArray[i] = byteString.charCodeAt(i);
-            }
-
-            // Blob 생성
-            const blob = new Blob([arrayBuffer], { type: mimeString });
-            const url = URL.createObjectURL(blob);
-
-            // 링크 생성 및 클릭을 통한 다운로드
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `image_${index + 1}.jpeg`;
-            document.body.appendChild(a);
-            a.click();
-
-            // 리소스 해제
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error('Failed to download the image:', error);
-        }
-    };
-
     const [repeatDirectionPage, setRepeatDirectionPage] = useState(0); // 반복 방향 및 비율 페이지 상태
     const [moodPage, setMoodPage] = useState(0); // 분위기 페이지 상태
     const [selectedRepeatDirection, setSelectedRepeatDirection] = useState(null);
@@ -313,7 +273,15 @@ const CreateImage = () => {
         }
     };
 
-    const handleSaveImage = () => {};
+    // Function to handle image download
+    const handleSaveImage = (imageData, index) => {
+        const link = document.createElement('a');
+        link.href = `data:image/jpeg;base64,${imageData}`;
+        link.download = `generated_image_${index + 1}.jpeg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     const handlePrevPage = (setter) => {
         setter((prev) => Math.max(prev - 1, 0));
@@ -575,7 +543,7 @@ const CreateImage = () => {
                                                         />
                                                     </svg>
                                                 </button>
-                                                <button onClick={() => handleDownloadImage(imageData, idx)}>
+                                                <button onClick={() => handleSaveImage(imageData, idx)}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
