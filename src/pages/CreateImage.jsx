@@ -500,14 +500,18 @@ const CreateImage = () => {
                         <div
                             key={idx}
                             className="flex flex-col justify-between items-center"
-                            style={{ width: '280px', height: '280px' }}
+                            style={{ width: '300px', height: '300px', flexShrink: 0 }}
                         >
                             <div className="overflow-hidden cursor-pointer" style={{ width: '100%', height: '100%' }}>
                                 <img
                                     src={`data:image/jpeg;base64,${imageData}`}
                                     alt="Generated Image"
-                                    className="object-cover rounded-lg"
-                                    style={{ width: '100%', height: '100%' }}
+                                    style={{
+                                        width: '100% !important',
+                                        height: '100% !important',
+                                        objectFit: 'cover !important',
+                                        borderRadius: '8px !important',
+                                    }}
                                 />
                             </div>
                             <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
