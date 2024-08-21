@@ -148,12 +148,16 @@ const CreateImage = () => {
 
     const handleDownloadImage = (imageData, index) => {
         try {
-            // Base64 데이터만 추출 (data:image/jpeg;base64, 부분을 제거)
-            const base64Data = imageData.split(',')[1];
+            if (!imageData) {
+                throw new Error('Invalid image data');
+            }
+
+            // 접두사 추가
+            const base64Data = `data:image/jpeg;base64,${imageData}`;
 
             // Base64 데이터를 바이너리 데이터로 변환
-            const byteString = atob(base64Data);
-            const mimeString = imageData.split(',')[0].split(':')[1].split(';')[0];
+            const byteString = atob(imageData);
+            const mimeString = 'image/jpeg'; // 이미지가 JPEG 형식이라고 가정
 
             // 바이너리 데이터를 ArrayBuffer로 변환
             const arrayBuffer = new ArrayBuffer(byteString.length);
