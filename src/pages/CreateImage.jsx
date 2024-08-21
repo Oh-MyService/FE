@@ -129,10 +129,12 @@ const CreateImage = () => {
     const [inputText, setInputText] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [isAddModalOpen, setAddModalOpen] = useState(false);
+    const openAddModal = () => setAddModalOpen(true);
+    const closeAddModal = () => setAddModalOpen(false);
+
     const [results, setResults] = useState([]);
     const [cfgScale, setCfgScale] = useState(10);
     const [samplingSteps, setSamplingSteps] = useState(50);
-    const [selectedImageId, setSelectedImageId] = useState(null);
 
     const sliderRef1 = useRef(null);
     const sliderRef2 = useRef(null);
@@ -299,13 +301,6 @@ const CreateImage = () => {
     );
 
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
-
-    const openAddModal = (imageId) => {
-        setSelectedImageId(imageId);
-        setAddModalOpen(true);
-    };
-
-    const closeAddModal = () => setAddModalOpen(false);
 
     return (
         <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
@@ -523,7 +518,7 @@ const CreateImage = () => {
                             <div className="grid grid-cols-2 gap-4 mt-8">
                                 {result.images.map((imageData, idx) => (
                                     <div key={idx} className="flex flex-col justify-between items-center w-40">
-                                        <div className="overflow-hidden w-40 h-40 cursor-pointer">
+                                        <div className="overflow-hidden w-80 h-80 cursor-pointer">
                                             <img
                                                 src={`data:image/jpeg;base64,${imageData}`}
                                                 alt="Generated Image"
@@ -533,7 +528,7 @@ const CreateImage = () => {
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
                                             <p className="text-left">{result.created_at}</p>
                                             <div className="flex items-center space-x-2">
-                                                <button onClick={() => openAddModal(result.id + '_' + idx)}>
+                                                <button onClick={openAddModal}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
@@ -572,11 +567,11 @@ const CreateImage = () => {
                                     </div>
                                 ))}
                             </div>
+                            {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
                         </div>
                     ))}
                 </div>
             </div>
-            {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} resultId={selectedImageId} />}
         </div>
     );
 };
