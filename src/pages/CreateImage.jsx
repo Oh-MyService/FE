@@ -147,29 +147,33 @@ const CreateImage = () => {
     }, []);
 
     const handleDownloadImage = (imageData, index) => {
-        // base64 데이터를 Blob 객체로 변환
-        const byteString = atob(imageData.split(',')[1]);
-        const mimeString = imageData.split(',')[0].split(':')[1].split(';')[0];
-        const arrayBuffer = new ArrayBuffer(byteString.length);
-        const intArray = new Uint8Array(arrayBuffer);
+        // Base64 데이터만 추출 (data:image/jpeg;base64, 부분을 제거)
+        const base64Data = imageData.split(',')[1];
 
-        for (let i = 0; i < byteString.length; i++) {
-            intArray[i] = byteString.charCodeAt(i);
+        try {
+            const byteString = atob(base64Data);
+            const mimeString = imageData.split(',')[0].split(':')[1].split(';')[0];
+            const arrayBuffer = new ArrayBuffer(byteString.length);
+            const intArray = new Uint8Array(arrayBuffer);
+
+            for (let i = 0; i < byteString.length; i++) {
+                intArray[i] = byteString.charCodeAt(i);
+            }
+
+            const blob = new Blob([arrayBuffer], { type: mimeString });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `image_${index + 1}.jpeg`;
+            document.body.appendChild(a);
+            a.click();
+
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Failed to decode base64 string:', error);
         }
-
-        const blob = new Blob([arrayBuffer], { type: mimeString });
-        const url = URL.createObjectURL(blob);
-
-        // a 태그를 사용하여 파일 다운로드
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `image_${index + 1}.jpeg`; // 파일 이름 지정
-        document.body.appendChild(a);
-        a.click();
-
-        // 다운로드 후 요소 제거
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
     };
 
     const [repeatDirectionPage, setRepeatDirectionPage] = useState(0); // 반복 방향 및 비율 페이지 상태
