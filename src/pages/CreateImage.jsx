@@ -549,7 +549,7 @@ const CreateImage = () => {
                                     <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
                                     <Bubble text={result.content} />
                                 </div>
-                                <div className="grid grid-cols-2 gap-2 mt-6">
+                                <div className="grid grid-cols-2 gap-3 mt-6">
                                     {result.images.map((imageData, idx) => (
                                         <div key={idx} className="flex flex-col justify-between items-center w-full">
                                             <div
