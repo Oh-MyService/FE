@@ -495,68 +495,53 @@ const CreateImage = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
-                    {/* 생성 결과 섹션 */}
-                    {results.map((result, index) => (
-                        <div
-                            key={index}
-                            className="flex flex-col justify-center mt-2 w-full bg-white p-4 rounded-lg shadow-md"
-                        >
-                            <div className="flex">
-                                <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
-                                <Bubble text={result.content} />
+                <div className="grid grid-cols-2 gap-4 mt-8">
+                    {result.images.map((imageData, idx) => (
+                        <div key={idx} className="flex flex-col justify-between items-center w-48 h-48">
+                            <div className="overflow-hidden w-48 h-48 cursor-pointer">
+                                <img
+                                    src={`data:image/jpeg;base64,${imageData}`}
+                                    alt="Generated Image"
+                                    className="w-full h-full object-cover rounded-lg"
+                                />
                             </div>
-                            <div className="grid grid-cols-2 gap-4 mt-8">
-                                {result.images.map((imageData, idx) => (
-                                    <div key={idx} className="flex flex-col justify-between items-center w-40">
-                                        <div className="overflow-hidden w-40 h-40 cursor-pointer">
-                                            <img
-                                                src={`data:image/jpeg;base64,${imageData}`}
-                                                alt="Generated Image"
-                                                className="w-full h-full object-cover rounded-lg"
+                            <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
+                                <p className="text-left">{result.created_at}</p>
+                                <div className="flex items-center space-x-2">
+                                    <button onClick={openAddModal}>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="2"
+                                            stroke="currentColor"
+                                            className="w-6 h-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
                                             />
-                                        </div>
-                                        <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
-                                            <p className="text-left">{result.created_at}</p>
-                                            <div className="flex items-center space-x-2">
-                                                <button onClick={openAddModal}>
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none"
-                                                        viewBox="0 0 24 24"
-                                                        strokeWidth="2"
-                                                        stroke="currentColor"
-                                                        className="w-6 h-6"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                                <button onClick={handleSaveImage}>
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none"
-                                                        viewBox="0 0 24 24"
-                                                        strokeWidth="2"
-                                                        stroke="currentColor"
-                                                        className="w-6 h-6"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
+                                        </svg>
+                                    </button>
+                                    <button onClick={handleSaveImage}>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="2"
+                                            stroke="currentColor"
+                                            className="w-6 h-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                            {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
                         </div>
                     ))}
                 </div>
