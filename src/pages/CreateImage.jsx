@@ -129,8 +129,6 @@ const CreateImage = () => {
     const [inputText, setInputText] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [isAddModalOpen, setAddModalOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
-
     const openAddModal = () => setAddModalOpen(true);
     const closeAddModal = () => setAddModalOpen(false);
 
@@ -147,6 +145,32 @@ const CreateImage = () => {
         if (sliderRef1.current) applySliderStyles(sliderRef1.current);
         if (sliderRef2.current) applySliderStyles(sliderRef2.current);
     }, []);
+
+    const handleDownloadImage = (imageData, index) => {
+        // base64 데이터를 Blob 객체로 변환
+        const byteString = atob(imageData.split(',')[1]);
+        const mimeString = imageData.split(',')[0].split(':')[1].split(';')[0];
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const intArray = new Uint8Array(arrayBuffer);
+
+        for (let i = 0; i < byteString.length; i++) {
+            intArray[i] = byteString.charCodeAt(i);
+        }
+
+        const blob = new Blob([arrayBuffer], { type: mimeString });
+        const url = URL.createObjectURL(blob);
+
+        // a 태그를 사용하여 파일 다운로드
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `image_${index + 1}.jpeg`; // 파일 이름 지정
+        document.body.appendChild(a);
+        a.click();
+
+        // 다운로드 후 요소 제거
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
 
     const [repeatDirectionPage, setRepeatDirectionPage] = useState(0); // 반복 방향 및 비율 페이지 상태
     const [moodPage, setMoodPage] = useState(0); // 분위기 페이지 상태
@@ -189,8 +213,6 @@ const CreateImage = () => {
             return;
         }
 
-        setIsLoading(true); // 로딩 상태 시작
-
         try {
             const formData = new FormData();
             formData.append('content', inputText);
@@ -221,8 +243,6 @@ const CreateImage = () => {
         } catch (error) {
             console.error('Error occurred:', error);
             setAlertMessage('Error occurred while creating prompt.');
-        } finally {
-            setIsLoading(false); // 로딩 상태 종료
         }
     };
 
@@ -502,89 +522,69 @@ const CreateImage = () => {
                 </div>
 
                 <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
-                    {isLoading ? (
-                        <div className="flex justify-center items-center h-full">
-                            {/* 로딩 화면 */}
-                            <div role="status">
-                                <svg
-                                    aria-hidden="true"
-                                    className="w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                    viewBox="0 0 100 101"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                        fill="currentColor"
-                                    />
-                                    <path
-                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                        fill="currentFill"
-                                    />
-                                </svg>
-                                <span className="sr-only">Loading...</span>
+                    {/* 생성 결과 섹션 */}
+                    {results.map((result, index) => (
+                        <div
+                            key={index}
+                            className="flex flex-col justify-center mt-2 w-full bg-white p-4 rounded-lg shadow-md"
+                        >
+                            <div className="flex">
+                                <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
+                                <Bubble text={result.content} />
                             </div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-2 gap-4 mt-8">
-                            {results.map((result, index) => (
-                                <div
-                                    key={index}
-                                    className="flex flex-col justify-between items-center"
-                                    style={{ width: '320px', height: '320px' }}
-                                >
-                                    <div
-                                        className="overflow-hidden cursor-pointer"
-                                        style={{ width: '100%', height: '100%' }}
-                                    >
-                                        <img
-                                            src={`data:image/jpeg;base64,${result.images[0]}`}
-                                            alt="Generated Image"
-                                            className="object-cover rounded-lg"
-                                            style={{ width: '100%', height: '100%' }}
-                                        />
-                                    </div>
-                                    <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
-                                        <p className="text-left">{result.created_at}</p>
-                                        <div className="flex items-center space-x-2">
-                                            <button onClick={openAddModal}>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth="2"
-                                                    stroke="currentColor"
-                                                    className="w-6 h-6"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                                                    />
-                                                </svg>
-                                            </button>
-                                            <button onClick={handleSaveImage}>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth="2"
-                                                    stroke="currentColor"
-                                                    className="w-6 h-6"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                                                    />
-                                                </svg>
-                                            </button>
+                            <div className="grid grid-cols-2 gap-4 mt-8">
+                                {result.images.map((imageData, idx) => (
+                                    <div key={idx} className="flex flex-col justify-between items-center w-40">
+                                        <div className="overflow-hidden w-40 h-40 cursor-pointer">
+                                            <img
+                                                src={`data:image/jpeg;base64,${imageData}`}
+                                                alt="Generated Image"
+                                                className="w-full h-full object-cover rounded-lg"
+                                            />
+                                        </div>
+                                        <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
+                                            <p className="text-left">{result.created_at}</p>
+                                            <div className="flex items-center space-x-2">
+                                                <button onClick={openAddModal}>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth="2"
+                                                        stroke="currentColor"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                                <button onClick={() => handleDownloadImage(imageData, idx)}>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth="2"
+                                                        stroke="currentColor"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+                            {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
                         </div>
-                    )}
+                    ))}
                 </div>
             </div>
         </div>
