@@ -534,9 +534,9 @@ const CreateImage = () => {
                         results.map((result, index) => (
                             <div
                                 key={index}
-                                className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md"
+                                className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3"
                             >
-                                <div className="flex">
+                                <div className="flex -mt-2">
                                     <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
                                     <Bubble text={result.content} />
                                 </div>
