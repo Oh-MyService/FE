@@ -146,8 +146,8 @@ const CreateImage = () => {
         if (sliderRef2.current) applySliderStyles(sliderRef2.current);
     }, []);
 
-    const [repeatDirectionPage, setRepeatDirectionPage] = useState(0); // 반복 방향 및 비율 페이지 상태
-    const [moodPage, setMoodPage] = useState(0); // 분위기 페이지 상태
+    const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
+    const [moodPage, setMoodPage] = useState(0);
     const [selectedRepeatDirection, setSelectedRepeatDirection] = useState(null);
     const [selectedMood, setSelectedMood] = useState(null);
 
@@ -208,11 +208,10 @@ const CreateImage = () => {
                 content: data.content,
                 created_at: data.created_at,
                 user_id: data.user_id,
-                images: [], // 각 결과에 대한 이미지를 저장할 배열
+                images: [],
             };
             setResults((prevResults) => [newResult, ...prevResults]);
 
-            // 이미지 수신을 위한 polling 시작
             pollForImages(data.id, newResult);
         } catch (error) {
             console.error('Error occurred:', error);
@@ -241,14 +240,13 @@ const CreateImage = () => {
                                 ? {
                                       ...result,
                                       images: [...result.images, ...data.results.map((r) => r.image_data)],
-                                      created_at: formatDateWithoutDot(new Date(result.created_at)), // 날짜 포맷팅 함수 사용
+                                      created_at: formatDateWithoutDot(new Date(result.created_at)),
                                   }
                                 : result
                         )
                     );
                 }
 
-                // 모든 이미지가 수신되면 polling 종료
                 if (data.results.length >= 4) {
                     clearInterval(interval);
                 }
@@ -259,7 +257,6 @@ const CreateImage = () => {
         }, 10000);
     };
 
-    // 날짜 포맷팅 함수 추가
     const formatDateWithoutDot = (date) => {
         return `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date
             .getDate()
@@ -273,7 +270,6 @@ const CreateImage = () => {
         }
     };
 
-    // 로컬 저장 기능 추가
     const handleSaveImage = (imageData, imageId) => {
         const byteCharacters = atob(imageData);
         const byteNumbers = new Array(byteCharacters.length);
@@ -284,7 +280,7 @@ const CreateImage = () => {
         const blob = new Blob([byteArray], { type: 'image/jpeg' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `image_${imageId}.jpg`; // imageId 기반 파일명 사용
+        link.download = `image_${imageId}.jpg`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -310,7 +306,6 @@ const CreateImage = () => {
         <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
             <div className="flex w-[80%] justify-center px-4 mt-10">
                 <div className="flex flex-col w-[50%] mx-2 min-w-[650px]">
-                    {/* 입력창 섹션 */}
                     <div className="flex flex-col justify-start items-start">
                         <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
                             상상 속 패턴을 지금 만들어보세요!
@@ -335,7 +330,6 @@ const CreateImage = () => {
                             </div>
                         </div>
                     </div>
-                    {/* 옵션 섹션 */}
                     <div className="w-full h-auto mt-8 rounded-lg border-3 border-[#8194EC] p-4">
                         <div className="relative w-full">
                             <span className="block text-2xl font-['pretendard-bold'] text-left text-black mb-3">
@@ -512,7 +506,6 @@ const CreateImage = () => {
                 </div>
 
                 <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
-                    {/* 생성 결과 섹션 */}
                     {results.map((result, index) => (
                         <div
                             key={index}
@@ -551,7 +544,9 @@ const CreateImage = () => {
                                                         />
                                                     </svg>
                                                 </button>
-                                                <button onClick={() => handleSaveImage(imageData, result.id)}>
+                                                <button
+                                                    onClick={() => handleSaveImage(imageData, result.id + '_' + idx)}
+                                                >
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
