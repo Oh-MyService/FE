@@ -273,14 +273,22 @@ const CreateImage = () => {
         }
     };
 
-    // Function to handle image download
-    const handleSaveImage = (imageData, index) => {
+    // 로컬 저장 기능 추가
+    const handleSaveImage = (imageData, imageId) => {
+        const byteCharacters = atob(imageData);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
         const link = document.createElement('a');
-        link.href = `data:image/jpeg;base64,${imageData}`;
-        link.download = `generated_image_${index + 1}.jpeg`;
+        link.href = URL.createObjectURL(blob);
+        link.download = `image_${imageId}.jpg`; // imageId 기반 파일명 사용
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
     };
 
     const handlePrevPage = (setter) => {
@@ -543,7 +551,7 @@ const CreateImage = () => {
                                                         />
                                                     </svg>
                                                 </button>
-                                                <button onClick={() => handleSaveImage(imageData, idx)}>
+                                                <button onClick={() => handleSaveImage(imageData, result.id)}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
