@@ -241,6 +241,7 @@ const CreateImage = () => {
                                 ? {
                                       ...result,
                                       images: [...result.images, ...data.results.map((r) => r.image_data)],
+                                      created_at: new Date(result.created_at).toLocaleDateString(), // 날짜만 표시하도록 변환
                                   }
                                 : result
                         )
