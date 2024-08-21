@@ -534,7 +534,7 @@ const CreateImage = () => {
                         results.map((result, index) => (
                             <div
                                 key={index}
-                                className="flex flex-col justify-center mt-2 w-full bg-white p-4 rounded-lg shadow-md"
+                                className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md"
                             >
                                 <div className="flex">
                                     <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
@@ -542,7 +542,7 @@ const CreateImage = () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 mt-6">
                                     {result.images.map((imageData, idx) => (
-                                        <div key={idx} className="flex flex-col justify-between items-center w-[80%]">
+                                        <div key={idx} className="flex flex-col justify-between items-center w-full">
                                             <div
                                                 className="overflow-hidden"
                                                 style={{ width: '250px', height: '250px' }}
