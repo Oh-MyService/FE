@@ -505,8 +505,8 @@ const CreateImage = () => {
                     </div>
                 </div>
 
+                {/* 생성 결과 섹션 */}
                 <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
-                    {/* 생성 결과 섹션 */}
                     {results.map((result, index) => (
                         <div
                             key={index}
@@ -531,7 +531,7 @@ const CreateImage = () => {
                                         </div>
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
                                             <p className="text-left">{result.created_at}</p>
-                                            <div className="flex items-center ml-8 space-x-4">
+                                            <div className="flex items-center space-x-4 ">
                                                 <button onClick={openAddModal}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -548,7 +548,9 @@ const CreateImage = () => {
                                                         />
                                                     </svg>
                                                 </button>
-                                                <button onClick={handleSaveImage}>
+                                                <button
+                                                    onClick={() => handleSaveImage(imageData, result.id + '_' + idx)}
+                                                >
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
