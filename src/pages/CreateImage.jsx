@@ -515,17 +515,13 @@ const CreateImage = () => {
                                 <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
                                 <Bubble text={result.content} />
                             </div>
-                            <div className="grid grid-cols-2 gap-2 mt-8">
+                            <div className="grid grid-cols-2 gap-1 mt-7">
                                 {result.images.map((imageData, idx) => (
                                     <div key={idx} className="flex flex-col justify-between items-center w-40 ml-16">
-                                        {' '}
-                                        {/* 오른쪽으로 이동시키는 ml-4 */}
                                         <div
                                             className="overflow-hidden"
                                             style={{ width: '250px', height: '250px', cursor: 'pointer' }}
                                         >
-                                            {' '}
-                                            {/* 커스텀 크기 적용 */}
                                             <img
                                                 src={`data:image/jpeg;base64,${imageData}`}
                                                 alt="Generated Image"
@@ -533,8 +529,10 @@ const CreateImage = () => {
                                             />
                                         </div>
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
-                                            <p className="text-left">{result.created_at}</p>
-                                            <div className="flex items-center space-x-2">
+                                            <p className="text-left">{result.created_at}</p> {/* 왼쪽 정렬 */}
+                                            <div className="flex items-center space-x-2 ml-auto">
+                                                {' '}
+                                                {/* 오른쪽 정렬 */}
                                                 <button onClick={openAddModal}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
