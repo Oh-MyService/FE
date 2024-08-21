@@ -515,9 +515,9 @@ const CreateImage = () => {
                                 <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
                                 <Bubble text={result.content} />
                             </div>
-                            <div className="grid grid-cols-2 gap-4 mt-8">
+                            <div className="grid grid-cols-2 gap-2 mt-8">
                                 {result.images.map((imageData, idx) => (
-                                    <div key={idx} className="flex flex-col justify-between items-center w-40 ml-15">
+                                    <div key={idx} className="flex flex-col justify-between items-center w-40 ml-16">
                                         {' '}
                                         {/* 오른쪽으로 이동시키는 ml-4 */}
                                         <div
