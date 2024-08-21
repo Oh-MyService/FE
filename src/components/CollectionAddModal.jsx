@@ -46,7 +46,6 @@ const CollectionAddModal = ({ onClose, resultId }) => {
     const handleSelect = async (index) => {
         const collectionId = collections[index].id;
 
-        console.log('Result ID:', resultId); // 전달된 result ID 확인
         try {
             const response = await fetch(`http://43.202.57.225:28282/api/collections/${collectionId}/add_result`, {
                 method: 'POST',
@@ -65,14 +64,10 @@ const CollectionAddModal = ({ onClose, resultId }) => {
             }
 
             const newCollections = [...collections];
-            newCollections[index].isSelected = !newCollections[index].isSelected;
+            newCollections[index].isSelected = true;
             setCollections(newCollections);
 
-            setToastMessage(
-                newCollections[index].isSelected
-                    ? `${collections[index].name} 컬렉션에 저장되었습니다.`
-                    : `${collections[index].name} 컬렉션에 저장이 취소되었습니다.`
-            );
+            setToastMessage(`${collections[index].name} 컬렉션에 저장되었습니다.`);
 
             setTimeout(() => {
                 setToastMessage('');
