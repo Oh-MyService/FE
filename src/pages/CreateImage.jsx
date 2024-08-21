@@ -519,7 +519,10 @@ const CreateImage = () => {
                             <div className="grid grid-cols-2 gap-2 mt-8">
                                 {result.images.map((imageData, idx) => (
                                     <div key={idx} className="flex flex-col justify-between items-center w-40 ml-16">
-                                        <div className="overflow-hidden" style={{ width: '250px', height: '250px' }}>
+                                        <div
+                                            className="overflow-hidden"
+                                            style={{ width: '250px', height: '250px', cursor: 'pointer' }}
+                                        >
                                             <img
                                                 src={`data:image/jpeg;base64,${imageData}`}
                                                 alt="Generated Image"
@@ -527,8 +530,8 @@ const CreateImage = () => {
                                             />
                                         </div>
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
-                                            <p className="text-left mr-8">{result.created_at}</p>
-                                            <div className="flex items-center space-x-2 ">
+                                            <p className="text-left">{result.created_at}</p>
+                                            <div className="flex items-center space-x-4 ">
                                                 <button onClick={openAddModal}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
