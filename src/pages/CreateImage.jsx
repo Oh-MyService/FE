@@ -129,17 +129,8 @@ const CreateImage = () => {
     const [inputText, setInputText] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [isAddModalOpen, setAddModalOpen] = useState(false);
-    const [selectedResultId, setSelectedResultId] = useState(null); // 선택된 결과 ID를 저장하는 상태
-
-    const openAddModal = (resultId) => {
-        setSelectedResultId(resultId);
-        setAddModalOpen(true);
-    };
-
-    const closeAddModal = () => {
-        setSelectedResultId(null);
-        setAddModalOpen(false);
-    };
+    const openAddModal = () => setAddModalOpen(true);
+    const closeAddModal = () => setAddModalOpen(false);
 
     const [results, setResults] = useState([]);
     const [cfgScale, setCfgScale] = useState(10);
@@ -373,9 +364,109 @@ const CreateImage = () => {
                                 </div>
                                 <div className="flex items-center">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">반복 방향 및 비율</label>
+                                    <button
+                                        onClick={() => handlePrevPage(setRepeatDirectionPage)}
+                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            stroke="currentColor"
+                                            className="size-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M15.75 19.5 8.25 12l7.5-7.5"
+                                            />
+                                        </svg>
+                                    </button>
+                                    {currentRepeatDirections.map((direction, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setSelectedRepeatDirection(direction)}
+                                            className={`px-4 py-2 rounded-full ml-2 border-2 ${
+                                                selectedRepeatDirection === direction
+                                                    ? 'border-[#8194EC]'
+                                                    : 'border-primary'
+                                            } hover:border-[#8194EC] focus:border-[#8194EC] font-['pretendard-regular']`}
+                                        >
+                                            {direction}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => handleNextPage(setRepeatDirectionPage, repeatDirectionOptions)}
+                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full ml-2"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            stroke="currentColor"
+                                            className="size-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                                            />
+                                        </svg>
+                                    </button>
                                 </div>
                                 <div className="flex items-center">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">분위기</label>
+                                    <button
+                                        onClick={() => handlePrevPage(setMoodPage)}
+                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            stroke="currentColor"
+                                            className="size-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M15.75 19.5 8.25 12l7.5-7.5"
+                                            />
+                                        </svg>
+                                    </button>
+                                    {currentMoods.map((mood, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setSelectedMood(mood)}
+                                            className={`px-4 py-2 rounded-full ml-2 border-2 ${
+                                                selectedMood === mood ? 'border-[#8194EC]' : 'border-primary'
+                                            } hover:border-[#8194EC] focus:border-[#8194EC] font-['pretendard-regular']`}
+                                        >
+                                            {mood}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => handleNextPage(setMoodPage, moodOptions)}
+                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full ml-2"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            stroke="currentColor"
+                                            className="size-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                                            />
+                                        </svg>
+                                    </button>
                                 </div>
                                 <div className="border-t border-gray-300 my-4"></div>
                                 <div className="flex items-center">
@@ -465,7 +556,7 @@ const CreateImage = () => {
                                             <div className="flex justify-between items-center w-[250px] mt-2 font-['pretendard-medium'] text-black">
                                                 <p className="text-left ">{result.created_at}</p>
                                                 <div className="flex items-center space-x-2 ">
-                                                    <button onClick={() => openAddModal(result.id)}>
+                                                    <button onClick={openAddModal}>
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             fill="none"
@@ -506,9 +597,7 @@ const CreateImage = () => {
                                         </div>
                                     ))}
                                 </div>
-                                {isAddModalOpen && selectedResultId === result.id && (
-                                    <CollectionAddModal onClose={closeAddModal} resultId={selectedResultId} />
-                                )}
+                                {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
                             </div>
                         ))
                     )}
