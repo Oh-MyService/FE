@@ -527,9 +527,9 @@ const CreateImage = () => {
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>
-                                        <div className="flex items-center w-full mt-2 font-['pretendard-medium'] text-black">
+                                        <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
                                             {/* 날짜를 왼쪽 정렬 */}
-                                            <p className="text-left flex-grow">{result.created_at}</p>
+                                            <p className="text-left">{result.created_at}</p>
                                             {/* 아이콘을 오른쪽 정렬 */}
                                             <div className="flex items-center space-x-2">
                                                 <button onClick={openAddModal}>
