@@ -527,9 +527,7 @@ const CreateImage = () => {
                                             />
                                         </div>
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
-                                            <p className="text-left absolute bottom-0 left-0 mb-2 ml-2">
-                                                {result.created_at}
-                                            </p>
+                                            <p className="text-left mr-8">{result.created_at}</p>
                                             <div className="flex items-center space-x-2 ">
                                                 <button onClick={openAddModal}>
                                                     <svg
