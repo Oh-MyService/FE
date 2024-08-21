@@ -497,8 +497,8 @@ const CreateImage = () => {
 
                 <div className="grid grid-cols-2 gap-4 mt-8">
                     {result.images.map((imageData, idx) => (
-                        <div key={idx} className="flex flex-col justify-between items-center w-48 h-48">
-                            <div className="overflow-hidden w-48 h-48 cursor-pointer">
+                        <div key={idx} className="flex flex-col justify-between items-center w-56 h-56">
+                            <div className="overflow-hidden w-56 h-56 cursor-pointer">
                                 <img
                                     src={`data:image/jpeg;base64,${imageData}`}
                                     alt="Generated Image"
