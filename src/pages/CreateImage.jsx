@@ -241,7 +241,7 @@ const CreateImage = () => {
                                 ? {
                                       ...result,
                                       images: [...result.images, ...data.results.map((r) => r.image_data)],
-                                      created_at: new Date(result.created_at).toLocaleDateString(), // 날짜만 표시하도록 변환
+                                      created_at: formatDateWithoutDot(new Date(result.created_at)), // 날짜 포맷팅 함수 사용
                                   }
                                 : result
                         )
@@ -257,6 +257,14 @@ const CreateImage = () => {
                 clearInterval(interval);
             }
         }, 10000);
+    };
+
+    // 날짜 포맷팅 함수 추가
+    const formatDateWithoutDot = (date) => {
+        return `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date
+            .getDate()
+            .toString()
+            .padStart(2, '0')}`;
     };
 
     const handleKeyDown = (event) => {
