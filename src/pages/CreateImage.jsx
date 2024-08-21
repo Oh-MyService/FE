@@ -506,10 +506,9 @@ const CreateImage = () => {
                 </div>
                 <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-black">
                     <p className="text-left">{result.created_at}</p>
-                    <div className="flex items-center space-x-8">
+                    <div className="flex items-center">
                         {' '}
-                        {/* space-x-4로 간격을 늘립니다. */}
-                        <button onClick={openAddModal}>
+                        <button onClick={openAddModal} className="ml-8">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
