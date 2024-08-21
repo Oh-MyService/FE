@@ -129,7 +129,7 @@ const CreateImage = () => {
     const [inputText, setInputText] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [isAddModalOpen, setAddModalOpen] = useState(false);
-    const [selectedResultId, setSelectedResultId] = useState(null);
+    const [selectedResultId, setSelectedResultId] = useState(null); // 선택된 결과 ID를 저장하는 상태
 
     const openAddModal = (resultId) => {
         setSelectedResultId(resultId);
@@ -373,109 +373,9 @@ const CreateImage = () => {
                                 </div>
                                 <div className="flex items-center">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">반복 방향 및 비율</label>
-                                    <button
-                                        onClick={() => handlePrevPage(setRepeatDirectionPage)}
-                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                            stroke="currentColor"
-                                            className="size-6"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M15.75 19.5 8.25 12l7.5-7.5"
-                                            />
-                                        </svg>
-                                    </button>
-                                    {currentRepeatDirections.map((direction, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setSelectedRepeatDirection(direction)}
-                                            className={`px-4 py-2 rounded-full ml-2 border-2 ${
-                                                selectedRepeatDirection === direction
-                                                    ? 'border-[#8194EC]'
-                                                    : 'border-primary'
-                                            } hover:border-[#8194EC] focus:border-[#8194EC] font-['pretendard-regular']`}
-                                        >
-                                            {direction}
-                                        </button>
-                                    ))}
-                                    <button
-                                        onClick={() => handleNextPage(setRepeatDirectionPage, repeatDirectionOptions)}
-                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full ml-2"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                            stroke="currentColor"
-                                            className="size-6"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                                            />
-                                        </svg>
-                                    </button>
                                 </div>
                                 <div className="flex items-center">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">분위기</label>
-                                    <button
-                                        onClick={() => handlePrevPage(setMoodPage)}
-                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                            stroke="currentColor"
-                                            className="size-6"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M15.75 19.5 8.25 12l7.5-7.5"
-                                            />
-                                        </svg>
-                                    </button>
-                                    {currentMoods.map((mood, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setSelectedMood(mood)}
-                                            className={`px-4 py-2 rounded-full ml-2 border-2 ${
-                                                selectedMood === mood ? 'border-[#8194EC]' : 'border-primary'
-                                            } hover:border-[#8194EC] focus:border-[#8194EC] font-['pretendard-regular']`}
-                                        >
-                                            {mood}
-                                        </button>
-                                    ))}
-                                    <button
-                                        onClick={() => handleNextPage(setMoodPage, moodOptions)}
-                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full ml-2"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                            stroke="currentColor"
-                                            className="size-6"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                                            />
-                                        </svg>
-                                    </button>
                                 </div>
                                 <div className="border-t border-gray-300 my-4"></div>
                                 <div className="flex items-center">
@@ -549,7 +449,7 @@ const CreateImage = () => {
                                     <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
                                     <Bubble text={result.content} />
                                 </div>
-                                <div className="grid grid-cols-2 gap-3 mt-6">
+                                <div className="grid grid-cols-2 gap-2 mt-6">
                                     {result.images.map((imageData, idx) => (
                                         <div key={idx} className="flex flex-col justify-between items-center w-full">
                                             <div
