@@ -542,10 +542,7 @@ const CreateImage = () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 mt-6">
                                     {result.images.map((imageData, idx) => (
-                                        <div
-                                            key={idx}
-                                            className="flex flex-col justify-between items-center w-full ml-16"
-                                        >
+                                        <div key={idx} className="flex flex-col justify-between items-center w-full">
                                             <div
                                                 className="overflow-hidden"
                                                 style={{ width: '250px', height: '250px' }}
