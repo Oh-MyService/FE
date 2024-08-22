@@ -129,7 +129,12 @@ const CreateImage = () => {
     const [inputText, setInputText] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [isAddModalOpen, setAddModalOpen] = useState(false);
-    const openAddModal = () => setAddModalOpen(true);
+    const [selectedResultId, setSelectedResultId] = useState(null); // 추가된 부분
+
+    const openAddModal = (resultId) => {
+        setSelectedResultId(resultId);
+        setAddModalOpen(true);
+    };
     const closeAddModal = () => setAddModalOpen(false);
 
     const [results, setResults] = useState([]);
@@ -514,7 +519,7 @@ const CreateImage = () => {
                         <div role="status" className="flex justify-center items-center h-full">
                             <svg
                                 aria-hidden="true"
-                                className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                className="w-8 h-8 text-gray-200 animate-spin fill-blue-600"
                                 viewBox="0 0 100 101"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -556,7 +561,7 @@ const CreateImage = () => {
                                             <div className="flex justify-between items-center w-[250px] mt-2 font-['pretendard-medium'] text-black">
                                                 <p className="text-left ">{result.created_at}</p>
                                                 <div className="flex items-center space-x-2 ">
-                                                    <button onClick={openAddModal}>
+                                                    <button onClick={() => openAddModal(result.id)}>
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             fill="none"
@@ -597,7 +602,9 @@ const CreateImage = () => {
                                         </div>
                                     ))}
                                 </div>
-                                {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} />}
+                                {isAddModalOpen && (
+                                    <CollectionAddModal onClose={closeAddModal} resultId={selectedResultId} />
+                                )}
                             </div>
                         ))
                     )}
