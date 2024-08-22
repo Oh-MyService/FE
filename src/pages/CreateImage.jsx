@@ -131,8 +131,8 @@ const CreateImage = () => {
     const [isAddModalOpen, setAddModalOpen] = useState(false);
     const [selectedResultId, setSelectedResultId] = useState(null);
 
-    const openAddModal = (resultId) => {
-        setSelectedResultId(resultId);
+    const openAddModal = (imageId) => {
+        setSelectedResultId(imageId);
         setAddModalOpen(true);
     };
     const closeAddModal = () => setAddModalOpen(false);
@@ -245,7 +245,7 @@ const CreateImage = () => {
                             result.id === promptId
                                 ? {
                                       ...result,
-                                      images: [...result.images, ...data.results.map((r) => r.image_data)],
+                                      images: [...result.images, ...data.results], // **수정된 부분: results에 id와 image_data 모두 저장**
                                       created_at: formatDateWithoutDot(new Date(result.created_at)),
                                   }
                                 : result
@@ -254,12 +254,12 @@ const CreateImage = () => {
                 }
 
                 if (data.results.length >= 4) {
-                    setIsLoading(false); // Set loading state to false when images are fetched
+                    setIsLoading(false); // 이미지 로딩 완료 시 로딩 상태 해제
                     clearInterval(interval);
                 }
             } catch (error) {
                 console.error('Error occurred while fetching the image:', error);
-                setIsLoading(false); // Set loading state to false in case of error
+                setIsLoading(false); // 오류 발생 시 로딩 상태 해제
                 clearInterval(interval);
             }
         }, 10000);
@@ -546,22 +546,22 @@ const CreateImage = () => {
                                     <Bubble text={result.content} />
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 mt-6">
-                                    {result.images.map((imageData, idx) => (
+                                    {result.images.map((imageResult, idx) => (
                                         <div key={idx} className="flex flex-col justify-between items-center w-full">
                                             <div
                                                 className="overflow-hidden"
                                                 style={{ width: '250px', height: '250px' }}
                                             >
                                                 <img
-                                                    src={`data:image/jpeg;base64,${imageData}`}
+                                                    src={`data:image/jpeg;base64,${imageResult.image_data}`}
                                                     alt="Generated Image"
                                                     className="w-full h-full object-cover"
                                                 />
                                             </div>
                                             <div className="flex justify-between items-center w-[250px] mt-2 font-['pretendard-medium'] text-black">
-                                                <p className="text-left ">{result.created_at}</p>
-                                                <div className="flex items-center space-x-2 ">
-                                                    <button onClick={() => openAddModal(result.id)}>
+                                                <p className="text-left">{result.created_at}</p>
+                                                <div className="flex items-center space-x-2">
+                                                    <button onClick={() => openAddModal(imageResult.id)}>
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             fill="none"
@@ -579,7 +579,10 @@ const CreateImage = () => {
                                                     </button>
                                                     <button
                                                         onClick={() =>
-                                                            handleSaveImage(imageData, result.id + '_' + idx)
+                                                            handleSaveImage(
+                                                                imageResult.image_data,
+                                                                imageResult.id + '_' + idx
+                                                            )
                                                         }
                                                     >
                                                         <svg
