@@ -129,7 +129,7 @@ const CreateImage = () => {
     const [inputText, setInputText] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [isAddModalOpen, setAddModalOpen] = useState(false);
-    const [selectedResultId, setSelectedResultId] = useState(null); // 추가된 부분
+    const [selectedResultId, setSelectedResultId] = useState(null);
 
     const openAddModal = (resultId) => {
         setSelectedResultId(resultId);
