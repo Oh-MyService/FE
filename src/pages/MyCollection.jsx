@@ -50,7 +50,7 @@ const MyCollection = () => {
               return {
                 id: collection.collection_id,
                 name: collection.collection_name,
-                images: imagesData.images,
+                images: imagesData.images.reverse(),
                 createdAt: collection.created_at,
               };
             })
