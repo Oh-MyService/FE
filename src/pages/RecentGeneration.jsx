@@ -28,8 +28,10 @@ const RecentGeneration = () => {
                 });
                 if (response.ok) {
                     let results = await response.json();
-                    // 결과를 역순으로 정렬하여 최신 생성 이미지가 앞에 오도록 설정
-                    const sortedItems = results.reverse();
+                    // `created_at` 또는 `id`를 기준으로 정렬한 후 역순으로 변경
+                    const sortedItems = results
+                        .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+                        .reverse();
                     setItems(sortedItems);
                 } else {
                     throw new Error('Failed to fetch images');
