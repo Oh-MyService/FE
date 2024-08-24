@@ -6,14 +6,15 @@ const Mypage = () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
 
-  const goToRecentGeneration = () => navigate("/recent-generation");
-  const goToCollection = () => navigate("/my-collection");
-
+  
   const [recentImages, setRecentImages] = useState([]);
   const [collections, setCollections] = useState([]);
+
+  // 로딩 상태 관리
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // 최근 생성 이미지 불러오기
     const fetchRecentImages = async () => {
       try {
         let response = await fetch(
@@ -28,7 +29,7 @@ const Mypage = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          const groupedImages = groupItems(data, 4); // 그룹을 만든 후 역순 정렬
+          const groupedImages = groupItems(data, 4); // 그룹을 만든 후 역순 정렬(최신순)
           setRecentImages(groupedImages.slice(0, 5)); // 5개의 이미지만 표시
         } else {
           console.error("Failed to fetch recent images");
@@ -38,6 +39,7 @@ const Mypage = () => {
       }
     };
 
+    // 컬렉션  정보 불러오기
     const fetchCollections = async () => {
       try {
         const response = await fetch(
@@ -53,6 +55,7 @@ const Mypage = () => {
 
         if (response.ok) {
           const data = await response.json();
+          // 컬렉션에 저장된 이미지 불러오기
           const collectionsData = await Promise.all(
             data.collection_list.map(async (collection) => {
               const imagesResponse = await fetch(
@@ -73,17 +76,17 @@ const Mypage = () => {
               return {
                 id: collection.collection_id,
                 name: collection.collection_name,
-                images: imagesData.images.reverse(),
+                images: imagesData.images.reverse(), // 역순 정렬(최신순)
                 createdAt: collection.created_at,
               };
             })
           );
 
+          // 최신순
           collectionsData.sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
-
-          setCollections(collectionsData.slice(0, 5));
+          setCollections(collectionsData.slice(0, 5)); // 5개의 컬렉션만 표시
         } else {
           console.error("Failed to fetch collections:", response.statusText);
         }
@@ -100,16 +103,17 @@ const Mypage = () => {
     fetchData();
   }, [token, userId]);
 
-  // 그룹을 만들어서 역순으로 정렬하는 함수
+  // 그룹을 만들어서 역순으로 정렬
   const groupItems = (items, groupSize) => {
     const groups = [];
     for (let i = 0; i < items.length; i += groupSize) {
       const group = items.slice(i, i + groupSize).sort((a, b) => a.id - b.id);
       groups.push(group);
     }
-    return groups.reverse().flat(); // 그룹 전체를 역순으로 정렬 후 평탄화
+    return groups.reverse().flat();
   };
 
+  // 로딩 스피너
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -141,7 +145,7 @@ const Mypage = () => {
         <div className="flex items-center">
           <button
             className="bg-transparent p-2 flex items-center"
-            onClick={goToRecentGeneration}
+            onClick={() => navigate("/recent-generation")}
           >
             <h2 className="text-3xl font-['pretendard-extrabold'] mb-3">
               최근 생성 패턴
@@ -198,7 +202,7 @@ const Mypage = () => {
         <div className="flex items-center">
           <button
             className="bg-transparent p-2 flex items-center"
-            onClick={goToCollection}
+            onClick={() => navigate("/my-collection")}
           >
             <h2 className="text-3xl font-['pretendard-extrabold'] mb-3 mt-4">
               아카이브

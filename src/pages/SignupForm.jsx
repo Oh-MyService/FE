@@ -15,11 +15,13 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
       const password = e.target.registerPassword.value;
       const confirmPassword = e.target.confirmPassword.value;
 
+      // 입력한 비밀번호가 동일한 지 확인
       if (password !== confirmPassword) {
         setPasswordErrorMessage("비밀번호가 일치하지 않습니다.");
         return;
       }
 
+      // 회원가입 유저 정보 보내기
       try {
         const response = await fetch("http://43.202.57.225:28282/register", {
           method: "POST",
@@ -32,7 +34,8 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
         const data = await response.json();
         if (response.ok) {
           onRegisterSuccess();
-        } else if (data.detail === "Username already registered") {
+        } // 중복 아아디 처리
+        else if (data.detail === "Username already registered") {
           setUsernameErrorMessage("중복된 아이디입니다.");
         } else {
           console.error("Registration failed: ", data);

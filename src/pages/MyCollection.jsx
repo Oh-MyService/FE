@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomModal from "../components/NewCollectionModal";
+import NewCollectionModal from "../components/NewCollectionModal";
 import DeleteModal from "../components/DeleteModal";
 
 const MyCollection = () => {
   const navigate = useNavigate();
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedCollectionId, setSelectedCollectionId] = useState(null);
-  const [collections, setCollections] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("user_id");
 
+  // 컬렉션 상태 관리
+  const [collections, setCollections] = useState([]);
+  const [selectedCollectionId, setSelectedCollectionId] = useState(null);
+
+  // 모달 상태 관리
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  // 로딩 상태 관리
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 컬렉션 정보 불러오기
   useEffect(() => {
     const fetchCollections = async (userId) => {
       try {
@@ -50,7 +56,7 @@ const MyCollection = () => {
               return {
                 id: collection.collection_id,
                 name: collection.collection_name,
-                images: imagesData.images.reverse(),
+                images: imagesData.images.reverse(), // 최신순
                 createdAt: collection.created_at,
               };
             })
@@ -74,10 +80,7 @@ const MyCollection = () => {
     fetchCollections(userId);
   }, [userId, token]);
 
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
-
-  // id 사용
+  // 컬렉션 삭제
   const openDeleteModal = (id) => {
     setSelectedCollectionId(id);
     setDeleteModalOpen(true);
@@ -112,6 +115,10 @@ const MyCollection = () => {
     }
   };
 
+  // 새 컬렉션 생성
+  const openCreateModal = () => setCreateModalOpen(true);
+  const closeCreateModal = () => setCreateModalOpen(false);
+
   const handleCreateCollection = async (collectionName) => {
     const newCollection = {
       name: collectionName,
@@ -137,7 +144,7 @@ const MyCollection = () => {
         const data = await response.json();
         console.log("Collection created:", data);
         setCollections([newCollection, ...collections]);
-        closeModal();
+        closeCreateModal();
       } else {
         console.error("Failed to create collection:", response.statusText);
       }
@@ -146,6 +153,7 @@ const MyCollection = () => {
     }
   };
 
+  // 컬렉션 상세보기
   const handleCollectionClick = (collection) => {
     navigate(`/collection/${collection.id}`, { state: { collection } });
   };
@@ -180,7 +188,7 @@ const MyCollection = () => {
             strokeWidth="2.5"
             stroke="currentColor"
             className="w-8 h-8 cursor-pointer"
-            onClick={openModal}
+            onClick={openCreateModal}
           >
             <path
               strokeLinecap="round"
@@ -217,7 +225,7 @@ const MyCollection = () => {
               지금 아카이브 해보세요!
             </p>
             <button
-              onClick={openModal}
+              onClick={openCreateModal}
               className="px-6 py-2 border bg-[#3A57A7] hover:bg-[#213261] text-white rounded-full font-['pretendard-medium'] text-xl mt-2"
             >
               아카이브 생성하기
@@ -289,9 +297,9 @@ const MyCollection = () => {
             ))}
           </div>
         )}
-        <CustomModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
+        <NewCollectionModal
+          isOpen={isCreateModalOpen}
+          onClose={closeCreateModal}
           onCreate={handleCreateCollection}
         />
         <DeleteModal
