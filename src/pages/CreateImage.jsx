@@ -415,7 +415,8 @@ const CreateImage = () => {
                   <input
                     type="number"
                     className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
-                    defaultValue={512}
+                    value={width}
+                    onChange={(e) => setWidth(Number(e.target.value))}
                   />
                   <label className="text-lg font-['pretendard-bold'] mr-2">
                     세로
@@ -423,7 +424,8 @@ const CreateImage = () => {
                   <input
                     type="number"
                     className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-6 font-['pretendard-regular']"
-                    defaultValue={512}
+                    value={height}
+                    onChange={(e) => setHeight(Number(e.target.value))}
                   />
                   <label className="text-lg font-['pretendard-bold'] mr-2">
                     배경색
@@ -432,6 +434,8 @@ const CreateImage = () => {
                     type="text"
                     className="w-32 p-2 focus:outline-[#8194EC] rounded-lg font-['pretendard-regular']"
                     placeholder="ex) white"
+                    value={backgroundColor}
+                    onChange={(e) => setBackgroundColor(e.target.value)}
                   />
                 </div>
                 <div className="flex items-center">
@@ -594,7 +598,8 @@ const CreateImage = () => {
                   <input
                     type="number"
                     className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
-                    defaultValue={0}
+                    value={seed}
+                    onChange={(e) => setSeed(Number(e.target.value))}
                   />
                 </div>
               </div>
