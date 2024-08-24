@@ -142,7 +142,6 @@ const MyCollection = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Collection created:", data);
         setCollections([newCollection, ...collections]);
         closeCreateModal();
       } else {
