@@ -148,7 +148,7 @@ const CreateImage = () => {
   const [samplingSteps, setSamplingSteps] = useState(50);
   const [width, setWidth] = useState(512);
   const [height, setHeight] = useState(512);
-  const [backgroundColor, setBackgroundColor] = useState("white"); 
+  const [backgroundColor, setBackgroundColor] = useState("white");
   const [seed, setSeed] = useState(0);
 
   // 기타 상태 관리
@@ -236,12 +236,12 @@ const CreateImage = () => {
     try {
       const formData = new FormData();
       formData.append("content", inputText);
-      formData.append("width", width);
-      formData.append("height", height);
-      formData.append("background_color", backgroundColor);
-      formData.append("cfg_scale", cfgScale);
-      formData.append("sampling_steps", samplingSteps);
-      formData.append("seed", seed);
+      formData.append("width", width || 512); // 기본값 512
+      formData.append("height", height || 512); // 기본값 512
+      formData.append("background_color", backgroundColor || "white"); // 기본값 white
+      formData.append("cfg_scale", cfgScale || 10); // 기본값 10
+      formData.append("sampling_steps", samplingSteps || 50); // 기본값 50
+      formData.append("seed", seed || 0); /// 기본값 0
 
       let response = await fetch("http://43.202.57.225:28282/api/prompts", {
         method: "POST",
@@ -431,7 +431,7 @@ const CreateImage = () => {
                   <input
                     type="text"
                     className="w-32 p-2 focus:outline-[#8194EC] rounded-lg font-['pretendard-regular']"
-                    placeholder="ex) red"
+                    placeholder="ex) white"
                   />
                 </div>
                 <div className="flex items-center">
