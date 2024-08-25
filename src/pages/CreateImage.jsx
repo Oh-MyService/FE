@@ -597,7 +597,7 @@ const CreateImage = () => {
 
             {/* 생성 결과 섹션 */}
             <div className="flex flex-col w-full lg:w-1/2 px-4 mt-10 lg:mt-0 h-auto lg:h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg">
-                <div className="h-[100px] lg:h-[50px]"></div> {/* 추가된 공백을 위한 div */}
+                <div className="h-[65px]"></div> {/* 추가된 공백을 위한 div */}
                 {isLoading ? (
                     <div role="status" className="flex justify-center items-center h-full">
                         {/* 로딩 중 애니메이션 */}
