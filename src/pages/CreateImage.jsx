@@ -385,11 +385,11 @@ const CreateImage = () => {
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
 
     return (
-        <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
-            <div className="flex w-[80%] justify-center px-4 mt-10">
-                <div className="flex flex-col w-[50%] mx-2 min-w-[650px]">
+        <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
+            <div className="flex flex-col w-full md:w-1/2 lg:w-2/5 px-4 mt-10">
+                <div className="flex flex-col w-full">
                     <div className="flex flex-col justify-start items-start">
-                        <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
+                        <span className="block text-2xl md:text-3xl font-['pretendard-extrabold'] text-black mb-5">
                             상상 속 패턴을 지금 만들어보세요!
                         </span>
                         <div className="relative w-full">
@@ -398,13 +398,13 @@ const CreateImage = () => {
                                 value={inputText}
                                 onChange={(e) => setInputText(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                className="appearance-none block w-full h-56 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 leading-tight focus:outline-none border-3 border-[#3A57A7] mb-0"
+                                className="appearance-none block w-full h-32 md:h-56 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 leading-tight focus:outline-none border-3 border-[#3A57A7] mb-0"
                                 placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                             />
                             <div className="absolute bottom-0 right-0 flex w-full justify-between rounded-b-lg rounded-t-lg">
                                 <button
                                     type="submit"
-                                    className="w-full bg-[#3A57A7] hover:bg-blue-900 text-white font-['pretendard-bold'] text-2xl py-4 rounded-b-lg"
+                                    className="w-full bg-[#3A57A7] hover:bg-blue-900 text-white font-['pretendard-bold'] text-lg md:text-2xl py-4 rounded-b-lg"
                                     onClick={handleSubmit}
                                 >
                                     생성하기
@@ -414,28 +414,28 @@ const CreateImage = () => {
                     </div>
                     <div className="w-full h-auto mt-8 rounded-lg border-3 border-[#8194EC] p-4">
                         <div className="relative w-full">
-                            <span className="block text-2xl font-['pretendard-bold'] text-left text-black mb-3">
+                            <span className="block text-lg md:text-2xl font-['pretendard-bold'] text-left text-black mb-3">
                                 고급 설정
                             </span>
                             <div className="grid gap-4">
-                                <div className="flex items-center">
+                                <div className="flex flex-col md:flex-row items-center">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">가로</label>
                                     <input
                                         type="number"
-                                        className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
+                                        className="w-full md:w-20 p-2 focus:outline-[#8194EC] rounded-lg mb-2 md:mb-0 md:mr-2 font-['pretendard-regular']"
                                         value={width}
                                         onChange={(e) => setWidth(Number(e.target.value))}
                                     />
                                     <label className="text-lg font-['pretendard-bold'] mr-2">세로</label>
                                     <input
                                         type="number"
-                                        className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-6 font-['pretendard-regular']"
+                                        className="w-full md:w-20 p-2 focus:outline-[#8194EC] rounded-lg mb-2 md:mb-0 md:mr-6 font-['pretendard-regular']"
                                         value={height}
                                         onChange={(e) => setHeight(Number(e.target.value))}
                                     />
                                     <label className="text-lg font-['pretendard-bold'] mr-2">배경색</label>
                                     <select
-                                        className="w-32 p-2 focus:outline-[#8194EC] rounded-lg font-['pretendard-regular']"
+                                        className="w-full md:w-32 p-2 focus:outline-[#8194EC] rounded-lg font-['pretendard-regular']"
                                         value={backgroundColor}
                                         onChange={(e) => setBackgroundColor(e.target.value)}
                                     >
@@ -449,7 +449,7 @@ const CreateImage = () => {
                                 <div className="flex items-center">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">질감</label>
                                 </div>
-                                <div className="flex items-center">
+                                <div className="flex items-center flex-wrap">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">반복 방향 및 비율</label>
                                     <button
                                         onClick={() => handlePrevPage(setRepeatDirectionPage)}
@@ -503,7 +503,7 @@ const CreateImage = () => {
                                         </svg>
                                     </button>
                                 </div>
-                                <div className="flex items-center">
+                                <div className="flex items-center flex-wrap">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">분위기</label>
                                     <button
                                         onClick={() => handlePrevPage(setMoodPage)}
@@ -586,7 +586,7 @@ const CreateImage = () => {
                                     <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
                                     <input
                                         type="number"
-                                        className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
+                                        className="w-full md:w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
                                         value={seed}
                                         onChange={(e) => setSeed(Number(e.target.value))}
                                     />
@@ -597,7 +597,7 @@ const CreateImage = () => {
                 </div>
 
                 {/* 생성 결과 섹션 */}
-                <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
+                <div className="flex flex-col w-full md:w-1/2 lg:w-3/5 mx-2 mt-14 h-auto md:h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg">
                     {isLoading ? (
                         <div role="status" className="flex justify-center items-center h-full">
                             {/* 로딩 중 애니메이션 */}
@@ -630,12 +630,17 @@ const CreateImage = () => {
                                     <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
                                     <Bubble text={result.content} />
                                 </div>
-                                <div className="grid grid-cols-2 gap-2 mt-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
                                     {result.images.map((imageResult, idx) => (
                                         <div key={idx} className="flex flex-col justify-between items-center w-full">
                                             <div
                                                 className="overflow-hidden"
-                                                style={{ width: '250px', height: '250px' }}
+                                                style={{
+                                                    width: '100%',
+                                                    height: 'auto',
+                                                    maxWidth: '250px',
+                                                    maxHeight: '250px',
+                                                }}
                                             >
                                                 <img
                                                     src={`data:image/jpeg;base64,${imageResult.image_data}`}
@@ -643,7 +648,7 @@ const CreateImage = () => {
                                                     className="w-full h-full object-cover"
                                                 />
                                             </div>
-                                            <div className="flex justify-between items-center w-[250px] mt-2 font-['pretendard-medium'] text-gray-600">
+                                            <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
                                                 <p className="text-left">{result.created_at}</p>
                                                 <div className="flex items-center space-x-2">
                                                     {/* 이미지 추가 모달 열기 버튼 */}
