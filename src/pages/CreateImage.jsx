@@ -385,8 +385,8 @@ const CreateImage = () => {
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
-            <div className="flex flex-col w-full lg:w-1/2 px-4 mt-10">
+        <div className="flex flex-col lg:flex-row min-h-screen bg-[#F2F2F2] pt-10 lg:pt-20 pb-10 w-full justify-center">
+            <div className="flex flex-col w-full lg:w-1/2 px-4 mt-10 lg:mt-0">
                 <div className="flex flex-col justify-start items-start">
                     <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
                         상상 속 패턴을 지금 만들어보세요!
@@ -596,7 +596,7 @@ const CreateImage = () => {
             </div>
 
             {/* 생성 결과 섹션 */}
-            <div className="flex flex-col w-full lg:w-1/2 mx-2 mt-10 lg:mt-0 h-auto lg:h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg">
+            <div className="flex flex-col w-full lg:w-1/2 px-4 mt-10 lg:mt-0 h-auto lg:h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg">
                 {isLoading ? (
                     <div role="status" className="flex justify-center items-center h-full">
                         {/* 로딩 중 애니메이션 */}
