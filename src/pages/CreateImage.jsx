@@ -648,7 +648,7 @@ const CreateImage = () => {
                                                     className="w-full h-full object-cover"
                                                 />
                                             </div>
-                                            <div className="flex items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
+                                            <div className="flex items-center w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
                                                 <p className="text-left">{result.created_at}</p>
                                                 <div className="flex-grow"></div>
                                                 <div className="flex items-center space-x-2">
