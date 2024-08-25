@@ -164,6 +164,7 @@ const CreateImage = () => {
     const [moodPage, setMoodPage] = useState(0);
     const [selectedRepeatDirection, setSelectedRepeatDirection] = useState(null);
     const [selectedMood, setSelectedMood] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(''); // 배경색 상태 추가
 
     // 반복 방향 및 분위기 옵션
     const repeatDirectionOptions = ['격자', '대각선', '원형', '수평', '수직', '물결', '물방울', '다이아몬드'];
@@ -182,6 +183,16 @@ const CreateImage = () => {
         '레트로',
     ];
     const optionsPerPage = 5; // 한 페이지당 옵션 수
+
+    // 색상 옵션
+    const colorOptions = {
+        neutral: ['White', 'Ivory', 'Light Gray', 'Gray', 'Dark Gray', 'Beige', 'Black'],
+        redPink: ['Deep Red', 'Red', 'Pink', 'Light Pink', 'Pale Pink', 'Burgundy'],
+        orangeYellow: ['Orange', 'Light Yellow', 'Yellow'],
+        green: ['Light Green', 'Mint', 'Green', 'Olive Green', 'Khaki', 'Dark Green'],
+        bluePurple: ['Sky Blue', 'Blue', 'Navy', 'Lavender', 'Purple'],
+        brown: ['Brown', 'Camel'],
+    };
 
     // 토큰 만료 여부 확인
     const isTokenExpired = (token) => {
@@ -378,11 +389,55 @@ const CreateImage = () => {
                                         defaultValue={512}
                                     />
                                     <label className="text-lg font-['pretendard-bold'] mr-2">배경색</label>
-                                    <input
-                                        type="text"
+                                    <select
+                                        value={selectedColor}
+                                        onChange={(e) => setSelectedColor(e.target.value)}
                                         className="w-32 p-2 focus:outline-[#8194EC] rounded-lg font-['pretendard-regular']"
-                                        placeholder="ex) red"
-                                    />
+                                    >
+                                        <option value="">Select Color</option>
+                                        <optgroup label="Neutral Colors">
+                                            {colorOptions.neutral.map((color, index) => (
+                                                <option key={index} value={color}>
+                                                    {color}
+                                                </option>
+                                            ))}
+                                        </optgroup>
+                                        <optgroup label="Red and Pink Tones">
+                                            {colorOptions.redPink.map((color, index) => (
+                                                <option key={index} value={color}>
+                                                    {color}
+                                                </option>
+                                            ))}
+                                        </optgroup>
+                                        <optgroup label="Orange and Yellow Tones">
+                                            {colorOptions.orangeYellow.map((color, index) => (
+                                                <option key={index} value={color}>
+                                                    {color}
+                                                </option>
+                                            ))}
+                                        </optgroup>
+                                        <optgroup label="Green Tones">
+                                            {colorOptions.green.map((color, index) => (
+                                                <option key={index} value={color}>
+                                                    {color}
+                                                </option>
+                                            ))}
+                                        </optgroup>
+                                        <optgroup label="Blue and Purple Tones">
+                                            {colorOptions.bluePurple.map((color, index) => (
+                                                <option key={index} value={color}>
+                                                    {color}
+                                                </option>
+                                            ))}
+                                        </optgroup>
+                                        <optgroup label="Brown Tones">
+                                            {colorOptions.brown.map((color, index) => (
+                                                <option key={index} value={color}>
+                                                    {color}
+                                                </option>
+                                            ))}
+                                        </optgroup>
+                                    </select>
                                 </div>
                                 <div className="flex items-center">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">질감</label>
