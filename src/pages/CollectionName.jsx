@@ -8,6 +8,7 @@ const CollectionName = () => {
     const { collectionId } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
 
     // 컬렉션 및 이미지 상태 관리
     const [collection, setCollection] = useState(location.state.collection);
@@ -21,8 +22,6 @@ const CollectionName = () => {
     const [addCollectionId, setAddCollectionId] = useState(null);
     const [editIndex, setEditIndex] = useState(null);
     const [deleteId, setDeleteId] = useState(null);
-
-    const token = localStorage.getItem('token'); // 인증 토큰을 로컬 스토리지에서 가져옴
 
     // 이미지 전체 화면
     const showFullScreenImage = (imageUrl) => {

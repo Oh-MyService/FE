@@ -5,17 +5,21 @@ import CollectionAddModal from '../components/CollectionAddModal';
 
 const RecentGeneration = () => {
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('user_id');
+
+    // 모달 및 기타 상태 관리
     const [items, setItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [isAddModalOpen, setAddModalOpen] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
     const [addCollectionId, setAddCollectionId] = useState(null);
     const [fullScreenImage, setFullScreenImage] = useState(null);
 
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('user_id');
+    // 로딩 상태 관리
+    const [isLoading, setIsLoading] = useState(true);
 
+    // 최근 생성 이미지 불러오기
     useEffect(() => {
         const fetchAllImages = async (userId) => {
             try {
@@ -28,7 +32,7 @@ const RecentGeneration = () => {
                 });
                 if (response.ok) {
                     let results = await response.json();
-                    // 그룹을 만들어서 역순으로 정렬
+                    // 그룹을 만들어서 역순으로 정렬(최신순)
                     const groupedItems = groupItems(results, 4);
                     setItems(groupedItems);
                 } else {
@@ -49,20 +53,18 @@ const RecentGeneration = () => {
         }
     }, [userId, token]);
 
+    // id로 4개씩 그룹화
     const groupItems = (items, groupSize) => {
         const groups = [];
-
-        // 그룹으로 나누기
         for (let i = 0; i < items.length; i += groupSize) {
-            // ID를 기준으로 정렬하여 그룹 내 순서를 맞춘 후 그룹화
             const group = items.slice(i, i + groupSize).sort((a, b) => a.id - b.id);
             groups.push(group);
         }
 
-        // 그룹 전체를 역순으로 정렬하고 평탄화
         return groups.reverse().flat();
     };
 
+    // 이미지 클릭 시 전체 화면
     const showFullScreenImage = (imageUrl) => {
         setFullScreenImage(imageUrl);
     };
@@ -71,6 +73,7 @@ const RecentGeneration = () => {
         setFullScreenImage(null);
     };
 
+    // 이미지 삭제
     const openDeleteModal = (id) => {
         setDeleteId(id);
         setDeleteModalOpen(true);
@@ -100,6 +103,7 @@ const RecentGeneration = () => {
         }
     };
 
+    // 이미지 컬렉션에 추가
     const openAddModal = (id) => {
         setAddCollectionId(id);
         setAddModalOpen(true);
@@ -107,6 +111,7 @@ const RecentGeneration = () => {
 
     const closeAddModal = () => setAddModalOpen(false);
 
+    // 로컬에 이미지 저장하기
     const handleSaveImage = (imageData, imageId) => {
         const byteCharacters = atob(imageData);
         const byteNumbers = new Array(byteCharacters.length);
@@ -124,6 +129,7 @@ const RecentGeneration = () => {
         URL.revokeObjectURL(link.href);
     };
 
+    // 최신순 정렬을 위한 그룹화
     const groupItemsByDate = (items) => {
         const groupedItems = {};
         items.forEach((item) => {

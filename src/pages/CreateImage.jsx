@@ -133,26 +133,41 @@ const applySliderStyles = (element) => {
 };
 
 const CreateImage = () => {
-    const [inputText, setInputText] = useState('');
-    const [alertMessage, setAlertMessage] = useState('');
-    const [isAddModalOpen, setAddModalOpen] = useState(false);
-    const [selectedResultId, setSelectedResultId] = useState(null);
+    const token = localStorage.getItem('token'); // 토큰 가져오기
 
+    // 프롬프트 상태 관리
+    const [inputText, setInputText] = useState('');
+
+    // 고급 옵션 상태 관리
+    const [cfgScale, setCfgScale] = useState(10);
+    const [samplingSteps, setSamplingSteps] = useState(50);
+    const [width, setWidth] = useState(512);
+    const [height, setHeight] = useState(512);
+    const [backgroundColor, setBackgroundColor] = useState('white');
+    const [seed, setSeed] = useState(0);
+
+    // 기타 상태 관리
+    const [alertMessage, setAlertMessage] = useState('');
+    const [selectedResultId, setSelectedResultId] = useState(null);
+    const [results, setResults] = useState([]);
+
+    // 로딩 상태 관리
+    const [isLoading, setIsLoading] = useState(false);
+
+    // 모달 상태 관리
+    const [isAddModalOpen, setAddModalOpen] = useState(false);
+
+    // 슬라이더 상태 관리
+    const sliderRef1 = useRef(null);
+    const sliderRef2 = useRef(null);
+
+    // 컬렉션 추가 모달
     const openAddModal = (imageId) => {
         setSelectedResultId(imageId);
         setAddModalOpen(true);
     };
+
     const closeAddModal = () => setAddModalOpen(false);
-
-    const [results, setResults] = useState([]);
-    const [cfgScale, setCfgScale] = useState(10);
-    const [samplingSteps, setSamplingSteps] = useState(50);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const sliderRef1 = useRef(null);
-    const sliderRef2 = useRef(null);
-
-    const token = localStorage.getItem('token'); // 토큰 가져오기
 
     // 슬라이더 스타일 초기화
     useEffect(() => {
@@ -207,6 +222,12 @@ const CreateImage = () => {
         try {
             const formData = new FormData();
             formData.append('content', inputText);
+            formData.append('width', width || 512); // 기본값 512
+            formData.append('height', height || 512); // 기본값 512
+            formData.append('background_color', backgroundColor || 'white'); // 기본값 white
+            formData.append('cfg_scale', cfgScale || 10); // 기본값 10
+            formData.append('sampling_steps', samplingSteps || 50); // 기본값 50
+            formData.append('seed', seed || 0); /// 기본값 0
 
             let response = await fetch('http://43.202.57.225:28282/api/prompts', {
                 method: 'POST',
@@ -369,19 +390,23 @@ const CreateImage = () => {
                                     <input
                                         type="number"
                                         className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
-                                        defaultValue={512}
+                                        value={width}
+                                        onChange={(e) => setWidth(Number(e.target.value))}
                                     />
                                     <label className="text-lg font-['pretendard-bold'] mr-2">세로</label>
                                     <input
                                         type="number"
                                         className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-6 font-['pretendard-regular']"
-                                        defaultValue={512}
+                                        value={height}
+                                        onChange={(e) => setHeight(Number(e.target.value))}
                                     />
                                     <label className="text-lg font-['pretendard-bold'] mr-2">배경색</label>
                                     <input
                                         type="text"
                                         className="w-32 p-2 focus:outline-[#8194EC] rounded-lg font-['pretendard-regular']"
-                                        placeholder="ex) red"
+                                        placeholder="ex) white"
+                                        value={backgroundColor}
+                                        onChange={(e) => setBackgroundColor(e.target.value)}
                                     />
                                 </div>
                                 <div className="flex items-center">
@@ -525,7 +550,8 @@ const CreateImage = () => {
                                     <input
                                         type="number"
                                         className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
-                                        defaultValue={0}
+                                        value={seed}
+                                        onChange={(e) => setSeed(Number(e.target.value))}
                                     />
                                 </div>
                             </div>
