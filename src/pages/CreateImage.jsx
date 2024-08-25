@@ -386,7 +386,7 @@ const CreateImage = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full">
-            <div className="flex w-full max-w-[1200px] mx-auto px-4 justify-center">
+            <div className="flex w-full max-w-[1400px] mx-auto px-4 justify-center">
                 <div className="flex flex-col w-1/2 px-4 mt-10">
                     <div className="flex flex-col justify-start items-start">
                         <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
