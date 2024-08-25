@@ -68,6 +68,70 @@ const Bubble = ({ text }) => {
     );
 };
 
+// 슬라이더 스타일 설정
+const applySliderStyles = (element) => {
+    element.style.webkitAppearance = 'none';
+    element.style.width = '100%';
+    element.style.height = '10px';
+    element.style.background = '#dcdcdc';
+    element.style.outline = 'none';
+    element.style.borderRadius = '5px';
+    element.style.overflow = 'visible';
+    element.style.appearance = 'none';
+
+    // 슬라이더 배경 색상 업데이트
+    const setSliderBackground = (value) => {
+        const percentage = ((value - element.min) / (element.max - element.min)) * 100;
+        element.style.background = `linear-gradient(to right, #8194EC 0%, #8194EC ${percentage}%, #dcdcdc ${percentage}%, #dcdcdc 100%)`;
+    };
+
+    setSliderBackground(element.value);
+
+    element.addEventListener('input', (e) => {
+        setSliderBackground(e.target.value);
+    });
+
+    // 슬라이더 thumb 스타일 추가
+    const thumbStyles = document.createElement('style');
+    thumbStyles.innerHTML = `
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #3A57A7;
+      background: #ffffff;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      top: 50%;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border: 3px solid #3A57A7;
+      background: #ffffff;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      top: 50%;
+    }
+
+    input[type="range"]::-ms-thumb {
+      width: 20px;
+      height: 20px;
+      border: 3px solid #3A57A7;
+      background: #ffffff;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      top: 50%;
+    }
+  `;
+    document.head.appendChild(thumbStyles);
+};
+
 const CreateImage = () => {
     const token = localStorage.getItem('token'); // 토큰 가져오기
 
@@ -79,7 +143,7 @@ const CreateImage = () => {
     const [samplingSteps, setSamplingSteps] = useState(50);
     const [width, setWidth] = useState(512);
     const [height, setHeight] = useState(512);
-    const [backgroundColor, setBackgroundColor] = useState('White');
+    const [backgroundColor, setBackgroundColor] = useState('white');
     const [seed, setSeed] = useState(0);
 
     // 기타 상태 관리
@@ -97,6 +161,44 @@ const CreateImage = () => {
     const sliderRef1 = useRef(null);
     const sliderRef2 = useRef(null);
 
+    // 컬렉션 추가 모달
+    const openAddModal = (imageId) => {
+        setSelectedResultId(imageId);
+        setAddModalOpen(true);
+    };
+
+    const closeAddModal = () => setAddModalOpen(false);
+
+    // 슬라이더 스타일 초기화
+    useEffect(() => {
+        if (sliderRef1.current) applySliderStyles(sliderRef1.current);
+        if (sliderRef2.current) applySliderStyles(sliderRef2.current);
+    }, []);
+
+    const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
+    const [moodPage, setMoodPage] = useState(0);
+    const [selectedRepeatDirection, setSelectedRepeatDirection] = useState(null);
+    const [selectedMood, setSelectedMood] = useState(null);
+
+    // 반복 방향 및 분위기 옵션
+    const repeatDirectionOptions = ['격자', '대각선', '원형', '수평', '수직', '물결', '물방울', '다이아몬드'];
+    const moodOptions = [
+        '카툰',
+        '모던',
+        '아방가르드',
+        '빈티지',
+        '보헤미안',
+        '미니멀리스트',
+        '로맨틱',
+        '펑크',
+        '그래픽',
+        '에스닉',
+        '내추럴',
+        '레트로',
+    ];
+    const optionsPerPage = 5; // 한 페이지당 옵션 수
+
+    // 컬러 옵션
     const colorOptions = [
         'White',
         'Ivory',
@@ -129,12 +231,11 @@ const CreateImage = () => {
         'Beige',
     ];
 
-    const openAddModal = (imageId) => {
-        setSelectedResultId(imageId);
-        setAddModalOpen(true);
+    // 토큰 만료 여부 확인
+    const isTokenExpired = (token) => {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.exp < Date.now() / 1000;
     };
-
-    const closeAddModal = () => setAddModalOpen(false);
 
     // 이미지 생성 요청 처리
     const handleSubmit = async (event) => {
@@ -154,12 +255,12 @@ const CreateImage = () => {
         try {
             const formData = new FormData();
             formData.append('content', inputText);
-            formData.append('width', width || 512);
-            formData.append('height', height || 512);
-            formData.append('background_color', backgroundColor || 'White');
-            formData.append('cfg_scale', cfgScale || 10);
-            formData.append('sampling_steps', samplingSteps || 50);
-            formData.append('seed', seed || 0);
+            formData.append('width', width || 512); // 기본값 512
+            formData.append('height', height || 512); // 기본값 512
+            formData.append('background_color', backgroundColor || 'white'); // 기본값 white
+            formData.append('cfg_scale', cfgScale || 10); // 기본값 10
+            formData.append('sampling_steps', samplingSteps || 50); // 기본값 50
+            formData.append('seed', seed || 0); /// 기본값 0
 
             let response = await fetch('http://43.202.57.225:28282/api/prompts', {
                 method: 'POST',
@@ -182,19 +283,15 @@ const CreateImage = () => {
                 images: [],
             };
             setResults((prevResults) => [newResult, ...prevResults]);
-            setIsLoading(true);
-            pollForImages(data.id, newResult);
+            setIsLoading(true); // 로딩 상태 설정
+            pollForImages(data.id, newResult); // 이미지 폴링 시작
         } catch (error) {
             console.error('Error occurred:', error);
             setAlertMessage('Error occurred while creating prompt.');
         }
     };
 
-    const isTokenExpired = (token) => {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload.exp < Date.now() / 1000;
-    };
-
+    // 이미지 생성 결과 폴링
     const pollForImages = (promptId, newResult) => {
         const interval = setInterval(async () => {
             try {
@@ -215,7 +312,7 @@ const CreateImage = () => {
                             result.id === promptId
                                 ? {
                                       ...result,
-                                      images: [...result.images, ...data.results],
+                                      images: [...result.images, ...data.results], // 이미지 데이터 추가
                                       created_at: formatDateWithoutDot(new Date(result.created_at)),
                                   }
                                 : result
@@ -224,17 +321,18 @@ const CreateImage = () => {
                 }
 
                 if (data.results.length >= 4) {
-                    setIsLoading(false);
+                    setIsLoading(false); // 이미지 로딩 완료 시 로딩 상태 해제
                     clearInterval(interval);
                 }
             } catch (error) {
                 console.error('Error occurred while fetching the image:', error);
-                setIsLoading(false);
+                setIsLoading(false); // 오류 발생 시 로딩 상태 해제
                 clearInterval(interval);
             }
         }, 10000);
     };
 
+    // 날짜 형식 변환
     const formatDateWithoutDot = (date) => {
         return `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date
             .getDate()
@@ -242,11 +340,49 @@ const CreateImage = () => {
             .padStart(2, '0')}`;
     };
 
+    // Enter 키로 이미지 생성 요청 처리
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             handleSubmit(event);
         }
     };
+
+    // 이미지 저장 처리
+    const handleSaveImage = (imageData, imageId) => {
+        const byteCharacters = atob(imageData);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `image_${imageId}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+    };
+
+    // 이전 페이지로 이동
+    const handlePrevPage = (setter) => {
+        setter((prev) => Math.max(prev - 1, 0));
+    };
+
+    // 다음 페이지로 이동
+    const handleNextPage = (setter, options) => {
+        setter((prev) => Math.min(prev + 1, Math.ceil(options.length / optionsPerPage) - 1));
+    };
+
+    // 현재 페이지의 반복 방향 옵션
+    const currentRepeatDirections = repeatDirectionOptions.slice(
+        repeatDirectionPage * optionsPerPage,
+        (repeatDirectionPage + 1) * optionsPerPage
+    );
+
+    // 현재 페이지의 분위기 옵션
+    const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
 
     return (
         <div className="flex min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center">
@@ -298,34 +434,173 @@ const CreateImage = () => {
                                         onChange={(e) => setHeight(Number(e.target.value))}
                                     />
                                     <label className="text-lg font-['pretendard-bold'] mr-2">배경색</label>
-                                    <div className="flex flex-wrap">
+                                    <select
+                                        className="w-32 p-2 focus:outline-[#8194EC] rounded-lg font-['pretendard-regular']"
+                                        value={backgroundColor}
+                                        onChange={(e) => setBackgroundColor(e.target.value)}
+                                    >
                                         {colorOptions.map((color, index) => (
-                                            <button
-                                                key={index}
-                                                onClick={() => setBackgroundColor(color)}
-                                                className={`px-3 py-1 m-1 rounded-md border-2 ${
-                                                    backgroundColor === color
-                                                        ? 'border-blue-500 bg-blue-100'
-                                                        : 'border-gray-300'
-                                                } hover:border-blue-500 focus:outline-none`}
-                                            >
+                                            <option key={index} value={color}>
                                                 {color}
-                                            </button>
+                                            </option>
                                         ))}
-                                    </div>
+                                    </select>
                                 </div>
                                 <div className="flex items-center">
                                     <label className="text-lg font-['pretendard-bold'] mr-2">질감</label>
                                 </div>
-                                {/* 반복 방향 및 분위기 설정 등 다른 UI 요소들 */}
+                                <div className="flex items-center">
+                                    <label className="text-lg font-['pretendard-bold'] mr-2">반복 방향 및 비율</label>
+                                    <button
+                                        onClick={() => handlePrevPage(setRepeatDirectionPage)}
+                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            stroke="currentColor"
+                                            className="size-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M15.75 19.5 8.25 12l7.5-7.5"
+                                            />
+                                        </svg>
+                                    </button>
+                                    {currentRepeatDirections.map((direction, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setSelectedRepeatDirection(direction)}
+                                            className={`px-4 py-2 rounded-full ml-2 border-2 ${
+                                                selectedRepeatDirection === direction
+                                                    ? 'border-[#8194EC]'
+                                                    : 'border-primary'
+                                            } hover:border-[#8194EC] focus:border-[#8194EC] font-['pretendard-regular']`}
+                                        >
+                                            {direction}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => handleNextPage(setRepeatDirectionPage, repeatDirectionOptions)}
+                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full ml-2"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            stroke="currentColor"
+                                            className="size-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div className="flex items-center">
+                                    <label className="text-lg font-['pretendard-bold'] mr-2">분위기</label>
+                                    <button
+                                        onClick={() => handlePrevPage(setMoodPage)}
+                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            stroke="currentColor"
+                                            className="size-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M15.75 19.5 8.25 12l7.5-7.5"
+                                            />
+                                        </svg>
+                                    </button>
+                                    {currentMoods.map((mood, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setSelectedMood(mood)}
+                                            className={`px-4 py-2 rounded-full ml-2 border-2 ${
+                                                selectedMood === mood ? 'border-[#8194EC]' : 'border-primary'
+                                            } hover:border-[#8194EC] focus:border-[#8194EC] font-['pretendard-regular']`}
+                                        >
+                                            {mood}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => handleNextPage(setMoodPage, moodOptions)}
+                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full ml-2"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                            stroke="currentColor"
+                                            className="size-6"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div className="border-t border-gray-300 my-4"></div>
+                                <div className="flex items-center">
+                                    <label className="text-lg font-['pretendard-bold'] mr-2">CFG Scale</label>
+                                    <input
+                                        type="range"
+                                        min="7"
+                                        max="13"
+                                        value={cfgScale}
+                                        onChange={(e) => setCfgScale(Number(e.target.value))}
+                                        ref={sliderRef1}
+                                        className="flex-1 cursor-pointer"
+                                    />
+                                    <span className="ml-2 text-lg">{cfgScale}</span>
+                                </div>
+                                <div className="flex items-center">
+                                    <label className="text-lg font-['pretendard-bold'] mr-2">Sampling Steps</label>
+                                    <input
+                                        type="range"
+                                        min="5"
+                                        max="150"
+                                        value={samplingSteps}
+                                        onChange={(e) => setSamplingSteps(Number(e.target.value))}
+                                        ref={sliderRef2}
+                                        className="flex-1 cursor-pointer"
+                                    />
+                                    <span className="ml-2 text-lg">{samplingSteps}</span>
+                                </div>
+                                <div className="flex items-center">
+                                    <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
+                                    <input
+                                        type="number"
+                                        className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
+                                        value={seed}
+                                        onChange={(e) => setSeed(Number(e.target.value))}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 {/* 생성 결과 섹션 */}
                 <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
                     {isLoading ? (
                         <div role="status" className="flex justify-center items-center h-full">
+                            {/* 로딩 중 애니메이션 */}
                             <svg
                                 aria-hidden="true"
                                 className="w-8 h-8 text-gray-200 animate-spin fill-blue-600"
@@ -345,6 +620,7 @@ const CreateImage = () => {
                             <span className="sr-only">Loading...</span>
                         </div>
                     ) : (
+                        // 생성 결과 출력
                         results.map((result, index) => (
                             <div
                                 key={index}
@@ -370,6 +646,7 @@ const CreateImage = () => {
                                             <div className="flex justify-between items-center w-[250px] mt-2 font-['pretendard-medium'] text-gray-600">
                                                 <p className="text-left">{result.created_at}</p>
                                                 <div className="flex items-center space-x-2">
+                                                    {/* 이미지 추가 모달 열기 버튼 */}
                                                     <button onClick={() => openAddModal(imageResult.id)}>
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
@@ -386,6 +663,7 @@ const CreateImage = () => {
                                                             />
                                                         </svg>
                                                     </button>
+                                                    {/* 이미지 저장 버튼 */}
                                                     <button
                                                         onClick={() =>
                                                             handleSaveImage(
