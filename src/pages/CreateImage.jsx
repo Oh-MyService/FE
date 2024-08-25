@@ -385,9 +385,8 @@ const CreateImage = () => {
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center mx-auto p-4 sm:p-8">
-            {' '}
-            <div className="flex flex-col w-full lg:w-1/2 mt-10">
+        <div className="max-w-7xl mx-auto p-4 sm:p-8 flex flex-col lg:flex-row min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full">
+            <div className="flex flex-col w-full lg:w-[50%] lg:max-w-[650px] mx-auto">
                 <div className="flex flex-col justify-start items-start">
                     <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
                         상상 속 패턴을 지금 만들어보세요!
@@ -413,6 +412,7 @@ const CreateImage = () => {
                     </div>
                 </div>
                 <div className="w-full h-auto mt-8 rounded-lg border-3 border-[#8194EC] p-4">
+                    {/* 고급 설정 내용 */}
                     <div className="relative w-full">
                         <span className="block text-2xl font-['pretendard-bold'] text-left text-black mb-3">
                             고급 설정
@@ -595,8 +595,9 @@ const CreateImage = () => {
                     </div>
                 </div>
             </div>
+
             {/* 생성 결과 섹션 */}
-            <div className="flex flex-col w-full lg:w-1/2 mx-2 mt-10 lg:mt-0 h-auto lg:h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg">
+            <div className="flex flex-col w-full lg:w-[50%] lg:max-w-[700px] mx-auto h-auto mt-10 lg:mt-0 lg:h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg">
                 {isLoading ? (
                     <div role="status" className="flex justify-center items-center h-full">
                         {/* 로딩 중 애니메이션 */}
