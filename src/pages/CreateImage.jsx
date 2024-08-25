@@ -385,9 +385,8 @@ const CreateImage = () => {
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center px-4 lg:px-10">
+        <div className="flex flex-col lg:flex-row min-h-screen bg-[#F2F2F2] pt-20 pb-10 w-full justify-center mx-auto p-4 sm:p-8">
             {' '}
-            {/* 여백 추가 */}
             <div className="flex flex-col w-full lg:w-1/2 mt-10">
                 <div className="flex flex-col justify-start items-start">
                     <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
