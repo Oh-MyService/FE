@@ -649,8 +649,8 @@ const CreateImage = () => {
                                                 />
                                             </div>
                                             <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
-                                                <p className="text-left">{result.created_at}</p>
-                                                <div className="flex items-center space-x-2">
+                                                <p className="text-left mr-2">{result.created_at}</p>
+                                                <div className="flex items-center space-x-2 ml-2">
                                                     {/* 이미지 추가 모달 열기 버튼 */}
                                                     <button onClick={() => openAddModal(imageResult.id)}>
                                                         <svg
