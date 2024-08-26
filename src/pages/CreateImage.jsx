@@ -597,7 +597,7 @@ const CreateImage = () => {
                 </div>
 
                 {/* 생성 결과 섹션 */}
-                <div className="flex flex-col w-1/2 px-4 mt-10 h-[500px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+                <div className="flex flex-col w-1/2 px-4 mt-10 h-[700px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
                     {isLoading ? (
                         <div role="status" className="flex justify-center items-center h-full">
                             {/* 로딩 중 애니메이션 */}
