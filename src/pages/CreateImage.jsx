@@ -597,7 +597,7 @@ const CreateImage = () => {
                 </div>
 
                 {/* 생성 결과 섹션 */}
-                <div className="flex flex-col w-1/2 px-4 mt-10 h-auto overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+                <div className="flex flex-col w-1/2 px-4 mt-10 h-[500px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
                     {isLoading ? (
                         <div role="status" className="flex justify-center items-center h-full">
                             {/* 로딩 중 애니메이션 */}
@@ -648,10 +648,9 @@ const CreateImage = () => {
                                                     className="w-full h-full object-cover"
                                                 />
                                             </div>
-                                            <div className="flex items-center w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
-                                                <p className="text-left">{result.created_at}</p>
-                                                <div className="flex-grow"></div>
-                                                <div className="flex items-center space-x-2">
+                                            <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
+                                                <p className="text-left mr-2">{result.created_at}</p>
+                                                <div className="flex items-center space-x-2 ml-auto">
                                                     {/* 이미지 추가 모달 열기 버튼 */}
                                                     <button onClick={() => openAddModal(imageResult.id)}>
                                                         <svg
