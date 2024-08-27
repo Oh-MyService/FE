@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "../components/DeleteModal";
 import CollectionAddModal from "../components/CollectionAddModal";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const RecentGeneration = () => {
   const navigate = useNavigate();
@@ -35,9 +37,13 @@ const RecentGeneration = () => {
         );
         if (response.ok) {
           let results = await response.json();
-          // 그룹을 만들어서 역순으로 정렬(최신순)
-          const groupedItems = groupItems(results, 4);
-          setItems(groupedItems);
+          // 그룹화 및 정렬 적용
+          const groupedItemsById = groupItemsById(results);
+          const sortedGroups = groupedItemsById.sort((a, b) => {
+            return b[0].id - a[0].id;
+          });
+          const sortedItems = sortedGroups.flat();
+          setItems(sortedItems);
         } else {
           throw new Error("Failed to fetch images");
         }
@@ -56,15 +62,24 @@ const RecentGeneration = () => {
     }
   }, [userId, token]);
 
-  // id로 4개씩 그룹화
-  const groupItems = (items, groupSize) => {
+  // id로 그룹화
+  const groupItemsById = (items) => {
     const groups = [];
-    for (let i = 0; i < items.length; i += groupSize) {
-      const group = items.slice(i, i + groupSize).sort((a, b) => a.id - b.id);
-      groups.push(group);
-    }
+    let currentGroup = [];
 
-    return groups.reverse().flat();
+    for (let i = 0; i < items.length; i++) {
+      currentGroup.push(items[i]);
+      // 다음 아이템이 현재 아이템의 다음 id가 아닐 경우 그룹을 나눔
+      if (i < items.length - 1 && items[i + 1].id !== items[i].id + 1) {
+        groups.push(currentGroup);
+        currentGroup = [];
+      }
+    }
+    // 마지막 그룹 추가
+    if (currentGroup.length > 0) {
+      groups.push(currentGroup);
+    }
+    return groups;
   };
 
   // 이미지 클릭 시 전체 화면
@@ -231,10 +246,11 @@ const RecentGeneration = () => {
                     key={index}
                     className="flex flex-col items-center cursor-pointer relative aspect-square w-full"
                   >
-                    <img
+                    <LazyLoadImage
                       src={"data:image/jpeg;base64," + item.image_data}
                       alt={"Image ID: " + item.id}
                       className="w-full h-full object-cover"
+                      effect="blur"
                       onClick={() =>
                         showFullScreenImage(
                           "data:image/jpeg;base64," + item.image_data,
