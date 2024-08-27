@@ -191,7 +191,7 @@ const Mypage = () => {
           ) : (
             recentImages.map((image, index) => (
               <div key={index} className="overflow-hidden w-60 h-60">
-                <LazyLoadImage
+                <img
                   src={"data:image/jpeg;base64," + image.image_data}
                   alt={`Recent Image ${index}`}
                   className="w-full h-full object-cover"
@@ -263,11 +263,10 @@ const Mypage = () => {
                         style={{ aspectRatio: "1/1" }}
                       >
                         {image.image_data ? (
-                          <LazyLoadImage
+                          <img
                             src={"data:image/jpeg;base64," + image.image_data}
                             alt={`${collection.name} Image ${idx}`}
                             className="absolute inset-0 w-full h-full object-cover"
-                            effect="blur"
                             onError={(e) =>
                               (e.target.src = "https://via.placeholder.com/150")
                             }
