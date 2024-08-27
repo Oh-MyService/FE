@@ -30,8 +30,8 @@ const Mypage = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          const groupedImages = groupItems(data, 4);
-          setRecentImages(groupedImages.slice(0, 5)); // 5개의 이미지만 표시
+          const sortedImages = data.sort((a, b) => b.id - a.id).slice(0, 5);
+          setRecentImages(sortedImages);
         } else {
           console.error("Failed to fetch recent images");
         }
@@ -103,16 +103,6 @@ const Mypage = () => {
 
     fetchData();
   }, [token, userId]);
-
-  // 그룹을 만들어서 역순으로 정렬
-  const groupItems = (items, groupSize) => {
-    const groups = [];
-    for (let i = 0; i < items.length; i += groupSize) {
-      const group = items.slice(i, i + groupSize).sort((a, b) => a.id - b.id);
-      groups.push(group);
-    }
-    return groups.reverse().flat();
-  };
 
   // 로딩 스피너
   if (isLoading) {

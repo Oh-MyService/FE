@@ -37,7 +37,8 @@ const RecentGeneration = () => {
         );
         if (response.ok) {
           let results = await response.json();
-          setItems(results);
+          const sortedItems = results.sort((a, b) => b.id - a.id);
+          setItems(sortedItems);
         } else {
           throw new Error("Failed to fetch images");
         }
