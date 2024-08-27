@@ -38,12 +38,8 @@ const RecentGeneration = () => {
         if (response.ok) {
           let results = await response.json();
           // 그룹화 및 정렬 적용
-          const groupedItemsById = groupItemsById(results);
-          const sortedGroups = groupedItemsById.sort((a, b) => {
-            return b[0].id - a[0].id;
-          });
-          const sortedItems = sortedGroups.flat();
-          setItems(sortedItems);
+          const groupedItems = groupItemsByIdAndSort(results);
+          setItems(groupedItems);
         } else {
           throw new Error("Failed to fetch images");
         }
@@ -62,24 +58,20 @@ const RecentGeneration = () => {
     }
   }, [userId, token]);
 
-  // id로 그룹화
-  const groupItemsById = (items) => {
+  // ID를 기준으로 4개씩 그룹화하고 최신순으로 정렬
+  const groupItemsByIdAndSort = (items) => {
+    // ID를 기준으로 오름차순 정렬
+    const sortedItems = items.sort((a, b) => a.id - b.id);
     const groups = [];
-    let currentGroup = [];
 
-    for (let i = 0; i < items.length; i++) {
-      currentGroup.push(items[i]);
-      // 다음 아이템이 현재 아이템의 다음 id가 아닐 경우 그룹을 나눔
-      if (i < items.length - 1 && items[i + 1].id !== items[i].id + 1) {
-        groups.push(currentGroup);
-        currentGroup = [];
-      }
+    // 4개씩 그룹화
+    for (let i = 0; i < sortedItems.length; i += 4) {
+      const group = sortedItems.slice(i, i + 4);
+      groups.push(group);
     }
-    // 마지막 그룹 추가
-    if (currentGroup.length > 0) {
-      groups.push(currentGroup);
-    }
-    return groups;
+
+    // 그룹을 최신순으로 뒤집어서 리턴
+    return groups.reverse().flat();
   };
 
   // 이미지 클릭 시 전체 화면
