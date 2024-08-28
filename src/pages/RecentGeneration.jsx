@@ -11,9 +11,9 @@ const SkeletonCard = () => (
     <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
       <div className="w-1/3 h-4 bg-gray-300 animate-pulse rounded"></div>
       <div className="flex space-x-2">
-        <div className="h-6 w-6 bg-gray-300 animate-pulse"></div>
-        <div className="h-6 w-6 bg-gray-300 animate-pulse"></div>
-        <div className="h-6 w-6 bg-gray-300 animate-pulse"></div>
+        <div className="h-6 w-6 bg-gray-300 animate-pulse rounded"></div>
+        <div className="h-6 w-6 bg-gray-300 animate-pulse rounded"></div>
+        <div className="h-6 w-6 bg-gray-300 animate-pulse rounded"></div>
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@ const SkeletonCard = () => (
 
 const SkeletonGroup = () => (
   <div className="flex flex-col justify-center mt-2 w-full bg-gray-200 p-5 rounded-lg shadow-md my-4">
-    <div className="h-8 w-1/8 bg-gray-300 rounded-full mb-4"></div>
+    <div className="h-8 w-32 bg-gray-300 rounded-full mb-4"></div>
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-2">
       {Array.from({ length: 6 }).map((_, index) => (
         <SkeletonCard key={index} />
