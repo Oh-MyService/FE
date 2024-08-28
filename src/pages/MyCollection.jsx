@@ -19,8 +19,8 @@ const SkeletonCard = () => (
         ))}
     </div>
     <div className="flex justify-between items-center w-full mt-2 text-gray-600 font-['pretendard-medium']">
-      <div className="w-1/4 h-4 bg-gray-300 animate-pulse"></div>
-      <div className="h-6 w-6 bg-gray-300 animate-pulse rounded-full"></div>
+      <div className="w-1/4 h-4 bg-gray-300 animate-pulse rounded"></div>
+      <div className="h-6 w-6 bg-gray-300 animate-pulse rounded"></div>
     </div>
   </div>
 );
