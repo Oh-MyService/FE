@@ -5,16 +5,21 @@ import CollectionAddModal from "../components/CollectionAddModal";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-const skeletonCard = () => (
+const SkeletonCard = () => (
   <div className="flex flex-col items-center w-full aspect-square bg-gray-200 animate-pulse rounded-lg">
-    <div className="w-full h-full bg-gray-300 rounded-lg"></div>
-    <div className="flex justify-between items-center w-full mt-2 text-gray-400">
-      <div className="h-4 w-1/3 bg-gray-300 rounded"></div>
-      <div className="flex space-x-2">
-        <div className="h-6 w-6 bg-gray-300 rounded-full"></div>
-        <div className="h-6 w-6 bg-gray-300 rounded-full"></div>
-        <div className="h-6 w-6 bg-gray-300 rounded-full"></div>
-      </div>
+    <div className="w-full h-32 bg-gray-300 mb-2"></div>
+    <div className="w-3/4 h-4 bg-gray-300 rounded mb-1"></div>
+    <div className="w-1/2 h-4 bg-gray-300 rounded"></div>
+  </div>
+);
+
+const SkeletonGroup = () => (
+  <div className="flex flex-col justify-center w-full bg-gray-200 p-5 rounded-lg shadow-md my-4">
+    <div className="h-4 w-1/4 bg-gray-300 rounded-full mb-4"></div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <SkeletonCard key={index} />
+      ))}
     </div>
   </div>
 );
@@ -184,9 +189,9 @@ const RecentGeneration = () => {
           </div>
         </div>
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-            {Array.from({ length: 12 }).map((_, index) => (
-              <skeletonCard key={index} />
+          <div>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <SkeletonGroup key={index} />
             ))}
           </div>
         ) : items.length === 0 ? (
