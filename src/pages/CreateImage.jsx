@@ -258,12 +258,11 @@ const CreateImage = () => {
             formData.append('width', width || 512); // 기본값 512
             formData.append('height', height || 512); // 기본값 512
             formData.append('background_color', backgroundColor || 'white'); // 기본값 white
+            formData.append('pattern', selectedRepeatDirection || 'null');
+            formData.append('mood', selectedMood || 'null');
             formData.append('cfg_scale', cfgScale || 10); // 기본값 10
             formData.append('sampling_steps', samplingSteps || 50); // 기본값 50
             formData.append('seed', seed || 0); /// 기본값 0
-
-            formData.append('mood', selectedMood !== null ? selectedMood : 'null');
-            formData.append('pattern', selectedRepeatDirection !== null ? selectedRepeatDirection : 'null');
 
             let response = await fetch('http://43.202.57.225:28282/api/prompts', {
                 method: 'POST',
