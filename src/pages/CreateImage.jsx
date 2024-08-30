@@ -2,23 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import CollectionAddModal from '../components/CollectionAddModal';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 
-// 스켈레톤 카드 컴포넌트 정의
-const SkeletonCard = () => (
-    <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3">
-        <div className="flex -mt-2">
-            <div className="w-10 h-10 bg-gray-300 animate-pulse rounded-full flex-shrink-0"></div>
-            <div className="ml-4 w-3/4 h-6 bg-gray-300 animate-pulse rounded"></div>
-        </div>
-        <div className="grid grid-cols-2 gap-2 mt-6">
-            {Array(4)
-                .fill(null)
-                .map((_, idx) => (
-                    <div key={idx} className="w-full h-32 bg-gray-300 animate-pulse rounded"></div>
-                ))}
-        </div>
-    </div>
-);
-
 const Bubble = ({ text }) => {
     const [copySuccess, setCopySuccess] = useState(false);
 
@@ -84,6 +67,27 @@ const Bubble = ({ text }) => {
         </div>
     );
 };
+
+// 스켈레톤 카드 컴포넌트 정의
+const SkeletonCard = () => (
+    <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3 animate-pulse">
+        <div className="flex -mt-2">
+            <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+            <div className="flex-1 ml-4 h-6 bg-gray-300 rounded"></div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
+            {Array(4)
+                .fill(null)
+                .map((_, index) => (
+                    <div key={index} className="w-full h-40 bg-gray-300 rounded"></div>
+                ))}
+        </div>
+        <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
+            <div className="w-1/4 h-4 bg-gray-300 rounded"></div>
+            <div className="h-6 w-6 bg-gray-300 rounded"></div>
+        </div>
+    </div>
+);
 
 // 슬라이더 스타일 설정
 const applySliderStyles = (element) => {
@@ -618,14 +622,8 @@ const CreateImage = () => {
                 {/* 생성 결과 섹션 */}
                 <div className="flex flex-col w-1/2 px-4 mt-20 h-[700px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
                     {isLoading ? (
-                        <div className="grid grid-cols-1 gap-4">
-                            {/* 스켈레톤 카드 여러개 표시 */}
-                            {Array(3)
-                                .fill(null)
-                                .map((_, index) => (
-                                    <SkeletonCard key={index} />
-                                ))}
-                        </div>
+                        // 스켈레톤 카드 한 개만 렌더링
+                        <SkeletonCard />
                     ) : (
                         // 생성 결과 출력
                         results.map((result, index) => (
