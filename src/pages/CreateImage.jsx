@@ -283,7 +283,7 @@ const CreateImage = () => {
             formData.append('mood', selectedMood || 'a');
             formData.append('cfg_scale', cfgScale || 10); // 기본값 10
             formData.append('sampling_steps', samplingSteps || 50); // 기본값 50
-            formData.append('seed', seed || 0); /// 기본값 0
+            formData.append('seed', seed || 0); // 기본값 0
 
             let response = await fetch('http://43.202.57.225:28282/api/prompts', {
                 method: 'POST',
@@ -304,6 +304,7 @@ const CreateImage = () => {
                 created_at: data.created_at,
                 user_id: data.user_id,
                 images: [],
+                isLoading: true, // 새로운 결과는 로딩 중으로 설정
             };
             setResults((prevResults) => [newResult, ...prevResults]);
             setIsLoading(true); // 로딩 상태 설정
@@ -337,6 +338,7 @@ const CreateImage = () => {
                                       ...result,
                                       images: [...result.images, ...data.results], // 이미지 데이터 추가
                                       created_at: formatDateWithoutDot(new Date(result.created_at)),
+                                      isLoading: false, // 로딩 완료
                                   }
                                 : result
                         )
@@ -349,6 +351,9 @@ const CreateImage = () => {
                 }
             } catch (error) {
                 console.error('Error occurred while fetching the image:', error);
+                setResults((prevResults) =>
+                    prevResults.map((result) => (result.id === promptId ? { ...result, isLoading: false } : result))
+                );
                 setIsLoading(false); // 오류 발생 시 로딩 상태 해제
                 clearInterval(interval);
             }
@@ -621,12 +626,10 @@ const CreateImage = () => {
 
                 {/* 생성 결과 섹션 */}
                 <div className="flex flex-col w-1/2 px-4 mt-20 h-[700px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
-                    {isLoading ? (
-                        // 스켈레톤 카드 한 개만 렌더링
-                        <SkeletonCard />
-                    ) : (
-                        // 생성 결과 출력
-                        results.map((result, index) => (
+                    {results.map((result, index) =>
+                        result.isLoading ? (
+                            <SkeletonCard key={index} />
+                        ) : (
                             <div
                                 key={index}
                                 className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3"
@@ -706,7 +709,7 @@ const CreateImage = () => {
                                     <CollectionAddModal onClose={closeAddModal} resultId={selectedResultId} />
                                 )}
                             </div>
-                        ))
+                        )
                     )}
                 </div>
             </div>
