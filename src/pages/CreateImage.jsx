@@ -629,7 +629,7 @@ const CreateImage = () => {
                 </div>
 
                 {/* 생성 결과 섹션 */}
-                <div className="flex flex-col w-[55%] mx-2 mt-14 h-[77vh] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg min-w-[700px]">
+                <div className="flex flex-col w-1/2 px-4 mt-24 h-[730px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
                     {results.map((result, index) =>
                         result.isLoading ? (
                             <SkeletonCard key={index} />
