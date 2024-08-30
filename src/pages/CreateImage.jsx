@@ -75,16 +75,20 @@ const SkeletonCard = () => (
             <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
             <div className="flex-1 ml-4 h-6 bg-gray-300 rounded"></div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
+        <div className="grid grid-cols-2 gap-2 mt-6">
             {Array(4)
                 .fill(null)
                 .map((_, index) => (
-                    <div key={index} className="w-full h-40 bg-gray-300 rounded"></div>
+                    <div key={index} className="relative w-full h-40 bg-gray-300 rounded">
+                        <div className="absolute bottom-2 left-2 right-2 flex justify-between items-center">
+                            <div className="w-1/4 h-4 bg-gray-200 rounded"></div> {/* 날짜 */}
+                            <div className="flex space-x-2">
+                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 북마크 아이콘 */}
+                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 다운로드 아이콘 */}
+                            </div>
+                        </div>
+                    </div>
                 ))}
-        </div>
-        <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
-            <div className="w-1/4 h-4 bg-gray-300 rounded"></div>
-            <div className="h-6 w-6 bg-gray-300 rounded"></div>
         </div>
     </div>
 );
