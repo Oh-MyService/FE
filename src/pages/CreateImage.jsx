@@ -73,7 +73,7 @@ const SkeletonCard = () => (
     <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3 animate-pulse">
         <div className="flex -mt-2">
             <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
-            <div className="flex-1 ml-4 h-6 bg-gray-300 rounded"></div>
+            <div className="flex-1 ml-4 h-8 mt-2 bg-gray-300 rounded"></div>
         </div>
         <div className="grid grid-cols-2 gap-2 mt-6">
             {Array(4)
