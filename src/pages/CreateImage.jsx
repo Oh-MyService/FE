@@ -79,7 +79,7 @@ const SkeletonCard = () => (
             {Array(4)
                 .fill(null)
                 .map((_, index) => (
-                    <div key={index} className="relative w-full h-40 bg-gray-300 rounded">
+                    <div key={index} className="relative w-full h-60 bg-gray-300 rounded">
                         <div className="absolute bottom-2 left-2 right-2 flex justify-between items-center">
                             <div className="w-1/4 h-4 bg-gray-200 rounded"></div> {/* 날짜 */}
                             <div className="flex space-x-2">
