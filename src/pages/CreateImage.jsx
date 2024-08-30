@@ -69,6 +69,7 @@ const Bubble = ({ text }) => {
 };
 
 // 스켈레톤 카드 컴포넌트 정의
+// 스켈레톤 카드 컴포넌트 정의
 const SkeletonCard = () => (
     <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3 animate-pulse">
         <div className="flex items-center mt-3">
@@ -79,18 +80,17 @@ const SkeletonCard = () => (
             {Array(4)
                 .fill(null)
                 .map((_, index) => (
-                    <div key={index} className="relative w-full h-60 bg-gray-300 rounded">
-                        {/* 이미지 영역 */}
+                    <div key={index} className="flex flex-col items-center">
+                        <div className="w-full h-60 bg-gray-300 rounded"></div> {/* 이미지 영역 */}
+                        <div className="flex justify-between items-center w-full mt-2">
+                            <div className="w-1/4 h-4 bg-gray-200 rounded"></div> {/* 날짜 */}
+                            <div className="flex space-x-2">
+                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 북마크 아이콘 */}
+                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 다운로드 아이콘 */}
+                            </div>
+                        </div>
                     </div>
                 ))}
-        </div>
-
-        <div className="flex justify-between items-center mt-2">
-            <div className="w-1/4 h-4 bg-gray-200 rounded"></div> {/* 날짜 */}
-            <div className="flex space-x-2">
-                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 북마크 아이콘 */}
-                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 다운로드 아이콘 */}
-            </div>
         </div>
     </div>
 );
