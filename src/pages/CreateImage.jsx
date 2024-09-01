@@ -69,7 +69,6 @@ const Bubble = ({ text }) => {
 };
 
 // 스켈레톤 카드 컴포넌트 정의
-// 스켈레톤 카드 컴포넌트 정의
 const SkeletonCard = () => (
     <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3 animate-pulse">
         <div className="flex items-center mt-3">
@@ -291,7 +290,7 @@ const CreateImage = () => {
             formData.append('sampling_steps', samplingSteps || 50); // 기본값 50
             formData.append('seed', seed || 0); // 기본값 0
 
-            let response = await fetch('http://43.202.57.225:28282/api/prompts', {
+            let response = await fetch('http://118.67.128.129:28282/api/prompts', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -325,7 +324,7 @@ const CreateImage = () => {
     const pollForImages = (promptId, newResult) => {
         const interval = setInterval(async () => {
             try {
-                const response = await fetch(`http://43.202.57.225:28282/api/results/${promptId}`, {
+                const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,

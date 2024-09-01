@@ -23,7 +23,7 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
 
             // 회원가입 유저 정보 보내기
             try {
-                const response = await fetch('http://43.202.57.225:28282/register', {
+                const response = await fetch('http://118.67.128.129:28282/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',

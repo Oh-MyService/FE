@@ -65,7 +65,7 @@ const CollectionName = () => {
     // 컬렉션 이름 수정
     const editCollection = async (newName) => {
         try {
-            const response = await fetch(`http://43.202.57.225:28282/api/collections/${collectionId}`, {
+            const response = await fetch(`http://118.67.128.129:28282/api/collections/${collectionId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -91,7 +91,7 @@ const CollectionName = () => {
     const deleteCollection = async () => {
         try {
             const response = await fetch(
-                `http://43.202.57.225:28282/api/collections/${collectionId}/results/${deleteId}`,
+                `http://118.67.128.129:28282/api/collections/${collectionId}/results/${deleteId}`,
                 {
                     method: 'DELETE',
                     headers: {

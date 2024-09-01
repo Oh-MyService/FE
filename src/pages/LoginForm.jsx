@@ -22,7 +22,7 @@ const LoginForm = ({ setToken }) => {
             const password = e.target.loginPassword.value;
 
             try {
-                const response = await fetch('http://43.202.57.225:28282/token', {
+                const response = await fetch('http://118.67.128.129:28282/token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
