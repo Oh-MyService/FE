@@ -70,22 +70,31 @@ const Bubble = ({ text }) => {
 
 // 스켈레톤 카드 컴포넌트 정의
 const SkeletonCard = () => (
-    <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3 animate-pulse">
-        <div className="flex items-center mt-3">
-            <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
-            <div className="flex-1 ml-4 h-8 mt-1 bg-gray-300 rounded"></div>
+    <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3">
+        <div className="flex -mt-2">
+            <div className="w-12 h-12 bg-gray-300 rounded-full"></div> {/* 로고 위치 */}
+            <div className="ml-2 flex-1 bg-gray-300 rounded h-12"></div> {/* 텍스트 공간 */}
         </div>
-        <div className="grid grid-cols-2 gap-2 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
             {Array(4)
                 .fill(null)
                 .map((_, index) => (
-                    <div key={index} className="flex flex-col items-center">
-                        <div className="w-full h-60 bg-gray-300 rounded"></div> {/* 이미지 영역 */}
-                        <div className="flex justify-between items-center w-full mt-2">
-                            <div className="w-1/4 h-4 bg-gray-200 rounded"></div> {/* 날짜 */}
-                            <div className="flex space-x-2">
-                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 북마크 아이콘 */}
-                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 다운로드 아이콘 */}
+                    <div key={index} className="flex flex-col justify-between items-center w-full">
+                        <div
+                            className="w-full bg-gray-300 rounded"
+                            style={{
+                                width: '100%',
+                                height: 'auto',
+                                maxWidth: '250px',
+                                maxHeight: '250px',
+                                aspectRatio: '1/1', // 이미지 비율 유지
+                            }}
+                        ></div>
+                        <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
+                            <div className="w-1/4 h-4 bg-gray-200 rounded"></div> {/* 날짜 위치 */}
+                            <div className="flex space-x-2 ml-auto">
+                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 북마크 아이콘 위치 */}
+                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 다운로드 아이콘 위치 */}
                             </div>
                         </div>
                     </div>
