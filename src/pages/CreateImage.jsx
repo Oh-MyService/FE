@@ -175,7 +175,11 @@ const CreateImage = () => {
     // 기타 상태 관리
     const [alertMessage, setAlertMessage] = useState('');
     const [selectedResultId, setSelectedResultId] = useState(null);
-    const [results, setResults] = useState([]);
+    const [results, setResults] = useState(() => {
+        // 컴포넌트가 로드될 때 localStorage에서 기록 불러오기
+        const savedResults = localStorage.getItem('results');
+        return savedResults ? JSON.parse(savedResults) : [];
+    });
 
     // 로딩 상태 관리
     const [isLoading, setIsLoading] = useState(false);
@@ -200,6 +204,11 @@ const CreateImage = () => {
         if (sliderRef1.current) applySliderStyles(sliderRef1.current);
         if (sliderRef2.current) applySliderStyles(sliderRef2.current);
     }, []);
+
+    // 생성 기록이 변경될 때마다 localStorage에 저장
+    useEffect(() => {
+        localStorage.setItem('results', JSON.stringify(results));
+    }, [results]);
 
     const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
     const [moodPage, setMoodPage] = useState(0);
