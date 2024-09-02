@@ -638,10 +638,10 @@ const CreateImage = () => {
                                     <input
                                         type="number"
                                         className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
-                                        value={seed === 0 ? '' : seed}
+                                        value={seed}
                                         onChange={(e) => {
                                             const value = e.target.value;
-                                            setSeed(value === '' ? '' : Number(value)); // 빈 문자열과 숫자 입력 모두 처리 가능
+                                            setSeed(value === '' ? '' : Number(value));
                                         }}
                                     />
                                 </div>
