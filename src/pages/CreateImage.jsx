@@ -70,21 +70,31 @@ const Bubble = ({ text }) => {
 
 // 스켈레톤 카드 컴포넌트 정의
 const SkeletonCard = () => (
-    <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3 animate-pulse">
-        <div className="flex -mt-2">
-            <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
-            <div className="flex-1 ml-4 h-8 mt-2 bg-gray-300 rounded"></div>
+    <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3">
+        <div className="flex mt-2">
+            <div className="w-12 h-12 bg-gray-300 rounded-full"></div> {/* 로고 위치 */}
+            <div className="ml-2 flex-1 bg-gray-300 rounded h-12"></div> {/* 텍스트 공간 */}
         </div>
-        <div className="grid grid-cols-2 gap-2 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
             {Array(4)
                 .fill(null)
                 .map((_, index) => (
-                    <div key={index} className="relative w-full h-60 bg-gray-300 rounded">
-                        <div className="absolute bottom-2 left-2 right-2 flex justify-between items-center">
-                            <div className="w-1/4 h-4 bg-gray-200 rounded"></div> {/* 날짜 */}
-                            <div className="flex space-x-2">
-                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 북마크 아이콘 */}
-                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 다운로드 아이콘 */}
+                    <div key={index} className="flex flex-col justify-between items-center w-full">
+                        <div
+                            className="w-full bg-gray-300 rounded"
+                            style={{
+                                width: '100%',
+                                height: 'auto',
+                                maxWidth: '250px',
+                                maxHeight: '250px',
+                                aspectRatio: '1/1', // 이미지 비율 유지
+                            }}
+                        ></div>
+                        <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
+                            <div className="w-1/4 h-4 bg-gray-200 rounded"></div> {/* 날짜 위치 */}
+                            <div className="flex space-x-2 ml-auto">
+                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 북마크 아이콘 위치 */}
+                                <div className="h-6 w-6 bg-gray-200 rounded"></div> {/* 다운로드 아이콘 위치 */}
                             </div>
                         </div>
                     </div>
@@ -174,7 +184,11 @@ const CreateImage = () => {
     // 기타 상태 관리
     const [alertMessage, setAlertMessage] = useState('');
     const [selectedResultId, setSelectedResultId] = useState(null);
-    const [results, setResults] = useState([]);
+    const [results, setResults] = useState(() => {
+        // 컴포넌트가 로드될 때 localStorage에서 기록 불러오기
+        const savedResults = localStorage.getItem('results');
+        return savedResults ? JSON.parse(savedResults) : [];
+    });
 
     // 로딩 상태 관리
     const [isLoading, setIsLoading] = useState(false);
@@ -199,6 +213,11 @@ const CreateImage = () => {
         if (sliderRef1.current) applySliderStyles(sliderRef1.current);
         if (sliderRef2.current) applySliderStyles(sliderRef2.current);
     }, []);
+
+    // 생성 기록이 변경될 때마다 localStorage에 저장
+    useEffect(() => {
+        localStorage.setItem('results', JSON.stringify(results));
+    }, [results]);
 
     const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
     const [moodPage, setMoodPage] = useState(0);
@@ -289,7 +308,7 @@ const CreateImage = () => {
             formData.append('sampling_steps', samplingSteps || 50); // 기본값 50
             formData.append('seed', seed || 0); // 기본값 0
 
-            let response = await fetch('http://43.202.57.225:28282/api/prompts', {
+            let response = await fetch('http://118.67.128.129:28282/api/prompts', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -323,7 +342,7 @@ const CreateImage = () => {
     const pollForImages = (promptId, newResult) => {
         const interval = setInterval(async () => {
             try {
-                const response = await fetch(`http://43.202.57.225:28282/api/results/${promptId}`, {
+                const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
@@ -620,7 +639,10 @@ const CreateImage = () => {
                                         type="number"
                                         className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
                                         value={seed}
-                                        onChange={(e) => setSeed(Number(e.target.value))}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            setSeed(value === '' ? '' : Number(value));
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -629,7 +651,7 @@ const CreateImage = () => {
                 </div>
 
                 {/* 생성 결과 섹션 */}
-                <div className="flex flex-col w-1/2 px-4 mt-20 h-[700px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+                <div className="flex flex-col w-1/2 px-4 mt-24 h-[730px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
                     {results.map((result, index) =>
                         result.isLoading ? (
                             <SkeletonCard key={index} />
