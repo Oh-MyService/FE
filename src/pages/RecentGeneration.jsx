@@ -348,7 +348,7 @@ const RecentGeneration = () => {
                     onDelete={() => handleDelete(deleteId)}
                 />
             </div>
-            {/* 맨위로가기 버튼 */}
+            {/* 맨위로 버튼 */}
             {showScrollTopButton && (
                 <button
                     onClick={scrollToTop}
