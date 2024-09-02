@@ -51,7 +51,7 @@ const RecentGeneration = () => {
     const fetchAllImages = async (userId) => {
       try {
         const response = await fetch(
-          `http://43.202.57.225:28282/api/results/user/${userId}`,
+          `http://118.67.128.129:28282/api/results/user/${userId}`,
           {
             method: "GET",
             headers: {
@@ -102,7 +102,7 @@ const RecentGeneration = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://43.202.57.225:28282/api/results/${id}`,
+        `http://118.67.128.129:28282/api/results/${id}`,
         {
           method: "DELETE",
           headers: {
