@@ -174,7 +174,7 @@ const CreateImage = () => {
     const [inputText, setInputText] = useState('');
 
     // 고급 옵션 상태 관리
-    const [cfgScale, setCfgScale] = useState(10);
+    const [cfgScale, setCfgScale] = useState(7);
     const [samplingSteps, setSamplingSteps] = useState(50);
     const [width, setWidth] = useState(512);
     const [height, setHeight] = useState(512);
@@ -304,7 +304,7 @@ const CreateImage = () => {
             formData.append('background_color', backgroundColor || 'white'); // 기본값 white
             formData.append('pattern', selectedRepeatDirection || 0);
             formData.append('mood', selectedMood || 'a');
-            formData.append('cfg_scale', cfgScale || 10); // 기본값 10
+            formData.append('cfg_scale', cfgScale || 7); // 기본값 7
             formData.append('sampling_steps', samplingSteps || 50); // 기본값 50
             formData.append('seed', seed || 0); // 기본값 0
 
