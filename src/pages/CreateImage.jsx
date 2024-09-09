@@ -173,6 +173,19 @@ const CreateImage = () => {
     // 프롬프트 상태 관리
     const [inputText, setInputText] = useState('');
 
+    // 한글 입력 제한 함수
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 체크하는 정규 표현식
+
+        if (koreanRegex.test(value)) {
+            setAlertMessage('한국어는 입력할 수 없습니다.');
+        } else {
+            setAlertMessage(''); // 알림 초기화
+            setInputText(value); // 한글이 아닐 때만 상태 업데이트
+        }
+    };
+
     // 고급 옵션 상태 관리
     const [cfgScale, setCfgScale] = useState(7);
     const [samplingSteps, setSamplingSteps] = useState(50);
@@ -447,7 +460,7 @@ const CreateImage = () => {
                             <textarea
                                 type="text"
                                 value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
+                                onChange={handleInputChange}
                                 onKeyDown={handleKeyDown}
                                 className="appearance-none block w-full h-56 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 leading-tight focus:outline-none border-3 border-[#3A57A7] mb-0"
                                 placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
@@ -611,10 +624,10 @@ const CreateImage = () => {
                                     <label className="text-lg font-['pretendard-bold'] mr-2">CFG Scale</label>
                                     <input
                                         type="range"
-                                        min="7"
+                                        min="1"
                                         max="13"
                                         value={cfgScale}
-                                        onChange={(e) => setCfgScale(Number(e.target.value))}
+                                        onChange={(e) => setCfgScale(parseFloat(e.target.value))}
                                         ref={sliderRef1}
                                         className="flex-1 cursor-pointer"
                                     />
