@@ -282,8 +282,16 @@ const CollectionName = () => {
                         className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center p-4"
                         onClick={closeFullScreen}
                     >
-                        {/* 전체 화면으로 이미지를 보여주는 레이어 */}
-                        <img src={fullScreenImage} alt="Full Screen" className="w-full h-full object-contain" />
+                        <div className="grid grid-cols-3 gap-0" style={{ width: '80vw', height: '80vh' }}>
+                            {Array.from({ length: 9 }).map((_, index) => (
+                                <img
+                                    key={index}
+                                    src={fullScreenImage}
+                                    alt="Full Screen Grid"
+                                    className="w-full h-full object-cover"
+                                />
+                            ))}
+                        </div>
                     </div>
                 )}
                 {/* 모달 컴포넌트 렌더링 */}
