@@ -6,7 +6,7 @@ const Header = ({ token, setToken }) => {
     const navigate = useNavigate();
 
     const goToMyPage = () => {
-        navigate(token ? '/my-page' : '/login');
+        navigate('/my-page');
     };
 
     const goToMain = () => {
@@ -33,15 +33,17 @@ const Header = ({ token, setToken }) => {
                     <img src={logo} alt="Logo" className="h-5 cursor-pointer" onClick={goToMain} />
                 </div>
                 <div className="flex-1 flex justify-end items-center mt-2 space-x-4">
-                    <button
-                        onClick={goToMyPage}
-                        aria-label="My Page"
-                        className="text-white cursor-pointer hover:underline"
-                        style={{ transform: 'translateY(2px)' }}
-                    >
-                        마이페이지
-                    </button>
-                    <div className="text-white pt-1 hidden sm:block">|</div>
+                    {token && (
+                        <button
+                            onClick={goToMyPage}
+                            aria-label="My Page"
+                            className="text-white cursor-pointer hover:underline"
+                            style={{ transform: 'translateY(2px)' }}
+                        >
+                            마이페이지
+                        </button>
+                    )}
+                    {token && <div className="text-white pt-1 hidden sm:block">|</div>}
                     {token ? (
                         <button
                             onClick={handleLogout}
