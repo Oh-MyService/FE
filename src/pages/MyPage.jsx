@@ -32,7 +32,7 @@ const Mypage = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          const sortedImages = data.sort((a, b) => b.id - a.id).slice(0, 5);
+          const sortedImages = data.sort((a, b) => b.id - a.id).slice(0, 5); // 에러
           setRecentImages(sortedImages);
         } else {
           console.error("Failed to fetch recent images");
@@ -61,6 +61,7 @@ const Mypage = () => {
           // 컬렉션에 저장된 이미지 불러오기
           const collectionsData = await Promise.all(
             data.collection_list.map(async (collection) => {
+              // 에러
               const imagesResponse = await fetch(
                 `http://118.67.128.129:28282/api/collections/${collection.collection_id}/images`,
                 {
