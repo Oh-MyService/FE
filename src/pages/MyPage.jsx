@@ -144,7 +144,7 @@ const Mypage = () => {
                         recentImages.map((image, index) => (
                             <div key={index} className="overflow-hidden w-60 h-60">
                                 <img
-                                    src={'data:image/jpeg;base64,' + image.image_data}
+                                    src={image.image_url}
                                     alt={`Recent Image ${index}`}
                                     className="w-full h-full object-cover"
                                 />
@@ -197,15 +197,15 @@ const Mypage = () => {
                                     {collection.images
                                         .concat(
                                             Array(Math.max(0, 4 - collection.images.length)).fill({
-                                                image_data: '',
+                                                image_url: '',
                                             })
                                         )
                                         .slice(0, 4)
                                         .map((image, idx) => (
                                             <div key={idx} className="relative w-full" style={{ aspectRatio: '1/1' }}>
-                                                {image.image_data ? (
+                                                {image.image_url ? (
                                                     <img
-                                                        src={'data:image/jpeg;base64,' + image.image_data}
+                                                        src={image.image_url}
                                                         alt={`${collection.name} Image ${idx}`}
                                                         className="absolute inset-0 w-full h-full object-cover"
                                                         onError={(e) =>
