@@ -32,7 +32,6 @@ const Mypage = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          console.log("Recent Images Data:", data); // 응답 확인
 
           // data.results가 배열인지 확인
           if (Array.isArray(data.results)) {
@@ -67,7 +66,7 @@ const Mypage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Collections Data:", data); // 응답 확인
+
           // 컬렉션에 저장된 이미지 불러오기
           // collection_list가 배열인지 확인
           if (data.collection_list && Array.isArray(data.collection_list)) {
