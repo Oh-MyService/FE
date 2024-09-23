@@ -119,22 +119,22 @@ const CollectionName = () => {
     }
   };
 
-  // 이미지 저장 (다운로드)
-  const handleSaveImage = async (imageUrl, e) => {
-    e.stopPropagation(); // 클릭 이벤트 버블링 방지
-    try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = imageUrl.split("/").pop(); // 이미지 파일 이름 추출
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(link.href);
-    } catch (error) {
-      console.error("Failed to download image:", error);
-    }
+  // 로컬에 이미지 저장하기
+  const handleSaveImage = (imageUrl, imageId) => {
+    fetch(imageUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `image_${imageId}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      })
+      .catch((error) => {
+        console.error("Error downloading the image:", error);
+      });
   };
 
   // 이미지 삭제 모달 열기

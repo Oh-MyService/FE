@@ -439,22 +439,22 @@ const CreateImage = () => {
     }
   };
 
-  // 이미지 저장 처리
-  const handleSaveImage = (imageData, imageId) => {
-    const byteCharacters = atob(imageData);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: "image/jpeg" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `image_${imageId}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
+  // 로컬에 이미지 저장하기
+  const handleSaveImage = (imageUrl, imageId) => {
+    fetch(imageUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `image_${imageId}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      })
+      .catch((error) => {
+        console.error("Error downloading the image:", error);
+      });
   };
 
   // 이전 페이지로 이동
