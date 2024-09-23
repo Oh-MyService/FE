@@ -254,7 +254,7 @@ const CollectionName = () => {
                     </button>
                     <button
                       onClick={
-                        (e) => handleSaveImage(image.image_data, e) // 이미지 저장 기능 호출
+                        (e) => handleSaveImage(image.image_data, image.id) // 이미지 저장 기능 호출
                       }
                       className="focus:outline-none"
                     >
