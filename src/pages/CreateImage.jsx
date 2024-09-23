@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from `react`;
+import React, { useState, useRef, useEffect } from "react";
 import CollectionAddModal from "../components/CollectionAddModal";
 import { ReactComponent as DLlogo } from "../assets/designovel_icon_black.svg";
 
