@@ -32,8 +32,17 @@ const Mypage = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          const sortedImages = data.sort((a, b) => b.id - a.id).slice(0, 5);
-          setRecentImages(sortedImages);
+          console.log("Recent Images Data:", data); // 응답 확인
+
+          // data.results가 배열인지 확인
+          if (Array.isArray(data.results)) {
+            const sortedImages = data.results
+              .sort((a, b) => b.id - a.id)
+              .slice(0, 5);
+            setRecentImages(sortedImages);
+          } else {
+            console.error("results is not an array", data);
+          }
         } else {
           console.error("Failed to fetch recent images");
         }
@@ -42,7 +51,7 @@ const Mypage = () => {
       }
     };
 
-    // 컬렉션  정보 불러오기
+    // 컬렉션 정보 불러오기
     const fetchCollections = async () => {
       try {
         const response = await fetch(
@@ -58,40 +67,46 @@ const Mypage = () => {
 
         if (response.ok) {
           const data = await response.json();
+          console.log("Collections Data:", data); // 응답 확인
           // 컬렉션에 저장된 이미지 불러오기
-          const collectionsData = await Promise.all(
-            data.collection_list.map(async (collection) => {
-              const imagesResponse = await fetch(
-                `http://118.67.128.129:28282/api/collections/${collection.collection_id}/images`,
-                {
-                  method: "GET",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              );
+          // collection_list가 배열인지 확인
+          if (data.collection_list && Array.isArray(data.collection_list)) {
+            const collectionsData = await Promise.all(
+              data.collection_list.map(async (collection) => {
+                const imagesResponse = await fetch(
+                  `http://118.67.128.129:28282/api/collections/${collection.collection_id}/images`,
+                  {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                );
 
-              const imagesData = imagesResponse.ok
-                ? await imagesResponse.json()
-                : { images: [] };
+                const imagesData = imagesResponse.ok
+                  ? await imagesResponse.json()
+                  : { images: [] };
 
-              return {
-                id: collection.collection_id,
-                name: collection.collection_name,
-                images: imagesData.images.reverse(), // 역순 정렬(최신순)
-                createdAt: collection.created_at,
-              };
-            })
-          );
+                return {
+                  id: collection.collection_id,
+                  name: collection.collection_name,
+                  images: imagesData.images.reverse(), // 역순 정렬(최신순)
+                  createdAt: collection.created_at,
+                };
+              })
+            );
 
-          // 최신순
-          collectionsData.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-          );
-          setCollections(collectionsData.slice(0, 5)); // 5개의 컬렉션만 표시
+            // 최신순 정렬
+            collectionsData.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
+            setCollections(collectionsData.slice(0, 5)); // 5개의 컬렉션만 표시
+          } else {
+            console.error("collection_list is not an array", data);
+          }
         } else {
-          console.error("Failed to fetch collections:", response.statusText);
+          console.error("Failed to fetch collections");
         }
       } catch (error) {
         console.error("Error fetching collections:", error);
