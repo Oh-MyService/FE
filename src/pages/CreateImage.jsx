@@ -755,7 +755,7 @@ const CreateImage = () => {
                         }}
                       >
                         <img
-                          src={`data:image/jpeg;base64,${imageResult.image_data}`}
+                          src={imageResult.image_data}
                           alt="Generated Image"
                           className="w-full h-full object-cover"
                         />

@@ -203,11 +203,7 @@ const CollectionName = () => {
                   src={image.image_data}
                   alt={`${collection.name} Image`}
                   className="w-full h-full object-cover"
-                  onClick={() =>
-                    showFullScreenImage(
-                      `data:image/jpeg;base64,${image.image_data}`
-                    )
-                  } // 이미지 클릭 시 전체 화면으로 보기
+                  onClick={() => showFullScreenImage(image.image_data)} // 이미지 클릭 시 전체 화면으로 보기
                 />
                 <div className="flex justify-between items-center w-full mt-2 text-gray-600">
                   <p className="text-gray-600">
@@ -258,11 +254,7 @@ const CollectionName = () => {
                     </button>
                     <button
                       onClick={
-                        (e) =>
-                          handleSaveImage(
-                            `data:image/jpeg;base64,${image.image_data}`,
-                            e
-                          ) // 이미지 저장 기능 호출
+                        (e) => handleSaveImage(image.image_data, e) // 이미지 저장 기능 호출
                       }
                       className="focus:outline-none"
                     >
