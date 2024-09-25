@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import NewCollectionModal from "../components/NewCollectionModal";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -12,6 +13,9 @@ const Mypage = () => {
 
   const [recentImages, setRecentImages] = useState([]);
   const [collections, setCollections] = useState([]);
+
+  // 모달 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 로딩 상태 관리
   const [isLoading, setIsLoading] = useState(true);
@@ -155,7 +159,10 @@ const Mypage = () => {
                 <div key={index} className={`${skeletonCard} w-60 h-60`}></div>
               ))
           ) : recentImages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center w-60 h-60 bg-gray-300">
+            <div
+              className="flex flex-col items-center justify-center w-60 h-60 bg-gray-300"
+              onClick={() => navigate("/create-image")}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -176,7 +183,11 @@ const Mypage = () => {
             </div>
           ) : (
             recentImages.map((image, index) => (
-              <div key={index} className="overflow-hidden w-60 h-60">
+              <div
+                key={index}
+                className="overflow-hidden w-60 h-60"
+                onClick={() => navigate("/recent-generation")}
+              >
                 <img
                   src={image.image_data}
                   alt={`Recent Image ${index}`}
@@ -218,7 +229,10 @@ const Mypage = () => {
                 <div key={index} className={`${skeletonCard} w-60 h-60`}></div>
               ))
           ) : collections.length === 0 ? (
-            <div className="flex flex-col items-center justify-center w-60 h-60 bg-gray-300">
+            <div
+              className="flex flex-col items-center justify-center w-60 h-60 bg-gray-300"
+              onClick={() => setIsModalOpen(true)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
