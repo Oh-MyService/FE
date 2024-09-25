@@ -4,6 +4,7 @@ import {
   Route,
   Routes,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import "./App.css";
 import LoginForm from "../src/pages/LoginForm";
@@ -22,6 +23,10 @@ import Main from "./pages/Main";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
+
+  // 로그인에서 헤더 숨김
+  const location = useLocation();
+  const shouldShowHeader = location.pathname !== "/login";
 
   return (
     <Router>

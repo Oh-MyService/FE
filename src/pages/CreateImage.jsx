@@ -186,6 +186,34 @@ const CreateImage = () => {
   // 프롬프트 상태 관리
   const [inputText, setInputText] = useState("");
 
+  // 옵션 상태 관리
+  const [cfgScale, setCfgScale] = useState(7);
+  const [samplingSteps, setSamplingSteps] = useState(50);
+  const [width, setWidth] = useState(512);
+  const [height, setHeight] = useState(512);
+  const [backgroundColor, setBackgroundColor] = useState("white");
+  const [seed, setSeed] = useState(0);
+
+  // 기타 상태 관리
+  const [alertMessage, setAlertMessage] = useState("");
+  const [selectedResultId, setSelectedResultId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
+
+  // 로컬 스토리지에서 불러온 결과 기록 상태 관리
+  const [results, setResults] = useState(() => {
+    const savedResults = localStorage.getItem("results");
+    const parsedResults = savedResults ? JSON.parse(savedResults) : [];
+    // 이미 이미지가 생성된 경우는 isLoading을 false로 설정
+    return parsedResults.map((result) =>
+      result.images.length > 0 ? { ...result, isLoading: false } : result
+    );
+  });
+
+  // 슬라이더 상태 관리
+  const sliderRef1 = useRef(null);
+  const sliderRef2 = useRef(null);
+
   // 한글 입력 제한 함수
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -198,33 +226,6 @@ const CreateImage = () => {
       setInputText(value); // 한글이 아닐 때만 상태 업데이트
     }
   };
-
-  // 고급 옵션 상태 관리
-  const [cfgScale, setCfgScale] = useState(7);
-  const [samplingSteps, setSamplingSteps] = useState(50);
-  const [width, setWidth] = useState(512);
-  const [height, setHeight] = useState(512);
-  const [backgroundColor, setBackgroundColor] = useState("white");
-  const [seed, setSeed] = useState(0);
-
-  // 기타 상태 관리
-  const [alertMessage, setAlertMessage] = useState("");
-  const [selectedResultId, setSelectedResultId] = useState(null);
-  const [results, setResults] = useState(() => {
-    // 컴포넌트가 로드될 때 localStorage에서 기록 불러오기
-    const savedResults = localStorage.getItem("results");
-    return savedResults ? JSON.parse(savedResults) : [];
-  });
-
-  // 로딩 상태 관리
-  const [isLoading, setIsLoading] = useState(false);
-
-  // 모달 상태 관리
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
-
-  // 슬라이더 상태 관리
-  const sliderRef1 = useRef(null);
-  const sliderRef2 = useRef(null);
 
   // 컬렉션 추가 모달
   const openAddModal = (imageId) => {
@@ -244,17 +245,6 @@ const CreateImage = () => {
   useEffect(() => {
     localStorage.setItem("results", JSON.stringify(results));
   }, [results]);
-
-  // isLoading 상태 확인
-  useEffect(() => {
-    const updatedResults = results.map((result) => {
-      if (result.images.length > 0) {
-        return { ...result, isLoading: false };
-      }
-      return result;
-    });
-    setResults(updatedResults);
-  }, []);
 
   const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
   const [moodPage, setMoodPage] = useState(0);
@@ -376,7 +366,6 @@ const CreateImage = () => {
         isLoading: true, // 새로운 결과는 로딩 중으로 설정
       };
       setResults((prevResults) => [newResult, ...prevResults]);
-      setIsLoading(true); // 로딩 상태 설정
       pollForImages(data.id, newResult); // 이미지 폴링 시작
     } catch (error) {
       console.error("Error occurred:", error);
@@ -408,7 +397,7 @@ const CreateImage = () => {
               result.id === promptId
                 ? {
                     ...result,
-                    images: [...result.images, ...data.results], // 이미지 데이터 추가
+                    images: [...result.images, ...data.results],
                     created_at: formatDateWithoutDot(
                       new Date(result.created_at)
                     ),
@@ -420,7 +409,6 @@ const CreateImage = () => {
         }
 
         if (data.results.length >= 4) {
-          setIsLoading(false); // 이미지 로딩 완료 시 로딩 상태 해제
           clearInterval(interval);
         }
       } catch (error) {
@@ -430,7 +418,6 @@ const CreateImage = () => {
             result.id === promptId ? { ...result, isLoading: false } : result
           )
         );
-        setIsLoading(false); // 오류 발생 시 로딩 상태 해제
         clearInterval(interval);
       }
     }, 10000);
@@ -495,7 +482,7 @@ const CreateImage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#F2F2F2] pt-10 pb-10 w-full">
       <div className="flex w-full max-w-[1400px] mx-auto px-4 justify-center">
-        <div className="flex flex-col w-1/2 px-4 mt-10">
+        <div className="flex flex-col w-1/2 px-4 mt-20">
           <div className="flex flex-col justify-start items-start">
             <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
               상상 속 패턴을 지금 만들어보세요!
@@ -523,7 +510,7 @@ const CreateImage = () => {
           <div className="w-full h-auto mt-8 rounded-lg border-3 border-[#8194EC] p-4 bg-[#F2F2F2]">
             <div className="relative w-full">
               <span className="block text-2xl font-['pretendard-bold'] text-left text-black mb-3">
-                고급 설정
+                설정
               </span>
               <div className="grid gap-4">
                 <div className="flex flex-wrap items-center">
