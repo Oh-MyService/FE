@@ -127,6 +127,9 @@ const Mypage = () => {
   return (
     <div className="flex justify-start items-start bg-[#F2F2F2] min-h-screen">
       <div className="flex flex-col text-left mx-auto my-auto p-4 sm:p-8 mt-20">
+        {isModalOpen && (
+          <NewCollectionModal onClose={() => setIsModalOpen(false)} />
+        )}
         <div className="flex items-center">
           <button
             className="bg-transparent p-2 flex items-center"
@@ -185,7 +188,7 @@ const Mypage = () => {
             recentImages.map((image, index) => (
               <div
                 key={index}
-                className="overflow-hidden w-60 h-60"
+                className="overflow-hidden w-60 h-60 cursor-pointer"
                 onClick={() => navigate("/recent-generation")}
               >
                 <img
