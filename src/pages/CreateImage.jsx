@@ -204,11 +204,28 @@ const CreateImage = () => {
   const [results, setResults] = useState(() => {
     const savedResults = localStorage.getItem("results");
     const parsedResults = savedResults ? JSON.parse(savedResults) : [];
+
     // 이미 이미지가 생성된 경우는 isLoading을 false로 설정
     return parsedResults.map((result) =>
-      result.images.length > 0 ? { ...result, isLoading: false } : result
+      result.images && result.images.length > 0
+        ? { ...result, isLoading: false }
+        : result
     );
   });
+
+  // useEffect를 통해 컴포넌트가 마운트될 때 로딩 상태를 업데이트
+  useEffect(() => {
+    const updatedResults = results.map((result) => {
+      // 이미지가 이미 생성된 경우 isLoading을 false로 설정
+      if (result.images.length > 0) {
+        return { ...result, isLoading: false };
+      }
+      return result;
+    });
+
+    setResults(updatedResults); // 상태 업데이트
+    localStorage.setItem("results", JSON.stringify(updatedResults)); // 로컬 스토리지 업데이트
+  }, []);
 
   // 슬라이더 상태 관리
   const sliderRef1 = useRef(null);
@@ -240,11 +257,6 @@ const CreateImage = () => {
     if (sliderRef1.current) applySliderStyles(sliderRef1.current);
     if (sliderRef2.current) applySliderStyles(sliderRef2.current);
   }, []);
-
-  // 생성 기록이 변경될 때마다 localStorage에 저장
-  useEffect(() => {
-    localStorage.setItem("results", JSON.stringify(results));
-  }, [results]);
 
   const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
   const [moodPage, setMoodPage] = useState(0);
@@ -481,8 +493,8 @@ const CreateImage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F2F2F2] pt-10 pb-10 w-full">
-      <div className="flex w-full max-w-[1400px] mx-auto px-4 justify-center">
-        <div className="flex flex-col w-1/2 px-4 mt-20">
+      <div className="flex w-full max-w-[1400px] mx-auto px-4 justify-center mt-10 mb-[-40px]">
+        <div className="flex flex-col w-1/2 px-4 mt-10">
           <div className="flex flex-col justify-start items-start">
             <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
               상상 속 패턴을 지금 만들어보세요!
