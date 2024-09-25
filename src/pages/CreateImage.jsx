@@ -245,6 +245,17 @@ const CreateImage = () => {
     localStorage.setItem("results", JSON.stringify(results));
   }, [results]);
 
+  // isLoading 상태 확인
+  useEffect(() => {
+    const updatedResults = results.map((result) => {
+      if (result.images.length > 0) {
+        return { ...result, isLoading: false };
+      }
+      return result;
+    });
+    setResults(updatedResults);
+  }, []);
+
   const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
   const [moodPage, setMoodPage] = useState(0);
   const [selectedRepeatDirection, setSelectedRepeatDirection] = useState(null);
