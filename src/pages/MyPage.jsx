@@ -268,7 +268,7 @@ const Mypage = () => {
               ))
           ) : collections.length === 0 ? (
             <div
-              className="flex flex-col items-center justify-center w-60 h-60 bg-gray-300"
+              className="flex flex-col items-center justify-center w-60 h-60 bg-gray-300 cursor-pointer"
               onClick={openCreateModal}
             >
               <svg
