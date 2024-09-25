@@ -4,7 +4,6 @@ import {
   Route,
   Routes,
   Navigate,
-  useLocation,
 } from "react-router-dom";
 import "./App.css";
 import LoginForm from "../src/pages/LoginForm";
@@ -25,13 +24,12 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
 
   // 로그인에서 헤더 숨김
-  const location = useLocation();
-  const shouldShowHeader = location.pathname !== "/login";
+  const isLoginPage = window.location.pathname === "/login";
 
   return (
     <Router>
       <div className="App">
-        <Header token={token} setToken={setToken} />
+        {!isLoginPage && <Header token={token} setToken={setToken} />}
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/SignupForm" element={<SignupForm />} />
