@@ -15,7 +15,7 @@ const Mypage = () => {
   const [collections, setCollections] = useState([]);
 
   // 모달 상태 관리
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 
   // 로딩 상태 관리
   const [isLoading, setIsLoading] = useState(true);
@@ -124,12 +124,47 @@ const Mypage = () => {
     fetchData();
   }, [token, userId]);
 
+  // 모달 열기 및 닫기
+  const openCreateModal = () => setCreateModalOpen(true);
+  const closeCreateModal = () => setCreateModalOpen(false);
+
+  // 컬렉션 생성 처리
+  const handleCreateCollection = async (collectionName) => {
+    const newCollection = {
+      name: collectionName,
+      images: Array(4).fill({ image_data: "" }),
+    };
+
+    try {
+      const response = await fetch(
+        "http://118.67.128.129:28282/api/collections",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${token}`,
+          },
+          body: new URLSearchParams({
+            collection_name: collectionName,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setCollections([newCollection, ...collections]);
+        closeCreateModal();
+      } else {
+        console.error("Failed to create collection:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error creating collection:", error);
+    }
+  };
+
   return (
     <div className="flex justify-start items-start bg-[#F2F2F2] min-h-screen">
       <div className="flex flex-col text-left mx-auto my-auto p-4 sm:p-8 mt-20">
-        {isModalOpen && (
-          <NewCollectionModal onClose={() => setIsModalOpen(false)} />
-        )}
         <div className="flex items-center">
           <button
             className="bg-transparent p-2 flex items-center"
@@ -234,7 +269,7 @@ const Mypage = () => {
           ) : collections.length === 0 ? (
             <div
               className="flex flex-col items-center justify-center w-60 h-60 bg-gray-300"
-              onClick={() => setIsModalOpen(true)}
+              onClick={openCreateModal}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -293,6 +328,11 @@ const Mypage = () => {
             ))
           )}
         </div>
+        <NewCollectionModal
+          isOpen={isCreateModalOpen}
+          onClose={closeCreateModal}
+          onCreate={handleCreateCollection}
+        />
       </div>
     </div>
   );
