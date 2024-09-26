@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import DeleteModal from '../components/DeleteModal';
 import EditModal from '../components/NameEditModal';
@@ -11,10 +11,10 @@ const CollectionName = () => {
     const token = localStorage.getItem('token');
 
     // 컬렉션 및 이미지 상태 관리
-    const [collection, setCollection] = useState(location.state?.collection || null);
-    const [images, setImages] = useState(collection?.images || []); // 초기 이미지를 빈 배열로 설정
+    const [collection, setCollection] = useState(location.state?.collection || null); // 방어 코드 추가
+    const [images, setImages] = useState(collection?.images || []); // collection이 null일 경우 빈 배열로 설정
 
-    const [isLoading, setIsLoading] = useState(!collection); // 컬렉션이 없을 때 로딩 상태 true
+    // 모달 및 기타 상태 관리
     const [fullScreenImage, setFullScreenImage] = useState(null);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -22,6 +22,33 @@ const CollectionName = () => {
     const [addCollectionId, setAddCollectionId] = useState(null);
     const [editIndex, setEditIndex] = useState(null);
     const [deleteId, setDeleteId] = useState(null);
+
+    // 만약 collection이 없으면 데이터 로딩 또는 에러 처리 로직 추가
+    useEffect(() => {
+        if (!collection) {
+            const fetchCollection = async () => {
+                try {
+                    const response = await fetch(`http://118.67.128.129:28282/api/collections/${collectionId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        setCollection(data); // 컬렉션 데이터 설정
+                        setImages(data.images || []); // 이미지 데이터 설정
+                    } else {
+                        console.error('Failed to fetch collection data');
+                    }
+                } catch (error) {
+                    console.error('An error occurred while fetching collection data:', error);
+                }
+            };
+            fetchCollection();
+        }
+    }, [collection, collectionId, token]);
 
     // 이미지 전체 화면
     const showFullScreenImage = (imageUrl) => {
@@ -135,46 +162,13 @@ const CollectionName = () => {
         openDeleteModal(id);
     };
 
-    // 데이터 로딩 처리
-    useEffect(() => {
-        if (!collection) {
-            const fetchCollection = async () => {
-                try {
-                    const response = await fetch(`http://118.67.128.129:28282/api/collections/${collectionId}`, {
-                        method: 'GET',
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        setCollection(data);
-                        setImages(data.images || []); // images가 없을 경우 빈 배열로 설정
-                    } else {
-                        console.error('Failed to fetch collection');
-                    }
-                } catch (error) {
-                    console.error('Error fetching collection:', error);
-                } finally {
-                    setIsLoading(false); // 로딩 완료 처리
-                }
-            };
-
-            fetchCollection();
-        }
-    }, [collection, collectionId, token]);
-
-    // 로딩 중일 때 화면
-    if (isLoading) {
-        return <div>로딩 중...</div>;
-    }
-
     return (
         <div className="bg-[#F2F2F2] min-h-screen">
             <div className="container mx-auto px-4 pt-24">
                 <div className="flex justify-between items-center py-4">
                     <div className="flex items-center space-x-4">
                         <button onClick={() => navigate('/my-collection')}>
+                            {/* 뒤로가기 버튼 */}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -186,11 +180,13 @@ const CollectionName = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                             </svg>
                         </button>
-                        <h1 className="text-3xl font-['pretendard-extrabold']">{collection?.name || '컬렉션 이름'}</h1>
+
+                        {/* collection이 있을 때만 렌더링 */}
+                        {collection && <h1 className="text-3xl font-['pretendard-extrabold']">{collection.name}</h1>}
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                openEditModal(0);
+                                openEditModal(0); // 컬렉션 이름 편집 모달 열기
                             }}
                             className="focus:outline-none"
                         >
@@ -222,15 +218,17 @@ const CollectionName = () => {
                                     src={image.image_data}
                                     alt={`${collection.name} Image`}
                                     className="w-full h-full object-cover"
-                                    onClick={() => showFullScreenImage(image.image_data)}
+                                    onClick={() => showFullScreenImage(image.image_data)} // 이미지 클릭 시 전체 화면으로 보기
                                 />
                                 <div className="flex justify-between items-center w-full mt-2 text-gray-600">
-                                    <p className="text-gray-600">{image.created_at.split('T')[0]}</p>
+                                    <p className="text-gray-600">
+                                        {image.created_at.split('T')[0]} {/* 이미지 생성 날짜 표시 */}
+                                    </p>
                                     <div className="flex items-center space-x-2">
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                openAddModal(image.id);
+                                                openAddModal(image.id); // 이미지 추가 모달 열기
                                             }}
                                             className="focus:outline-none"
                                         >
@@ -250,7 +248,7 @@ const CollectionName = () => {
                                             </svg>
                                         </button>
                                         <button
-                                            onClick={(e) => handleDeleteImage(image.id, e)}
+                                            onClick={(e) => handleDeleteImage(image.id, e)} // 이미지 삭제 모달 열기
                                             className="focus:outline-none"
                                         >
                                             <svg
@@ -269,7 +267,9 @@ const CollectionName = () => {
                                             </svg>
                                         </button>
                                         <button
-                                            onClick={() => handleSaveImage(image.image_data, image.id)}
+                                            onClick={
+                                                (e) => handleSaveImage(image.image_data, image.id) // 이미지 저장 기능 호출
+                                            }
                                             className="focus:outline-none"
                                         >
                                             <svg
@@ -294,6 +294,7 @@ const CollectionName = () => {
                     </div>
                 ) : (
                     <div className="flex flex-col items-center justify-center min-h-[60vh]">
+                        {/* 이미지가 없을 때의 메시지 및 버튼 */}
                         <p className="text-center font-['pretendard-extrabold'] text-5xl mb-4 text-black leading-snug">
                             저장된 패턴이 없습니다.
                         </p>
