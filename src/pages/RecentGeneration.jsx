@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from '../components/DeleteModal';
 import CollectionAddModal from '../components/CollectionAddModal';
+import Header from '../components/header'; // Header 추가
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
@@ -30,9 +31,8 @@ const SkeletonGroup = () => (
     </div>
 );
 
-const RecentGeneration = () => {
+const RecentGeneration = ({ token, setToken }) => {
     const navigate = useNavigate();
-    const token = localStorage.getItem('token');
     const userId = localStorage.getItem('user_id');
 
     // 모달 및 기타 상태 관리
@@ -41,9 +41,7 @@ const RecentGeneration = () => {
     const [isAddModalOpen, setAddModalOpen] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
     const [addCollectionId, setAddCollectionId] = useState(null);
-    const [fullScreenImage, setFullScreenImage] = useState(null);
-
-    // 로딩 상태 관리
+    const [fullScreenImage, setFullScreenImage] = useState(null); // fullScreenImage 상태
     const [isLoading, setIsLoading] = useState(true);
 
     // '맨위로가기' 버튼 가시성 상태 관리
@@ -102,12 +100,12 @@ const RecentGeneration = () => {
     }, [userId, token]);
 
     // 이미지 클릭 시 전체 화면
-    const showFullScreenImage = (imageUrl, imageId) => {
-        setFullScreenImage(imageUrl);
+    const showFullScreenImage = (imageUrl) => {
+        setFullScreenImage(imageUrl); // 전체 화면 이미지 활성화
     };
 
     const closeFullScreen = () => {
-        setFullScreenImage(null);
+        setFullScreenImage(null); // 전체 화면 이미지 닫기
     };
 
     // 이미지 삭제
@@ -184,24 +182,9 @@ const RecentGeneration = () => {
 
     return (
         <div className="bg-[#F2F2F2] min-h-screen pb-5">
+            {!fullScreenImage && <Header token={token} setToken={setToken} />}{' '}
+            {/* fullScreenImage 없을 때만 Header 렌더링 */}
             <div className="mx-auto px-4 pt-24 max-w-[85%]">
-                <div className="flex justify-between items-center py-4">
-                    <div className="flex items-center space-x-4">
-                        <button onClick={() => navigate('/my-page')}>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="3.5"
-                                stroke="currentColor"
-                                className="w-8 h-8"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                            </svg>
-                        </button>
-                        <h1 className="text-3xl font-['pretendard-extrabold']">최근 생성 패턴</h1>
-                    </div>
-                </div>
                 {isLoading ? (
                     <div>
                         {Array.from({ length: 3 }).map((_, index) => (
@@ -243,7 +226,7 @@ const RecentGeneration = () => {
                                             alt={'Image ID: ' + item.id}
                                             className="w-full h-full object-cover"
                                             effect="blur"
-                                            onClick={() => showFullScreenImage(item.image_data, item.id)}
+                                            onClick={() => showFullScreenImage(item.image_data)}
                                         />
                                         <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
                                             <div className="flex items-center space-x-2">
@@ -324,14 +307,7 @@ const RecentGeneration = () => {
                         onClick={closeFullScreen}
                     >
                         <div className="grid grid-cols-3 gap-0" style={{ width: '80vw', height: '80vh' }}>
-                            {Array.from({ length: 9 }).map((_, index) => (
-                                <img
-                                    key={index}
-                                    src={fullScreenImage}
-                                    alt="Full Screen Grid"
-                                    className="w-full h-full object-cover"
-                                />
-                            ))}
+                            <img src={fullScreenImage} alt="Full Screen" className="w-full h-full object-cover" />
                         </div>
                     </div>
                 )}
