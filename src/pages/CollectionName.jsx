@@ -11,8 +11,8 @@ const CollectionName = () => {
     const token = localStorage.getItem('token');
 
     // 컬렉션 및 이미지 상태 관리
-    const [collection, setCollection] = useState(location.state?.collection || null); // 방어 코드 추가
-    const [images, setImages] = useState(collection?.images || []); // collection이 null일 경우 빈 배열로 설정
+    const [collection, setCollection] = useState(location.state.collection);
+    const [images, setImages] = useState(collection.images);
 
     // 모달 및 기타 상태 관리
     const [fullScreenImage, setFullScreenImage] = useState(null);
@@ -22,33 +22,6 @@ const CollectionName = () => {
     const [addCollectionId, setAddCollectionId] = useState(null);
     const [editIndex, setEditIndex] = useState(null);
     const [deleteId, setDeleteId] = useState(null);
-
-    // 만약 collection이 없으면 데이터 로딩 또는 에러 처리 로직 추가
-    useEffect(() => {
-        if (!collection) {
-            const fetchCollection = async () => {
-                try {
-                    const response = await fetch(`http://118.67.128.129:28282/api/collections/${collectionId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        setCollection(data); // 컬렉션 데이터 설정
-                        setImages(data.images || []); // 이미지 데이터 설정
-                    } else {
-                        console.error('Failed to fetch collection data');
-                    }
-                } catch (error) {
-                    console.error('An error occurred while fetching collection data:', error);
-                }
-            };
-            fetchCollection();
-        }
-    }, [collection, collectionId, token]);
 
     // 이미지 전체 화면
     const showFullScreenImage = (imageUrl) => {
@@ -180,9 +153,7 @@ const CollectionName = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                             </svg>
                         </button>
-
-                        {/* collection이 있을 때만 렌더링 */}
-                        {collection && <h1 className="text-3xl font-['pretendard-extrabold']">{collection.name}</h1>}
+                        <h1 className="text-3xl font-['pretendard-extrabold']">{collection.name}</h1>
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
