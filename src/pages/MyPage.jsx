@@ -253,7 +253,11 @@ const Mypage = () => {
                         </div>
                     ) : (
                         collections.map((collection, index) => (
-                            <div key={index} className="flex flex-col items-center relative">
+                            <div
+                                key={index}
+                                className="flex flex-col items-center relative cursor-pointer"
+                                onClick={() => navigate(`/collection/${collection.name}`)} // 컬렉션 이름에 따라 페이지 이동
+                            >
                                 <div className="grid grid-cols-2 gap-1 w-60 h-60">
                                     {collection.images
                                         .concat(
