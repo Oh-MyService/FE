@@ -36,7 +36,7 @@ const LoginForm = ({ setToken }) => {
                     localStorage.setItem('user_id', data.user_id);
                     setToken(data.access_token);
                     setResult('Login successful: ' + JSON.stringify(data, null, 2));
-                    navigate('/'); // 로그인 성공 시 메인 페이지로 이동
+                    navigate('/create-image'); // 로그인 성공 시 메인 페이지로 이동
                 } // 401 에러일 경우 메시지 설정
                 else if (response.status === 401) {
                     setLoginErrorMessage('아이디 혹은 비밀번호가 맞지 않습니다.');
