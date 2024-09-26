@@ -15,7 +15,7 @@ const ArchiveDeleteModal = ({ isOpen, onRequestClose, onDelete }) => {
             <div className="flex flex-col items-center justify-center relative p-1 h-full">
                 <button
                     onClick={onRequestClose}
-                    className="absolute top-4 right-0 text-lg leading-none px-1 py-1"
+                    className="absolute top-0 right-0 text-lg leading-none px-1 py-1"
                     aria-label="Close Modal"
                 >
                     <svg
@@ -29,8 +29,7 @@ const ArchiveDeleteModal = ({ isOpen, onRequestClose, onDelete }) => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-                <div className="mt-6 w-full">
-                    {' '}
+                <div className="mt-10 w-full">
                     <h2 className="text-xl text-white font-['pretendard-semibold'] text-center">
                         아카이브에서 삭제하시겠습니까?
                     </h2>
