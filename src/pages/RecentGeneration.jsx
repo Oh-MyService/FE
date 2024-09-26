@@ -245,7 +245,7 @@ const RecentGeneration = () => {
                                             effect="blur"
                                             onClick={() => showFullScreenImage(item.image_data, item.id)}
                                         />
-                                        <div className="flex justify-between items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
+                                        <div className="flex justify-end items-center w-full mt-2 font-['pretendard-medium'] text-gray-600">
                                             <div className="flex items-center space-x-2">
                                                 <button
                                                     onClick={(e) => {
