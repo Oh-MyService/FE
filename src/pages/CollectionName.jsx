@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import DeleteModal from '../components/DeleteModal';
+import ArchiveDeleteModal from '../components/ArchiveDeleteModal';
 import EditModal from '../components/NameEditModal';
 import CollectionAddModal from '../components/CollectionAddModal';
 
@@ -16,7 +16,7 @@ const CollectionName = () => {
 
     // 모달 및 기타 상태 관리
     const [fullScreenImage, setFullScreenImage] = useState(null);
-    const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [isArchiveDeleteModalOpen, setArchiveDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     const [isAddModalOpen, setAddModalOpen] = useState(false);
     const [addCollectionId, setAddCollectionId] = useState(null);
@@ -33,13 +33,13 @@ const CollectionName = () => {
     };
 
     // 삭제 모달
-    const openDeleteModal = (id) => {
+    const openArchiveDeleteModal = (id) => {
         setDeleteId(id);
-        setDeleteModalOpen(true);
+        setArchiveDeleteModalOpen(true);
     };
 
-    const closeDeleteModal = () => {
-        setDeleteModalOpen(false);
+    const closeArchiveDeleteModal = () => {
+        setArchiveDeleteModalOpen(false);
     };
 
     // 편집 모달
@@ -102,7 +102,7 @@ const CollectionName = () => {
 
             if (response.ok) {
                 setImages((prevImages) => prevImages.filter((image) => image.id !== deleteId));
-                closeDeleteModal();
+                closeArchiveDeleteModal();
             } else {
                 console.error('Failed to delete image');
             }
@@ -132,7 +132,7 @@ const CollectionName = () => {
     // 이미지 삭제 모달 열기
     const handleDeleteImage = (id, e) => {
         e.stopPropagation();
-        openDeleteModal(id);
+        openArchiveDeleteModal(id);
     };
 
     return (
@@ -296,7 +296,11 @@ const CollectionName = () => {
                 )}
                 {/* 모달 컴포넌트 렌더링 */}
                 <EditModal isOpen={isEditModalOpen} onClose={closeEditModal} onEdit={editCollection} />
-                <DeleteModal isOpen={isDeleteModalOpen} onRequestClose={closeDeleteModal} onDelete={deleteCollection} />
+                <ArchiveDeleteModal
+                    isOpen={isArchiveDeleteModalOpen}
+                    onRequestClose={closeArchiveDeleteModal}
+                    onDelete={deleteCollection}
+                />
                 {isAddModalOpen && <CollectionAddModal onClose={closeAddModal} resultId={addCollectionId} />}
             </div>
         </div>
