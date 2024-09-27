@@ -348,12 +348,12 @@ const CollectionName = () => {
         )}
         {fullScreenImage && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black bg-opacity-85 flex items-start justify-center p-4 z-[1000]"
             onClick={closeFullScreen}
           >
             <div
               className="grid grid-cols-3 gap-0"
-              style={{ width: "80vw", height: "80vh" }}
+              style={{ width: "45vw", height: "45vh", marginTop: "3vh" }}
             >
               {Array.from({ length: 9 }).map((_, index) => (
                 <img
