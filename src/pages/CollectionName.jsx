@@ -11,7 +11,6 @@ const CollectionName = () => {
 
   // 이미지 상태 관리
   const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [collectionName, setCollectionName] = useState("");
 
   // 모달 및 기타 상태 관리
@@ -85,8 +84,6 @@ const CollectionName = () => {
         }
       } catch (error) {
         console.error("Error fetching images:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
