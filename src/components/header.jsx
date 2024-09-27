@@ -12,7 +12,7 @@ const Header = ({ token, setToken }) => {
       setActiveTab("pattern");
     } else if (
       location.pathname === "/my-page" ||
-      location.pathname === "/recent-image" ||
+      location.pathname === "/recent-generation" ||
       location.pathname === "/my-collection" ||
       location.pathname.startsWith("/collection/")
     ) {
