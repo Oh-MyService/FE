@@ -176,9 +176,7 @@ const MyCollection = () => {
 
   // 컬렉션 상세보기
   const handleCollectionClick = (collection) => {
-    navigate(`/collection/${collection.id}`, {
-      state: { collectionName: collection.name },
-    });
+    navigate(`/collection/${collection.id}`);
   };
 
   return (

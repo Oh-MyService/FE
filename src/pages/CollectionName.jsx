@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ArchiveDeleteModal from "../components/ArchiveDeleteModal";
 import EditModal from "../components/NameEditModal";
 import CollectionAddModal from "../components/CollectionAddModal";
 
 const CollectionName = () => {
-  const { state } = useLocation();
   const { collectionId } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("user_id");
 
   // 컬렉션 상태 관리
+  const [collectionName, setCollectionName] = useState("");
   const [images, setImages] = useState([]);
-  const [collectionName, setCollectionName] = useState(
-    state?.collectionName || ""
-  );
 
   // 모달 및 기타 상태 관리
   const [fullScreenImage, setFullScreenImage] = useState(null);
@@ -64,12 +62,13 @@ const CollectionName = () => {
     setAddModalOpen(false);
   };
 
-  // 이미지를 불러오기
+  // 컬렉션 및 이미지 불러오기
   useEffect(() => {
-    const fetchImages = async () => {
+    const fetchCollectionDetails = async () => {
       try {
-        const response = await fetch(
-          `http://118.67.128.129:28282/api/collections/${collectionId}/images`,
+        // 1. 유저의 모든 컬렉션 불러오기
+        const collectionsResponse = await fetch(
+          `http://118.67.128.129:28282/api/collections/user/${userId}`,
           {
             method: "GET",
             headers: {
@@ -79,19 +78,46 @@ const CollectionName = () => {
           }
         );
 
-        if (response.ok) {
-          const data = await response.json();
-          setImages(data.images.reverse()); // 최신순으로 정렬
+        if (collectionsResponse.ok) {
+          const collectionsData = await collectionsResponse.json();
+          const selectedCollection = collectionsData.collection_list.find(
+            (collection) => collection.collection_id.toString() === collectionId
+          );
+
+          if (selectedCollection) {
+            setCollectionName(selectedCollection.collection_name); // 해당 컬렉션의 이름 설정
+          } else {
+            console.error("Collection not found");
+          }
+
+          // 2. 이미지 정보 불러오기
+          const imagesResponse = await fetch(
+            `http://118.67.128.129:28282/api/collections/${collectionId}/images`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (imagesResponse.ok) {
+            const imagesData = await imagesResponse.json();
+            setImages(imagesData.images.reverse()); // 최신순으로 정렬
+          } else {
+            console.error("Failed to fetch images");
+          }
         } else {
-          console.error("Failed to fetch images");
+          console.error("Failed to fetch collections");
         }
       } catch (error) {
-        console.error("Error fetching images:", error);
+        console.error("Error fetching collection details:", error);
       }
     };
 
-    fetchImages();
-  }, [collectionId, token]);
+    fetchCollectionDetails();
+  }, [collectionId, userId, token]);
 
   // 컬렉션 이름 수정
   const editCollection = async (newName) => {
