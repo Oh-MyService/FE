@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ArchiveDeleteModal from "../components/ArchiveDeleteModal";
 import EditModal from "../components/NameEditModal";
 import CollectionAddModal from "../components/CollectionAddModal";
 
 const CollectionName = () => {
+  const { state } = useLocation();
   const { collectionId } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  // 이미지 상태 관리
+  // 컬렉션 상태 관리
   const [images, setImages] = useState([]);
-  const [collectionName, setCollectionName] = useState("");
+  const [collectionName, setCollectionName] = useState(
+    state?.collectionName || ""
+  );
 
   // 모달 및 기타 상태 관리
   const [fullScreenImage, setFullScreenImage] = useState(null);
