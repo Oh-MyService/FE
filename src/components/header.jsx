@@ -1,13 +1,23 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import logo from "../assets/logo.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = ({ token, setToken }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("");
 
+  useEffect(() => {
+    if (location.pathname === "/create-image") {
+      setActiveTab("pattern");
+    } else if (location.pathname === "/my-page") {
+      setActiveTab("mypage");
+    } else {
+      setActiveTab("");
+    }
+  }, [location.pathname]);
+
   const goToMyPage = () => {
-    setActiveTab("mypage");
     navigate("/my-page");
   };
 
@@ -21,7 +31,6 @@ const Header = ({ token, setToken }) => {
   };
 
   const goToCreateImage = () => {
-    setActiveTab("pattern");
     navigate("/create-image");
   };
 
