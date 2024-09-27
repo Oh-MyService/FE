@@ -10,7 +10,12 @@ const Header = ({ token, setToken }) => {
   useEffect(() => {
     if (location.pathname === "/create-image") {
       setActiveTab("pattern");
-    } else if (location.pathname === "/my-page") {
+    } else if (
+      location.pathname === "/my-page" ||
+      location.pathname === "/recent-image" ||
+      location.pathname === "/my-collection" ||
+      location.pathname.startsWith("/collection/")
+    ) {
       setActiveTab("mypage");
     } else {
       setActiveTab("");
