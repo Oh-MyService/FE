@@ -341,7 +341,7 @@ const RecentGeneration = () => {
           >
             <div
               className="grid grid-cols-3 gap-0"
-              style={{ width: "45vw", height: "45vh" }}
+              style={{ width: "45vw", height: "45vh", marginTop: "5vh" }}
             >
               {Array.from({ length: 9 }).map((_, index) => (
                 <img
