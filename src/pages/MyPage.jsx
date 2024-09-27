@@ -130,11 +130,6 @@ const Mypage = () => {
 
   // 컬렉션 생성 처리
   const handleCreateCollection = async (collectionName) => {
-    const newCollection = {
-      name: collectionName,
-      images: Array(4).fill({ image_data: "" }),
-    };
-
     try {
       const response = await fetch(
         "http://118.67.128.129:28282/api/collections",
@@ -152,6 +147,12 @@ const Mypage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        const newCollection = {
+          id: data.collection.collection_id,
+          name: data.collection.collection_name,
+          images: Array(4).fill({ image_data: "" }),
+          createdAt: data.collection.created_at,
+        };
         setCollections([newCollection, ...collections]);
         closeCreateModal();
       } else {
