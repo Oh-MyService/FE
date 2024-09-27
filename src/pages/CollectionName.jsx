@@ -8,10 +8,12 @@ const CollectionName = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
 
   // 컬렉션 및 이미지 상태 관리
-  const [collection, setCollection] = useState(null);
+  const [collections, setCollections] = useState(null);
   const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 모달 및 기타 상태 관리
   const [fullScreenImage, setFullScreenImage] = useState(null);
@@ -61,12 +63,12 @@ const CollectionName = () => {
     setAddModalOpen(false);
   };
 
-  // 컬렉션 및 이미지 불러오기
+  // 컬렉션 정보 불러오기
   useEffect(() => {
-    const fetchCollectionDetails = async () => {
+    const fetchCollections = async (userId) => {
       try {
         const response = await fetch(
-          `http://118.67.128.129:28282/api/collections/${collectionId}`,
+          `http://118.67.128.129:28282/api/collections/user/${userId}`,
           {
             method: "GET",
             headers: {
@@ -78,34 +80,49 @@ const CollectionName = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setCollection(data.collection);
+          const collectionsData = await Promise.all(
+            data.collection_list.map(async (collection) => {
+              const imagesResponse = await fetch(
+                `http://118.67.128.129:28282/api/collections/${collection.collection_id}/images`,
+                {
+                  method: "GET",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
 
-          const imagesResponse = await fetch(
-            `http://118.67.128.129:28282/api/collections/${collectionId}/images`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
+              const imagesData = imagesResponse.ok
+                ? await imagesResponse.json()
+                : { images: [] };
+
+              return {
+                id: collection.collection_id,
+                name: collection.collection_name,
+                images: imagesData.images.reverse(), // 최신순
+                createdAt: collection.created_at,
+              };
+            })
           );
-          if (imagesResponse.ok) {
-            const imagesData = await imagesResponse.json();
-            setImages(imagesData.images.reverse()); // 최신순 정렬
-          } else {
-            console.error("Failed to fetch images");
-          }
+
+          collectionsData.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+
+          setCollections(collectionsData);
         } else {
-          console.error("Failed to fetch collection details");
+          console.error("Failed to fetch collections:", response.statusText);
         }
       } catch (error) {
-        console.error("Error fetching collection details:", error);
+        console.error("Error fetching collections:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchCollectionDetails();
-  }, [collectionId, token]);
+    fetchCollections(userId);
+  }, [userId, token]);
 
   // 컬렉션 이름 수정
   const editCollection = async (newName) => {
@@ -122,7 +139,7 @@ const CollectionName = () => {
         }
       );
       if (response.ok) {
-        setCollection((prevCollection) => ({
+        setCollections((prevCollection) => ({
           ...prevCollection,
           name: newName,
         }));
@@ -211,7 +228,7 @@ const CollectionName = () => {
               </svg>
             </button>
             <h1 className="text-3xl font-['pretendard-extrabold']">
-              {collection.name}
+              {collections[0].name}
             </h1>
             <button
               onClick={(e) => {
@@ -237,16 +254,16 @@ const CollectionName = () => {
             </button>
           </div>
         </div>
-        {images.length > 0 ? (
+        {collections.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mt-8">
-            {images.map((image, index) => (
+            {collections[0].images.map((image, index) => (
               <div
                 key={index}
                 className="flex flex-col items-center cursor-pointer relative aspect-square w-full font-['pretendard-medium']"
               >
                 <img
                   src={image.image_data}
-                  alt={`${collection.name} Image`}
+                  alt={`${collections[0].name} Image`}
                   className="w-full h-full object-cover"
                   onClick={() => showFullScreenImage(image.image_data)} // 이미지 클릭 시 전체 화면으로 보기
                 />
