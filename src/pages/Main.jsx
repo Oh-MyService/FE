@@ -3,7 +3,10 @@ import TipImage from '../assets/tip_img.png';
 
 function Main() {
     return (
-        <div className="bg-[#F2F2F2] h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center items-start p-8 relative overflow-hidden">
+        <div
+            className="bg-[#F2F2F2] h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center items-start p-8 relative overflow-hidden"
+            style={{ paddingTop: '100px' }}
+        >
             <style>
                 {`
         @media (max-width: 768px) {
