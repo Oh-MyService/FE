@@ -30,7 +30,6 @@ function App() {
   const isLoginPage = location.pathname === "/login";
 
   return (
-    <Router>
       <div className="App">
         {!isLoginPage && <Header token={token} setToken={setToken} />}
         <Routes>
@@ -63,7 +62,6 @@ function App() {
           />
         </Routes>
       </div>
-    </Router>
   );
 }
 
