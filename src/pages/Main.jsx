@@ -25,7 +25,7 @@ function Main() {
 
             {/* 이미지 삽입 */}
             <div className="flex justify-center items-center w-full" style={{ marginTop: '60px' }}>
-                <img src={TipImage} alt="Tip Image" className="w-3/4 h-auto" style={{ border: '26px solid #E4E4E4' }} />
+                <img src={TipImage} alt="Tip Image" className="w-3/4 h-auto" style={{ borderRadius: '26px' }} />
             </div>
         </div>
     );
