@@ -1,13 +1,9 @@
 import React from 'react';
-import BG_pattern from '../assets/home_empty_ver.png';
 import TipImage from '../assets/tip_img.png';
 
 function Main() {
     return (
-        <div
-            className="bg-[#F2F2F2] h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center items-start p-8 relative overflow-hidden"
-            style={{ backgroundImage: `url(${BG_pattern})` }}
-        >
+        <div className="bg-[#F2F2F2] h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col justify-center items-start p-8 relative overflow-hidden">
             <style>
                 {`
         @media (max-width: 768px) {
@@ -24,12 +20,12 @@ function Main() {
                 세상의 모든 원단 디자인, 디자이노블에서
             </h1>
             <p className="text-2xl text-left font-['pretendard-medium'] pl-20 pt-10 z-10">
-                원하는 패턴이 없으신가요? AI를 사용해 직접 만들어보세요!
+                원하는 패턴이 없으신가요? <br /> AI를 사용해 직접 만들어보세요!
             </p>
 
             {/* 이미지 삽입 */}
-            <div className="flex justify-center items-center w-full mt-10">
-                <img src={TipImage} alt="Tip Image" className="w-3/4 h-auto" />
+            <div className="flex justify-center items-center w-full" style={{ marginTop: '60px' }}>
+                <img src={TipImage} alt="Tip Image" className="w-3/4 h-auto" style={{ border: '26px solid #E4E4E4' }} />
             </div>
         </div>
     );
