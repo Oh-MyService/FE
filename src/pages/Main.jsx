@@ -1,5 +1,5 @@
 import React from 'react';
-import TipImage from '../assets/tip_img.png';
+import TipImage from '../assets/tip.png';
 
 function Main() {
     return (
@@ -22,7 +22,10 @@ function Main() {
             <h1 className="text-6xl font-['pretendard-black'] text-left pl-80 z-10">
                 세상의 모든 원단 디자인, 디자이노블에서
             </h1>
-            <p className="text-2xl text-left font-['pretendard-medium'] pl-80 pt-10 z-10" style={{ lineHeight: '2em' }}>
+            <p
+                className="text-2xl text-left font-['pretendard-medium'] pl-80 pt-10 z-10"
+                style={{ lineHeight: '1.5em' }}
+            >
                 원하는 패턴이 없으신가요? <br /> AI를 사용해 직접 만들어보세요!
             </p>
 
