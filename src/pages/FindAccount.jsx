@@ -50,11 +50,11 @@ const FindAccount = () => {
                 <div className="w-[50%] h-full bg-[#3A57A7] flex flex-col items-center justify-center">
                     <h2 className="text-2xl font-['pretendard-bold'] text-white">비밀번호를 잊으셨나요?</h2>
                     <p className="text-xl font-['pretendard-medium'] text-white pt-5 pb-5">
-                        이메일을 입력하시면 비밀번호 재설정 링크를 보내드립니다.
+                        가입 시 사용했던 이메일을 입력하시면 <br /> 임시 비밀번호를 보내드립니다.
                     </p>
-                    <DLlogo width="100" height="100" />
                 </div>
                 <div className="w-[50%] h-full bg-white flex flex-col items-center justify-center">
+                    <DLlogo width="100" height="100" />
                     <h2 className="text-2xl font-['pretendard-bold'] text-center mb-8 text-black">비밀번호 찾기</h2>
                     <form onSubmit={handleFindAccount} className="flex flex-col items-center justify-center gap-4">
                         <input
@@ -75,7 +75,7 @@ const FindAccount = () => {
                             className="mt-4 bg-[#3A57A7] hover:bg-[#2c4383] text-white py-2 px-12 rounded-full font-['pretendard-medium']"
                             disabled={loading}
                         >
-                            {loading ? '전송 중...' : '비밀번호 찾기'}
+                            {loading ? '전송 중...' : '전송'}
                         </button>
                     </form>
                 </div>

@@ -20,9 +20,9 @@ import FindAccount from './pages/FindAccount';
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token') || '');
 
-    // 로그인에서 헤더 숨김
+    // 로그인 및 비밀번호 찾기 페이지에서 헤더 숨김
     const location = useLocation();
-    const isLoginPage = location.pathname === '/login';
+    const isHeaderHiddenPage = location.pathname === '/login' || location.pathname === '/find-account';
 
     return (
         <div className="App">
