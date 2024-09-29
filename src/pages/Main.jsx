@@ -19,10 +19,10 @@ function Main() {
         }
         `}
             </style>
-            <h1 className="text-6xl font-['pretendard-black'] text-left pl-40 z-10">
+            <h1 className="text-6xl font-['pretendard-black'] text-left pl-80 z-10">
                 세상의 모든 원단 디자인, 디자이노블에서
             </h1>
-            <p className="text-2xl text-left font-['pretendard-medium'] pl-40 pt-10 z-10">
+            <p className="text-2xl text-left font-['pretendard-medium'] pl-80 pt-10 z-10" style={{ lineHeight: '2em' }}>
                 원하는 패턴이 없으신가요? <br /> AI를 사용해 직접 만들어보세요!
             </p>
 
