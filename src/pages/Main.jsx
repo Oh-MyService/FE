@@ -33,6 +33,7 @@ function Main() {
           }
           img {
             width: 90%;
+            margin-left: 10px;
           }
         }
         `}
@@ -48,7 +49,12 @@ function Main() {
             </p>
 
             <div className="flex justify-center items-center w-full" style={{ marginTop: '40px' }}>
-                <img src={TipImage} alt="Tip Image" className="w-3/4 h-auto" style={{ borderRadius: '26px' }} />
+                <img
+                    src={TipImage}
+                    alt="Tip Image"
+                    className="w-3/4 h-auto"
+                    style={{ borderRadius: '26px', marginLeft: '20px' }}
+                />
             </div>
         </div>
     );
