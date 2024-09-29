@@ -18,7 +18,6 @@ const FindAccount = () => {
 
         try {
             const response = await fetch('http://example.com/api/find-account', {
-                // 실제 API 경로로 변경 필요
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -29,7 +28,7 @@ const FindAccount = () => {
             if (response.ok) {
                 setMessage('비밀번호 재설정 링크가 이메일로 전송되었습니다.');
                 setTimeout(() => {
-                    navigate('/login'); // 링크가 전송된 후 로그인 페이지로 이동
+                    navigate('/login');
                 }, 3000);
             } else {
                 const data = await response.json();
