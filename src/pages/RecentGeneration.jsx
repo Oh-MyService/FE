@@ -336,19 +336,19 @@ const RecentGeneration = () => {
         )}
         {fullScreenImage && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center p-4 z-[1000] h-screen"
+            className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center z-[1000]"
             onClick={closeFullScreen}
           >
             <div
               className="grid grid-cols-3 gap-0"
-              style={{ width: "45vw", height: "45vh" }}
+              style={{ width: "min(45vw, 45vh)", height: "min(45vw, 45vh)" }}
             >
               {Array.from({ length: 9 }).map((_, index) => (
                 <img
                   key={index}
                   src={fullScreenImage}
                   alt="Full Screen Grid"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               ))}
             </div>
