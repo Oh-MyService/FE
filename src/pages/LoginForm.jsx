@@ -37,8 +37,7 @@ const LoginForm = ({ setToken }) => {
                     setToken(data.access_token);
                     setResult('Login successful: ' + JSON.stringify(data, null, 2));
                     navigate('/create-image'); // 로그인 성공 시 메인 페이지로 이동
-                } // 401 에러일 경우 메시지 설정
-                else if (response.status === 401) {
+                } else if (response.status === 401) {
                     setLoginErrorMessage('아이디 혹은 비밀번호가 맞지 않습니다.');
                 } else {
                     setResult('Login failed: ' + JSON.stringify(data, null, 2));
@@ -54,6 +53,11 @@ const LoginForm = ({ setToken }) => {
     const handleRegisterSuccess = useCallback(() => {
         setIsRegister(false);
     }, []);
+
+    // 비밀번호 찾기 페이지로 이동
+    const handleFindPassword = () => {
+        navigate('/find-account'); // FindAccount 페이지로 이동
+    };
 
     return (
         <div
@@ -136,6 +140,12 @@ const LoginForm = ({ setToken }) => {
                                         로그인
                                     </button>
                                 </form>
+                                <p
+                                    className="mt-4 text-sm text-gray-500 cursor-pointer underline"
+                                    onClick={handleFindPassword}
+                                >
+                                    비밀번호 찾기
+                                </p>
                             </>
                         ) : (
                             <div></div>
