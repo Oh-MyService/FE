@@ -17,7 +17,7 @@ const FindAccount = () => {
         setMessage('');
 
         try {
-            const response = await fetch('http://example.com/api/find-account', {
+            const response = await fetch('http://118.67.128.129:28282/api/find-account', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
