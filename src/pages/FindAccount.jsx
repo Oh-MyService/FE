@@ -26,7 +26,7 @@ const FindAccount = () => {
             });
 
             if (response.ok) {
-                setMessage('비밀번호 재설정 링크가 이메일로 전송되었습니다.');
+                setMessage('임시 비밀번호가 이메일로 전송되었습니다.');
                 setTimeout(() => {
                     navigate('/login');
                 }, 3000);
