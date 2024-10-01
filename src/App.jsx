@@ -16,13 +16,15 @@ import CollectionAddModal from './components/CollectionAddModal';
 import Main from './pages/Main';
 import ArchiveDeleteModal from './components/ArchiveDeleteModal';
 import FindAccount from './pages/FindAccount';
+import ChangePW from './pages/ChangePw';
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token') || '');
 
     // 로그인 및 비밀번호 찾기 페이지에서 헤더 숨김
     const location = useLocation();
-    const isLoginPage = location.pathname === '/login' || location.pathname === '/find-account';
+    const isLoginPage =
+        location.pathname === '/login' || location.pathname === '/find-account' || location.pathname === '/change-pw';
 
     return (
         <div className="App">
@@ -39,6 +41,7 @@ function App() {
                 <Route path="/CollectionAddModal" element={<CollectionAddModal />} />
                 <Route path="/ArchiveDeleteModal" element={<ArchiveDeleteModal />} />
                 <Route path="/find-account" element={<FindAccount />} />
+                <Route path="/change-pw" element={<ChangePW />} />
 
                 {/* Protected Routes */}
                 <Route path="/my-page" element={token ? <MyPage /> : <Navigate to="/login" />} />
