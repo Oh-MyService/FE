@@ -22,7 +22,7 @@ function App() {
 
     // 로그인 및 비밀번호 찾기 페이지에서 헤더 숨김
     const location = useLocation();
-    const isHeaderHiddenPage = location.pathname === '/login' || location.pathname === '/find-account';
+    const isLoginPage = location.pathname === '/login' || location.pathname === '/find-account';
 
     return (
         <div className="App">
