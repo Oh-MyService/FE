@@ -353,14 +353,14 @@ const CollectionName = () => {
           >
             <div
               className="grid grid-cols-3 gap-0"
-              style={{ width: "45vw", height: "45vh" }}
+              style={{ width: "min(80vw, 80vh)", height: "min(80vw, 80vh)" }}
             >
               {Array.from({ length: 9 }).map((_, index) => (
                 <img
                   key={index}
                   src={fullScreenImage}
                   alt="Full Screen Grid"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               ))}
             </div>
