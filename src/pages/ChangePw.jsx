@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import background from '../assets/login_bg.png';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 
@@ -10,6 +10,19 @@ const ChangePW = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+    const [token, setToken] = useState('');
+
+    // URL에서 토큰 추출
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const resetToken = queryParams.get('token');
+        if (resetToken) {
+            setToken(resetToken);
+        } else {
+            setErrorMessage('토큰이 유효하지 않습니다.');
+        }
+    }, [location]);
 
     const handleChangePassword = async (e) => {
         e.preventDefault();
@@ -29,13 +42,19 @@ const ChangePW = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ password: newPassword }),
+                body: JSON.stringify({
+                    token: token, // 토큰 전달
+                    new_password: newPassword, // 새로운 비밀번호 전달
+                }),
             });
 
             if (response.ok) {
                 setMessage('비밀번호가 성공적으로 변경되었습니다.');
 
-                navigate('/login');
+                // 3초 후 로그인 페이지로 이동
+                setTimeout(() => {
+                    navigate('/login');
+                }, 3000);
             } else {
                 const data = await response.json();
                 setErrorMessage(data.message || '비밀번호 변경에 실패했습니다.');
