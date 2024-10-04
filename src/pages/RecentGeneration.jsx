@@ -49,6 +49,10 @@ const RecentGeneration = () => {
   // '맨위로가기' 버튼 가시성 상태 관리
   const [showScrollTopButton, setShowScrollTopButton] = useState(false);
 
+  // 프롬프트 데이터 상태 관리
+  const [promptData, setPromptData] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
   // 스크롤 이벤트 핸들러
   useEffect(() => {
     const handleScroll = () => {
@@ -104,9 +108,42 @@ const RecentGeneration = () => {
     }
   }, [userId, token]);
 
+  // 프롬프트 정보를 불러오는 함수
+  const handleIconClick = async (id) => {
+    try {
+      const response = await fetch(
+        `http://118.67.128.129:28282/api/results/${id}/prompt`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setPromptData(data);
+        setShowPopup(true);
+      } else {
+        console.error("Failed to fetch prompt data");
+      }
+    } catch (error) {
+      console.error("Error fetching prompt data:", error);
+    }
+  };
+
+  // 팝업을 닫는 함수
+  const closePopup = (e) => {
+    e.stopPropagation();
+    setShowPopup(false);
+  };
+
   // 이미지 클릭 시 전체 화면
   const showFullScreenImage = (imageUrl, imageId) => {
     setFullScreenImage(imageUrl);
+    setShowPopup(false);
   };
 
   const closeFullScreen = () => {
@@ -352,6 +389,103 @@ const RecentGeneration = () => {
                 />
               ))}
             </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleIconClick(fullScreenImage);
+              }}
+              className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                />
+              </svg>
+            </button>
+            {showPopup && promptData && (
+              <div className="absolute top-16 right-16 bg-white shadow-lg rounded-lg p-4 w-64 z-50">
+                <h2 className="text-lg font-bold mb-2">Prompt</h2>
+                <table className="w-full text-left border-separate border-spacing-0">
+                  <thead>
+                    <tr>
+                      <th className="font-semibold text-sm py-1">Option</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="py-1 text-sm">width</td>
+                      <td className="py-1 text-sm">
+                        {promptData.ai_option.width}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-sm">height</td>
+                      <td className="py-1 text-sm">
+                        {promptData.ai_option.height}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-sm">mood</td>
+                      <td className="py-1 text-sm">
+                        {promptData.ai_option.mood}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-sm">background color</td>
+                      <td className="py-1 text-sm">
+                        {promptData.ai_option.background_color}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-sm">cfg scale</td>
+                      <td className="py-1 text-sm">
+                        {promptData.ai_option.cfg_scale}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-sm">sampling steps</td>
+                      <td className="py-1 text-sm">
+                        {promptData.ai_option.sampling_steps}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-sm">seed</td>
+                      <td className="py-1 text-sm">
+                        {promptData.ai_option.seed}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button
+                  onClick={closePopup}
+                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         )}
         {isAddModalOpen && (

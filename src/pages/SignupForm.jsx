@@ -44,9 +44,12 @@ const SignupForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
         const data = await response.json();
         if (response.ok) {
           onRegisterSuccess();
-        } // 중복 아아디 처리
+        } // 중복 아이디 처리
         else if (data.detail === "Username already registered") {
           setUsernameErrorMessage("중복된 아이디입니다.");
+        } // 중복 이메일 처리
+        else if (data.detail === "Email already registered") {
+          setEmailErrorMessage("중복된 이메일입니다.");
         } else {
           console.error("Registration failed: ", data);
         }
