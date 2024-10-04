@@ -42,6 +42,7 @@ const RecentGeneration = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [addCollectionId, setAddCollectionId] = useState(null);
   const [fullScreenImage, setFullScreenImage] = useState(null);
+  const [fullScreenImageId, setFullScreenImageId] = useState(null);
 
   // 로딩 상태 관리
   const [isLoading, setIsLoading] = useState(true);
@@ -109,10 +110,10 @@ const RecentGeneration = () => {
   }, [userId, token]);
 
   // 프롬프트 정보를 불러오는 함수
-  const handleIconClick = async (id) => {
+  const handleIconClick = async () => {
     try {
       const response = await fetch(
-        `http://118.67.128.129:28282/api/results/${id}/prompt`,
+        `http://118.67.128.129:28282/api/results/${fullScreenImageId}/prompt`,
         {
           method: "GET",
           headers: {
@@ -143,11 +144,13 @@ const RecentGeneration = () => {
   // 이미지 클릭 시 전체 화면
   const showFullScreenImage = (imageUrl, imageId) => {
     setFullScreenImage(imageUrl);
+    setFullScreenImageId(imageId);
     setShowPopup(false);
   };
 
   const closeFullScreen = () => {
     setFullScreenImage(null);
+    setFullScreenImageId(null);
   };
 
   // 이미지 삭제
@@ -392,7 +395,7 @@ const RecentGeneration = () => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                handleIconClick(fullScreenImage);
+                handleIconClick();
               }}
               className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full"
             >
@@ -402,7 +405,7 @@ const RecentGeneration = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="2"
                 stroke="currentColor"
-                className="w-6 h-6"
+                className="w-10 h-10"
               >
                 <path
                   strokeLinecap="round"
