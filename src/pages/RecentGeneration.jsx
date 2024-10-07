@@ -403,24 +403,24 @@ const RecentGeneration = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth="2"
+                stroke-width="1.5"
                 stroke="currentColor"
-                className="w-10 h-10"
+                class="size-6"
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
                 />
               </svg>
             </button>
             {showPopup && promptData && (
-              <div className="absolute top-16 right-16 bg-white shadow-lg rounded-lg p-4 w-64 z-50">
-                <h3 className="text-lg font-['pretendard-bold'] mb-2">
+              <div className="absolute top-16 right-16 bg-white shadow-lg rounded-lg p-4 w-auto max-w-xl max-h-[80vh] overflow-auto z-50">
+                <h3 className="text-lg font-['pretendard-bold'] mb-2 text-left">
                   Prompt
                 </h3>
                 <hr className="my-2 border-gray-300" />
-                <p className="mb-4 text-base text-gray-700 font-['pretendard-medium']">
+                <p className="mb-4 text-base text-gray-700 font-['pretendard-medium'] whitespace-pre-wrap">
                   {promptData.content}
                 </p>
                 <table className="w-full text-left border-separate border-spacing-0">
@@ -431,6 +431,7 @@ const RecentGeneration = () => {
                       </th>
                     </tr>
                   </thead>
+                  <hr className="my-2 border-gray-300" />
                   <tbody>
                     <tr>
                       <td className="py-1 text-base font-['pretendard-semibold']">
