@@ -423,17 +423,11 @@ const RecentGeneration = () => {
                 <p className="mb-4 text-base text-gray-700 font-['pretendard-medium'] whitespace-pre-wrap">
                   {promptData.content}
                 </p>
+                <h3 className="text-lg font-['pretendard-bold'] mb-2 text-left">
+                  Option
+                </h3>
+                <hr className="my-2 border-gray-300" />
                 <table className="w-full text-left border-separate border-spacing-0">
-                  <thead
-                    className="border-b border-gray-300"
-                    style={{ borderWidth: "1px", borderStyle: "solid" }}
-                  >
-                    <tr>
-                      <th className="font-['pretendard-bold'] text-lg py-1">
-                        Option
-                      </th>
-                    </tr>
-                  </thead>
                   <tbody>
                     <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
