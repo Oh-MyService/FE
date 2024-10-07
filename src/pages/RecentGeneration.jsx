@@ -430,7 +430,7 @@ const RecentGeneration = () => {
                         Option
                       </th>
                     </tr>
-                    <hr className="my-2 border-gray-300" />
+                    <hr className="my-2 border-gray-300 w-full" />
                   </thead>
                   <tbody>
                     <tr>
