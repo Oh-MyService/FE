@@ -171,7 +171,8 @@ const CreateImage = () => {
     const token = localStorage.getItem('token'); // 토큰 가져오기
 
     // 프롬프트 상태 관리
-    const [inputText, setInputText] = useState('');
+    const [positivePrompt, setPositivePrompt] = useState('');
+    const [negativePrompt, setNegativePrompt] = useState('');
 
     // 옵션 상태 관리
     const [cfgScale, setCfgScale] = useState(7);
@@ -179,7 +180,8 @@ const CreateImage = () => {
     const [width, setWidth] = useState(512);
     const [height, setHeight] = useState(512);
     const [backgroundColor, setBackgroundColor] = useState('white');
-    const [seed, setSeed] = useState(0);
+    const [seed, setSeed] = useState('');
+    const [isRandomSeed, setIsRandomSeed] = useState(false);
 
     // 기타 상태 관리
     const [alertMessage, setAlertMessage] = useState('');
@@ -225,7 +227,8 @@ const CreateImage = () => {
             setAlertMessage('한국어는 입력할 수 없습니다.');
         } else {
             setAlertMessage(''); // 알림 초기화
-            setInputText(value); // 한글이 아닐 때만 상태 업데이트
+            setPositivePrompt(value); // 한글이 아닐 때만 상태 업데이트
+            setNegativePrompt(value);
         }
     };
 
@@ -248,8 +251,6 @@ const CreateImage = () => {
     const [selectedRepeatDirection, setSelectedRepeatDirection] = useState(null);
     const [selectedMood, setSelectedMood] = useState(null);
 
-    // 반복 방향 및 분위기 옵션
-    const repeatDirectionOptions = ['격자', '대각선', '원형', '수평', '수직', '물결', '물방울', '다이아몬드'];
     const moodOptions = [
         '카툰',
         '모던',
@@ -308,7 +309,6 @@ const CreateImage = () => {
     // 이미지 생성 요청 처리
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Submitted: ' + inputText);
 
         if (!token) {
             setAlertMessage('로그인이 필요합니다.');
@@ -322,15 +322,15 @@ const CreateImage = () => {
 
         try {
             const formData = new FormData();
-            formData.append('content', inputText);
+            formData.append('positive_prompt', positivePrompt); // Positive 프롬프트 추가
+            formData.append('negative_prompt', negativePrompt); // Negative 프롬프트 추가
             formData.append('width', width || 512); // 기본값 512
             formData.append('height', height || 512); // 기본값 512
             formData.append('background_color', backgroundColor || 'white'); // 기본값 white
-            formData.append('pattern', selectedRepeatDirection || 0);
-            formData.append('mood', selectedMood || 'a');
+            formData.append('mood', selectedResultId || '카툰'); // 선택된 분위기 추가
             formData.append('cfg_scale', cfgScale || 7); // 기본값 7
             formData.append('sampling_steps', samplingSteps || 20); // 기본값 20
-            formData.append('seed', seed || 0); // 기본값 0
+            formData.append('seed', isRandomSeed ? Math.floor(Math.random() * 10000) : seed || 0); // 랜덤 Seed 또는 입력된 Seed
 
             let response = await fetch('http://118.67.128.129:28282/api/prompts', {
                 method: 'POST',
@@ -447,12 +447,6 @@ const CreateImage = () => {
         setter((prev) => Math.min(prev + 1, Math.ceil(options.length / optionsPerPage) - 1));
     };
 
-    // 현재 페이지의 반복 방향 옵션
-    const currentRepeatDirections = repeatDirectionOptions.slice(
-        repeatDirectionPage * optionsPerPage,
-        (repeatDirectionPage + 1) * optionsPerPage
-    );
-
     // 현재 페이지의 분위기 옵션
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
 
@@ -464,301 +458,219 @@ const CreateImage = () => {
                         <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
                             상상 속 패턴을 지금 만들어보세요!
                         </span>
-                        <div className="relative w-full">
-                            <textarea
-                                type="text"
-                                value={inputText}
-                                onChange={handleInputChange}
-                                onKeyDown={handleKeyDown}
-                                className="appearance-none block w-full h-56 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 leading-tight focus:outline-none border-3 border-[#3A57A7] mb-0"
-                                placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
-                            />
-                            <div className="absolute bottom-0 right-0 flex w-full justify-between rounded-b-lg rounded-t-lg">
-                                <button
-                                    type="submit"
-                                    className="w-full bg-[#3A57A7] hover:bg-blue-900 text-white font-['pretendard-bold'] text-2xl py-4 rounded-b-lg"
-                                    onClick={handleSubmit}
-                                >
-                                    생성하기
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="w-full h-auto mt-8 rounded-lg border-3 border-[#8194EC] p-4 bg-[#F2F2F2]">
-                        <div className="relative w-full">
-                            <span className="block text-2xl font-['pretendard-bold'] text-left text-black mb-3">
-                                설정
-                            </span>
-                            <div className="grid gap-4">
-                                <div className="flex flex-wrap items-center">
-                                    <label className="text-lg font-['pretendard-bold'] mr-2">가로</label>
-                                    <input
-                                        type="number"
-                                        className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
-                                        value={width}
-                                        onChange={(e) => setWidth(Number(e.target.value))}
-                                    />
-                                    <label className="text-lg font-['pretendard-bold'] mr-2">세로</label>
-                                    <input
-                                        type="number"
-                                        className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-6 font-['pretendard-regular']"
-                                        value={height}
-                                        onChange={(e) => setHeight(Number(e.target.value))}
-                                    />
-                                    <label className="text-lg font-['pretendard-bold'] mr-2">배경색</label>
-                                    <select
-                                        className="w-32 p-2 focus:outline-[#8194EC] rounded-lg font-['pretendard-regular']"
-                                        value={backgroundColor}
-                                        onChange={(e) => setBackgroundColor(e.target.value)}
-                                    >
-                                        {colorOptions.map((color, index) => (
-                                            <option key={index} value={color}>
-                                                {color}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="flex items-center">
-                                    <label className="text-lg font-['pretendard-bold'] mr-2">질감</label>
-                                </div>
-                                <div className="flex items-center flex-wrap">
-                                    <label className="text-lg font-['pretendard-bold'] mr-2">반복 방향 및 비율</label>
-                                    <button
-                                        onClick={() => handlePrevPage(setRepeatDirectionPage)}
-                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                            stroke="currentColor"
-                                            className="size-6"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M15.75 19.5 8.25 12l7.5-7.5"
-                                            />
-                                        </svg>
-                                    </button>
-                                    {currentRepeatDirections.map((direction, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setSelectedRepeatDirection(direction)}
-                                            className={`px-4 py-2 rounded-full ml-2 border-2 ${
-                                                selectedRepeatDirection === direction
-                                                    ? 'border-[#8194EC]'
-                                                    : 'border-primary'
-                                            } hover:border-[#8194EC] focus:border-[#8194EC] font-['pretendard-regular']`}
-                                        >
-                                            {direction}
-                                        </button>
-                                    ))}
-                                    <button
-                                        onClick={() => handleNextPage(setRepeatDirectionPage, repeatDirectionOptions)}
-                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full ml-2"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                            stroke="currentColor"
-                                            className="size-6"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                                            />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div className="flex items-center flex-wrap">
-                                    <label className="text-lg font-['pretendard-bold'] mr-2">분위기</label>
-                                    <button
-                                        onClick={() => handlePrevPage(setMoodPage)}
-                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                            stroke="currentColor"
-                                            className="size-6"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M15.75 19.5 8.25 12l7.5-7.5"
-                                            />
-                                        </svg>
-                                    </button>
-                                    {currentMoods.map((mood, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setSelectedMood(mood)}
-                                            className={`px-4 py-2 rounded-full ml-2 border-2 ${
-                                                selectedMood === mood ? 'border-[#8194EC]' : 'border-primary'
-                                            } hover:border-[#8194EC] focus:border-[#8194EC] font-['pretendard-regular']`}
-                                        >
-                                            {mood}
-                                        </button>
-                                    ))}
-                                    <button
-                                        onClick={() => handleNextPage(setMoodPage, moodOptions)}
-                                        className="px-3 py-2 hover:bg-[#d8dae3] rounded-full ml-2"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                            stroke="currentColor"
-                                            className="size-6"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                                            />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div className="border-t border-gray-300 my-4"></div>
-                                <div className="flex items-center">
-                                    <label className="text-lg font-['pretendard-bold'] mr-2">CFG Scale</label>
-                                    <input
-                                        type="range"
-                                        min="1"
-                                        max="13"
-                                        value={cfgScale}
-                                        onChange={(e) => setCfgScale(parseFloat(e.target.value))}
-                                        ref={sliderRef1}
-                                        className="flex-1 cursor-pointer"
-                                    />
-                                    <span className="ml-2 text-lg">{cfgScale}</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <label className="text-lg font-['pretendard-bold'] mr-2">Sampling Steps</label>
-                                    <input
-                                        type="range"
-                                        min="5"
-                                        max="150"
-                                        value={samplingSteps}
-                                        onChange={(e) => setSamplingSteps(Number(e.target.value))}
-                                        ref={sliderRef2}
-                                        className="flex-1 cursor-pointer"
-                                    />
-                                    <span className="ml-2 text-lg">{samplingSteps}</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
-                                    <input
-                                        type="number"
-                                        className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
-                                        value={seed}
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-                                            setSeed(value === '' ? '' : Number(value));
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        {/* Positive 프롬프트 입력 */}
+                        <textarea
+                            type="text"
+                            value={positivePrompt}
+                            onChange={(e) => setPositivePrompt(e.target.value)}
+                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
+                            placeholder="패턴에 포함하고 싶은 요소를 입력하세요 (Positive)"
+                        />
 
-                {/* 생성 결과 섹션 */}
-                <div className="flex flex-col w-1/2 px-4 mt-24 h-[730px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
-                    {results.map((result, index) =>
-                        result.isLoading ? (
-                            <SkeletonCard key={index} />
-                        ) : (
-                            <div
-                                key={index}
-                                className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3"
-                            >
-                                <div className="flex -mt-2">
-                                    <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
-                                    <Bubble text={result.content} />
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
-                                    {result.images.map((imageResult, idx) => (
-                                        <div key={idx} className="flex flex-col justify-between items-center w-full">
-                                            <div
-                                                className="overflow-hidden"
-                                                style={{
-                                                    width: '100%',
-                                                    height: 'auto',
-                                                    maxWidth: '250px',
-                                                    maxHeight: '250px',
-                                                }}
-                                            >
-                                                <img
-                                                    src={imageResult.image_data}
-                                                    alt="Generated Image"
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            </div>
-                                            <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
-                                                <p className="text-left mr-2">{result.created_at}</p>
-                                                <div className="flex items-center space-x-2 ml-auto">
-                                                    {/* 이미지 추가 모달 열기 버튼 */}
-                                                    <button onClick={() => openAddModal(imageResult.id)}>
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            strokeWidth="2"
-                                                            stroke="currentColor"
-                                                            className="w-6 h-6"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                                                            />
-                                                        </svg>
-                                                    </button>
-                                                    {/* 이미지 저장 버튼 */}
-                                                    <button
-                                                        onClick={() =>
-                                                            handleSaveImage(
-                                                                imageResult.image_data,
-                                                                imageResult.id + '_' + idx
-                                                            )
-                                                        }
+                        {/* Negative 프롬프트 입력 */}
+                        <textarea
+                            type="text"
+                            value={negativePrompt}
+                            onChange={(e) => setNegativePrompt(e.target.value)}
+                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
+                            placeholder="패턴에 제외하고 싶은 요소를 입력하세요 (Negative)"
+                        />
+                    </div>
+                    {/* 분위기 선택 */}
+                    <div className="mb-4">
+                        <label className="block text-lg font-['pretendard-bold']">분위기 선택</label>
+                        <select
+                            value={selectedResultId}
+                            onChange={(e) => setSelectedResultId(e.target.value)}
+                            className="w-full p-2 border-3 border-[#8194EC] rounded-lg"
+                        >
+                            {moodOptions.map((option, index) => (
+                                <option key={index} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* 색상 선택 */}
+                    <div className="mb-4">
+                        <label className="block text-lg font-['pretendard-bold']">색상 선택</label>
+                        <select
+                            value={backgroundColor}
+                            onChange={(e) => setBackgroundColor(e.target.value)}
+                            className="w-full p-2 border-3 border-[#8194EC] rounded-lg"
+                        >
+                            {colorOptions.map((color, index) => (
+                                <option key={index} value={color}>
+                                    {color}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* 가로 세로 크기 입력 */}
+                    <div className="flex mb-4">
+                        <label className="mr-4">
+                            가로:
+                            <input
+                                type="number"
+                                value={width}
+                                onChange={(e) => setWidth(Number(e.target.value))}
+                                className="w-20 p-2 ml-2 border border-gray-300 rounded"
+                            />
+                        </label>
+                        <label>
+                            세로:
+                            <input
+                                type="number"
+                                value={height}
+                                onChange={(e) => setHeight(Number(e.target.value))}
+                                className="w-20 p-2 ml-2 border border-gray-300 rounded"
+                            />
+                        </label>
+                    </div>
+
+                    {/* CFG Scale */}
+                    <div className="mb-4">
+                        <label>CFG Scale: {cfgScale}</label>
+                        <input
+                            type="range"
+                            min="1"
+                            max="13"
+                            value={cfgScale}
+                            onChange={(e) => setCfgScale(Number(e.target.value))}
+                            className="w-full"
+                        />
+                    </div>
+
+                    {/* Sampling Steps */}
+                    <div className="mb-4">
+                        <label>Sampling Steps: {samplingSteps}</label>
+                        <input
+                            type="range"
+                            min="5"
+                            max="150"
+                            value={samplingSteps}
+                            onChange={(e) => setSamplingSteps(Number(e.target.value))}
+                            className="w-full"
+                        />
+                    </div>
+
+                    {/* Seed 입력 및 랜덤 체크박스 */}
+                    <div className="flex items-center mb-4">
+                        <label>Seed:</label>
+                        <input
+                            type="number"
+                            value={seed}
+                            onChange={(e) => setSeed(e.target.value)}
+                            className="w-32 p-2 ml-2 border border-gray-300 rounded"
+                            disabled={isRandomSeed}
+                        />
+                        <label className="ml-4">
+                            <input
+                                type="checkbox"
+                                checked={isRandomSeed}
+                                onChange={(e) => setIsRandomSeed(e.target.checked)}
+                                className="mr-2"
+                            />
+                            랜덤
+                        </label>
+                    </div>
+
+                    {/* 생성하기 버튼 */}
+                    <button onClick={handleSubmit} className="w-full p-4 mt-6 bg-blue-500 text-white rounded">
+                        생성하기
+                    </button>
+                </div>
+            </div>
+
+            {/* 생성 결과 섹션 */}
+            <div className="flex flex-col w-1/2 px-4 mt-24 h-[730px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+                {results.map((result, index) =>
+                    result.isLoading ? (
+                        <SkeletonCard key={index} />
+                    ) : (
+                        <div
+                            key={index}
+                            className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3"
+                        >
+                            <div className="flex -mt-2">
+                                <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
+                                <Bubble text={result.content} />
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
+                                {result.images.map((imageResult, idx) => (
+                                    <div key={idx} className="flex flex-col justify-between items-center w-full">
+                                        <div
+                                            className="overflow-hidden"
+                                            style={{
+                                                width: '100%',
+                                                height: 'auto',
+                                                maxWidth: '250px',
+                                                maxHeight: '250px',
+                                            }}
+                                        >
+                                            <img
+                                                src={imageResult.image_data}
+                                                alt="Generated Image"
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                        <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
+                                            <p className="text-left mr-2">{result.created_at}</p>
+                                            <div className="flex items-center space-x-2 ml-auto">
+                                                {/* 이미지 추가 모달 열기 버튼 */}
+                                                <button onClick={() => openAddModal(imageResult.id)}>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth="2"
+                                                        stroke="currentColor"
+                                                        className="w-6 h-6"
                                                     >
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            strokeWidth="2"
-                                                            stroke="currentColor"
-                                                            className="w-6 h-6"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                                                            />
-                                                        </svg>
-                                                    </button>
-                                                </div>
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                                {/* 이미지 저장 버튼 */}
+                                                <button
+                                                    onClick={() =>
+                                                        handleSaveImage(
+                                                            imageResult.image_data,
+                                                            imageResult.id + '_' + idx
+                                                        )
+                                                    }
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth="2"
+                                                        stroke="currentColor"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                                                        />
+                                                    </svg>
+                                                </button>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
-                                {isAddModalOpen && (
-                                    <CollectionAddModal onClose={closeAddModal} resultId={selectedResultId} />
-                                )}
+                                    </div>
+                                ))}
                             </div>
-                        )
-                    )}
-                </div>
+                            {isAddModalOpen && (
+                                <CollectionAddModal onClose={closeAddModal} resultId={selectedResultId} />
+                            )}
+                        </div>
+                    )
+                )}
             </div>
         </div>
     );
