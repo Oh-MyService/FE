@@ -429,18 +429,18 @@ const RecentGeneration = () => {
                       <th className="font-['pretendard-bold'] text-lg py-1">
                         Option
                       </th>
+                      <hr className="my-2 border-gray-300" />
                     </tr>
                   </thead>
-                  <hr className="my-2 border-gray-300" />
                   <tbody>
                     <tr>
-                      <td className="py-1 text-base font-['pretendard-semibold']">
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         width
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
                         {promptData.ai_option.width}
                       </td>
-                      <td className="py-1 text-base font-['pretendard-semibold']">
+                      <td className="py-1 text-base font-['pretendard-semibold' pr-2">
                         cfg scale
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
@@ -448,13 +448,13 @@ const RecentGeneration = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-1 text-base font-['pretendard-semibold']">
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         height
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
                         {promptData.ai_option.height}
                       </td>
-                      <td className="py-1 text-base font-['pretendard-semibold']">
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         sampling steps
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
@@ -462,13 +462,13 @@ const RecentGeneration = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-1 text-base font-['pretendard-semibold']">
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         mood
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
                         {promptData.ai_option.mood}
                       </td>
-                      <td className="py-1 text-base font-['pretendard-semibold']">
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         seed
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
@@ -476,7 +476,7 @@ const RecentGeneration = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-1 text-base font-['pretendard-semibold']">
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         background color
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
