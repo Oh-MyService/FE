@@ -440,36 +440,48 @@ const RecentGeneration = () => {
                       <td className="py-1 text-sm font-['pretendard-medium']">
                         {promptData.ai_option.width}
                       </td>
+                    </tr>
+                    <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         cfg scale
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
                         {promptData.ai_option.cfg_scale}
                       </td>
+                    </tr>
+                    <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         height
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
                         {promptData.ai_option.height}
                       </td>
+                    </tr>
+                    <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         sampling steps
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
                         {promptData.ai_option.sampling_steps}
                       </td>
+                    </tr>
+                    <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         mood
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
                         {promptData.ai_option.mood}
                       </td>
+                    </tr>
+                    <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         seed
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
                         {promptData.ai_option.seed}
                       </td>
+                    </tr>
+                    <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         background color
                       </td>
