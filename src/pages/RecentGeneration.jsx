@@ -420,7 +420,7 @@ const RecentGeneration = () => {
                   Prompt
                 </h3>
                 <hr className="my-2 border-gray-300" />
-                <p className="mb-4 text-base text-gray-700 font-['pretendard-medium'] whitespace-pre-wrap">
+                <p className="mb-4 text-base text-gray-700 font-['pretendard-medium'] whitespace-pre-wrap  break-words">
                   {promptData.content}
                 </p>
                 <h3 className="text-lg font-['pretendard-bold'] mb-2 text-left">
