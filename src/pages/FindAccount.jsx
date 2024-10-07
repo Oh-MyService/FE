@@ -20,9 +20,9 @@ const FindAccount = () => {
             const response = await fetch('http://118.67.128.129:28282/api/find-account', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/x-www-form-urlencoded",
                 },
-                body: JSON.stringify({ email }),
+                body: new URLSearchParams({ email }),
             });
 
             if (response.ok) {
