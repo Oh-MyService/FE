@@ -40,11 +40,11 @@ const ChangePW = () => {
             const response = await fetch('http://118.67.128.129:28282/api/change-password', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/x-www-form-urlencoded",
                 },
-                body: JSON.stringify({
+                body: new URLSearchParams({ 
                     token: token, // 토큰 전달
-                    new_password: newPassword, // 새로운 비밀번호 전달
+                    new_password: newPassword, // 새로운 비밀번호 전달}),
                 }),
             });
 
