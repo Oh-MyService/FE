@@ -509,7 +509,7 @@ const CreateImage = () => {
                                         setSelectedMood(selectedValue);
                                     }
                                 }}
-                                className="p-2 pr-2 border-2 border-[#8194EC] rounded-lg mr-5"
+                                className="p-2 pr-2 border-2 border-[#8194EC] rounded-lg mr-2"
                                 style={{ minWidth: '140px' }}
                             >
                                 <option value="custom">직접 입력</option>
@@ -528,7 +528,9 @@ const CreateImage = () => {
                                     className="p-2 border-2 border-[#8194EC] rounded-lg w-20"
                                 />
                             )}
+                        </div>
 
+                        <div className="flex items-center mb-6">
                             {/* 색상 선택 */}
                             <label className="text-lg font-['pretendard-bold'] mr-4">색상</label>
                             <select
@@ -543,7 +545,7 @@ const CreateImage = () => {
                                         setBackgroundColor(selectedValue);
                                     }
                                 }}
-                                className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg mr-5"
+                                className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg mr-2"
                                 style={{ minWidth: '140px' }}
                             >
                                 <option value="custom">직접 입력</option>
@@ -642,7 +644,7 @@ const CreateImage = () => {
                         {/* 생성하기 버튼 */}
                         <button
                             onClick={handleSubmit}
-                            className="w-36 p-4 mt-6 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded"
+                            className="w-36 p-4 mt-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded"
                         >
                             생성하기
                         </button>
