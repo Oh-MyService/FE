@@ -485,7 +485,7 @@ const CreateImage = () => {
                             value={positivePrompt}
                             onChange={(e) => handleInputChange(e, setPositivePrompt)}
                             className="w-full h-20 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC]"
-                            placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
+                            placeholder="ex) a floral pattern with small, curious kittens"
                         />
 
                         {/* Negative 프롬프트 입력 */}
@@ -632,7 +632,6 @@ const CreateImage = () => {
                             <button
                                 onClick={handleSubmit}
                                 className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl"
-                                style={{ marginBottom: '0.5rem' }}
                             >
                                 생성하기
                             </button>
