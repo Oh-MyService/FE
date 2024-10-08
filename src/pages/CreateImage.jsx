@@ -117,7 +117,7 @@ const applySliderStyles = (element) => {
     // 슬라이더 배경 색상 업데이트
     const setSliderBackground = (value) => {
         const percentage = ((value - element.min) / (element.max - element.min)) * 100;
-        element.style.background = `linear-gradient(to right, #8194EC 0%, #8194EC ${percentage}%, #dcdcdc ${percentage}%, #dcdcdc 100%)`;
+        element.style.background = `linear-gradient(to right, #3A57A7 0%, #3A57A7 ${percentage}%, #dcdcdc ${percentage}%, #dcdcdc 100%)`;
     };
 
     setSliderBackground(element.value);
@@ -479,7 +479,7 @@ const CreateImage = () => {
                             type="text"
                             value={positivePrompt}
                             onChange={(e) => handleInputChange(e, setPositivePrompt)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7]"
+                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7]  focus:border-[#8194EC]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
@@ -492,42 +492,6 @@ const CreateImage = () => {
                             className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
-
-                        <div className="flex items-center mb-6">
-                            {/* 분위기 선택 */}
-                            <label className="text-lg font-['pretendard-bold'] mr-4">분위기</label>
-                            <select
-                                value={selectedMood}
-                                onChange={(e) => {
-                                    const selectedValue = e.target.value;
-                                    if (selectedValue === 'custom') {
-                                        setIsCustomMood(true);
-                                        setSelectedMood(''); // 빈 값으로 초기화
-                                    } else {
-                                        setIsCustomMood(false);
-                                        setSelectedMood(selectedValue);
-                                    }
-                                }}
-                                className="p-2 pr-2 border-3 border-[#8194EC] rounded-lg mr-2"
-                                style={{ minWidth: '140px' }}
-                            >
-                                <option value="custom">직접 입력</option>
-                                {moodOptions.map((option, index) => (
-                                    <option key={index} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                            {isCustomMood && (
-                                <input
-                                    type="text"
-                                    value={mood}
-                                    onChange={(e) => setMood(e.target.value)}
-                                    placeholder="직접 입력"
-                                    className="p-2 border-3 border-[#8194EC] rounded-lg w-40"
-                                />
-                            )}
-                        </div>
 
                         <div className="flex items-center mb-6">
                             {/* 색상 선택 */}
@@ -544,7 +508,7 @@ const CreateImage = () => {
                                         setBackgroundColor(selectedValue);
                                     }
                                 }}
-                                className="p-2 pr-8 border-3 border-[#8194EC] rounded-lg mr-2"
+                                className="p-2 pr-8 border-3 border-[#3A57A7] rounded-lg mr-2"
                                 style={{ minWidth: '140px' }}
                             >
                                 <option value="custom">직접 입력</option>
@@ -560,7 +524,43 @@ const CreateImage = () => {
                                     value={backgroundColor}
                                     onChange={(e) => setBackgroundColor(e.target.value)}
                                     placeholder="직접 입력"
-                                    className="p-2 border-3 border-[#8194EC] rounded-lg w-40"
+                                    className="p-2 border-3 border-[#3A57A7] rounded-lg w-40"
+                                />
+                            )}
+                        </div>
+
+                        <div className="flex items-center mb-6">
+                            {/* 분위기 선택 */}
+                            <label className="text-lg font-['pretendard-bold'] mr-4">분위기</label>
+                            <select
+                                value={selectedMood}
+                                onChange={(e) => {
+                                    const selectedValue = e.target.value;
+                                    if (selectedValue === 'custom') {
+                                        setIsCustomMood(true);
+                                        setSelectedMood(''); // 빈 값으로 초기화
+                                    } else {
+                                        setIsCustomMood(false);
+                                        setSelectedMood(selectedValue);
+                                    }
+                                }}
+                                className="p-2 pr-2 border-3 border-[#3A57A7] rounded-lg mr-2"
+                                style={{ minWidth: '140px' }}
+                            >
+                                <option value="custom">직접 입력</option>
+                                {moodOptions.map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                            {isCustomMood && (
+                                <input
+                                    type="text"
+                                    value={mood}
+                                    onChange={(e) => setMood(e.target.value)}
+                                    placeholder="직접 입력"
+                                    className="p-2 border-3 border-[#3A57A7] rounded-lg w-40"
                                 />
                             )}
                         </div>
@@ -575,7 +575,8 @@ const CreateImage = () => {
                                     setWidth(newWidth);
                                     setHeight(newHeight);
                                 }}
-                                className="w-36 p-2 pr-8 border-3 border-[#8194EC] rounded-lg"
+                                className="p-2 pr-8 border-3 border-[#3A57A7] rounded-lg"
+                                style={{ minWidth: '140px', width: 'auto' }}
                             >
                                 <option value="512X512">512 X 512</option>
                                 <option value="1024X1024">1024 X 1024</option>
@@ -617,11 +618,11 @@ const CreateImage = () => {
                         </div>
 
                         {/* Seed 입력 및 랜덤 체크박스 */}
-                        <div className="flex items-center mb-4">
+                        <div className="flex items-center mb-2">
                             <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
                             <input
                                 type="number"
-                                className="w-16 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular'] text-center"
+                                className="w-16 p-2 focus:outline-[#3A57A7] rounded-lg mr-2 font-['pretendard-regular'] text-center"
                                 value={seed}
                                 onChange={(e) => {
                                     const value = e.target.value;
@@ -644,7 +645,7 @@ const CreateImage = () => {
                         <div className="flex justify-end w-full">
                             <button
                                 onClick={handleSubmit}
-                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl mb-4"
+                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl mb-2"
                             >
                                 생성하기
                             </button>
