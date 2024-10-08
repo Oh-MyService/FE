@@ -318,12 +318,16 @@ const CreateImage = () => {
         return payload.exp < Date.now() / 1000;
     };
 
-    // 이미지 생성 요청 처리
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (!token) {
             setAlertMessage('로그인이 필요합니다.');
+            return;
+        }
+
+        if (isTokenExpired(token)) {
+            setAlertMessage('Session expired. Please login again.');
             return;
         }
 
@@ -342,7 +346,7 @@ const CreateImage = () => {
             formData.append('sampling_steps', samplingSteps || 20);
             formData.append('seed', isRandomSeed ? Math.floor(Math.random() * 10000) : seed || 0);
 
-            let response = await fetch('http://118.67.128.129:28282/api/prompts', {
+            const response = await fetch('http://118.67.128.129:28282/api/prompts', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -351,25 +355,26 @@ const CreateImage = () => {
             });
 
             if (!response.ok) throw new Error('Network response was not ok');
-            const data = await response.json();
+
+            const data = await response.json(); // 여기에 data 변수를 정의
             console.log(data);
+
+            // 새 결과 추가
+            const newResult = {
+                id: data.id,
+                content: data.content,
+                created_at: data.created_at,
+                user_id: data.user_id,
+                images: [],
+                isLoading: true, // 새로운 결과는 로딩 중으로 설정
+            };
+            setResults((prevResults) => [newResult, ...prevResults]);
+            pollForImages(data.id, newResult); // 이미지 폴링 시작
         } catch (error) {
             console.error('Error occurred:', error);
             setAlertMessage('Error occurred while creating prompt.');
         }
     };
-
-    // 새 결과 추가
-    const newResult = {
-        id: data.id,
-        content: data.content,
-        created_at: data.created_at,
-        user_id: data.user_id,
-        images: [],
-        isLoading: true, // 새로운 결과는 로딩 중으로 설정
-    };
-    setResults((prevResults) => [newResult, ...prevResults]);
-    pollForImages(data.id, newResult); // 이미지 폴링 시작
 
     // 이미지 생성 결과 폴링
     const pollForImages = (promptId, newResult) => {
