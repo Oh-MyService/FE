@@ -484,7 +484,7 @@ const CreateImage = () => {
                             type="text"
                             value={positivePrompt}
                             onChange={(e) => handleInputChange(e, setPositivePrompt)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC]"
+                            className="w-full h-20 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
@@ -494,8 +494,8 @@ const CreateImage = () => {
                             type="text"
                             value={negativePrompt}
                             onChange={(e) => handleInputChange(e, setNegativePrompt)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC]"
-                            placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
+                            className="w-full h-20 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC]"
+                            placeholder="ex) sharp or jagged lines"
                         />
 
                         <div className="flex items-center mb-6">
@@ -503,35 +503,16 @@ const CreateImage = () => {
                             <label className="text-lg font-['pretendard-bold'] mr-4">색상</label>
                             <select
                                 value={backgroundColor}
-                                onChange={(e) => {
-                                    const selectedValue = e.target.value;
-                                    if (selectedValue === 'custom') {
-                                        setIsCustomColor(true);
-                                        setBackgroundColor(''); // 빈 값으로 초기화
-                                    } else {
-                                        setIsCustomColor(false);
-                                        setBackgroundColor(selectedValue);
-                                    }
-                                }}
+                                onChange={(e) => setBackgroundColor(e.target.value)}
                                 className="p-2 pr-8 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC] rounded-lg mr-2"
                                 style={{ minWidth: '140px' }}
                             >
-                                <option value="custom">직접 입력</option>
                                 {colorOptions.map((color, index) => (
                                     <option key={index} value={color}>
                                         {color}
                                     </option>
                                 ))}
                             </select>
-                            {isCustomColor && (
-                                <input
-                                    type="text"
-                                    value={backgroundColor}
-                                    onChange={(e) => setBackgroundColor(e.target.value)}
-                                    placeholder="직접 입력"
-                                    className="p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC] rounded-lg w-40"
-                                />
-                            )}
                         </div>
 
                         <div className="flex items-center mb-6">
@@ -563,7 +544,7 @@ const CreateImage = () => {
                                 <input
                                     type="text"
                                     value={mood}
-                                    onChange={(e) => setMood(e.target.value)}
+                                    onChange={(e) => handleInputChange(e, setMood)}
                                     placeholder="직접 입력"
                                     className="p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC] rounded-lg w-40"
                                 />
