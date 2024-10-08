@@ -480,7 +480,7 @@ const CreateImage = () => {
                             type="text"
                             value={positivePrompt}
                             onChange={(e) => setPositivePrompt(e.target.value)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-2 border-[#3A57A7]"
+                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
@@ -490,7 +490,7 @@ const CreateImage = () => {
                             type="text"
                             value={negativePrompt}
                             onChange={(e) => setNegativePrompt(e.target.value)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-2 border-[#3A57A7]"
+                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
@@ -509,7 +509,7 @@ const CreateImage = () => {
                                         setSelectedMood(selectedValue);
                                     }
                                 }}
-                                className="p-2 pr-2 border-2 border-[#8194EC] rounded-lg mr-2"
+                                className="p-2 pr-2 border-3 border-[#8194EC] rounded-lg mr-2"
                                 style={{ minWidth: '140px' }}
                             >
                                 <option value="custom">직접 입력</option>
@@ -525,7 +525,7 @@ const CreateImage = () => {
                                     value={mood}
                                     onChange={(e) => setMood(e.target.value)}
                                     placeholder="직접 입력"
-                                    className="p-2 border-2 border-[#8194EC] rounded-lg w-20"
+                                    className="p-2 border-3 border-[#8194EC] rounded-lg w-40"
                                 />
                             )}
                         </div>
@@ -545,7 +545,7 @@ const CreateImage = () => {
                                         setBackgroundColor(selectedValue);
                                     }
                                 }}
-                                className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg mr-2"
+                                className="p-2 pr-8 border-3 border-[#8194EC] rounded-lg mr-2"
                                 style={{ minWidth: '140px' }}
                             >
                                 <option value="custom">직접 입력</option>
@@ -561,7 +561,7 @@ const CreateImage = () => {
                                     value={backgroundColor}
                                     onChange={(e) => setBackgroundColor(e.target.value)}
                                     placeholder="직접 입력"
-                                    className="p-2 border-2 border-[#8194EC] rounded-lg w-20"
+                                    className="p-2 border-3 border-[#8194EC] rounded-lg w-40"
                                 />
                             )}
                         </div>
@@ -576,7 +576,7 @@ const CreateImage = () => {
                                     setWidth(newWidth);
                                     setHeight(newHeight);
                                 }}
-                                className="w-36 p-2 pr-8 border-2 border-[#8194EC] rounded-lg"
+                                className="w-36 p-2 pr-8 border-3 border-[#8194EC] rounded-lg"
                             >
                                 <option value="512X512">512 X 512</option>
                                 <option value="1024X1024">1024 X 1024</option>
@@ -596,7 +596,7 @@ const CreateImage = () => {
                                 className="flex-grow cursor-pointer mx-4"
                                 style={{ width: '80%' }}
                             />
-                            <span className="text-lg">{cfgScale}</span>
+                            <span className="text-lg font-['pretendard-medium']">{cfgScale}</span>
                         </div>
 
                         {/* Sampling Steps */}
@@ -614,7 +614,7 @@ const CreateImage = () => {
                                 className="flex-grow cursor-pointer mx-4"
                                 style={{ width: '80%' }}
                             />
-                            <span className="text-lg">{samplingSteps}</span>
+                            <span className="text-lg pretendard-medium">{samplingSteps}</span>
                         </div>
 
                         {/* Seed 입력 및 랜덤 체크박스 */}
@@ -635,19 +635,21 @@ const CreateImage = () => {
                                     type="checkbox"
                                     checked={isRandomSeed}
                                     onChange={(e) => setIsRandomSeed(e.target.checked)}
-                                    className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                    className="mr-2 h-4 w-4 text-[#3A57A7] border-gray-300 rounded"
                                 />
                                 random
                             </label>
                         </div>
 
                         {/* 생성하기 버튼 */}
-                        <button
-                            onClick={handleSubmit}
-                            className="w-36 p-4 mt-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded"
-                        >
-                            생성하기
-                        </button>
+                        <div className="flex justify-end w-full mt-6">
+                            <button
+                                onClick={handleSubmit}
+                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded"
+                            >
+                                생성하기
+                            </button>
+                        </div>
                     </div>
                 </div>
 
