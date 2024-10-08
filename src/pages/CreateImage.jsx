@@ -509,8 +509,8 @@ const CreateImage = () => {
                                         setSelectedMood(selectedValue);
                                     }
                                 }}
-                                className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg mr-10"
-                                style={{ minWidth: '150px' }}
+                                className="p-2 pr-2 border-2 border-[#8194EC] rounded-lg mr-5"
+                                style={{ minWidth: '140px' }}
                             >
                                 <option value="custom">직접 입력</option>
                                 {moodOptions.map((option, index) => (
@@ -525,7 +525,7 @@ const CreateImage = () => {
                                     value={mood}
                                     onChange={(e) => setMood(e.target.value)}
                                     placeholder="직접 입력"
-                                    className="p-2 border-2 border-[#8194EC] rounded-lg"
+                                    className="p-2 border-2 border-[#8194EC] rounded-lg w-20"
                                 />
                             )}
 
@@ -543,8 +543,8 @@ const CreateImage = () => {
                                         setBackgroundColor(selectedValue);
                                     }
                                 }}
-                                className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg"
-                                style={{ minWidth: '150px' }}
+                                className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg mr-5"
+                                style={{ minWidth: '140px' }}
                             >
                                 <option value="custom">직접 입력</option>
                                 {colorOptions.map((color, index) => (
@@ -559,7 +559,7 @@ const CreateImage = () => {
                                     value={backgroundColor}
                                     onChange={(e) => setBackgroundColor(e.target.value)}
                                     placeholder="직접 입력"
-                                    className="p-2 border-2 border-[#8194EC] rounded-lg"
+                                    className="p-2 border-2 border-[#8194EC] rounded-lg w-20"
                                 />
                             )}
                         </div>
