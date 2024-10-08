@@ -453,161 +453,153 @@ const CreateImage = () => {
     const currentMoods = moodOptions.slice(moodPage * optionsPerPage, (moodPage + 1) * optionsPerPage);
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#F2F2F2] pt-10 pb-10 w-full">
-            <div className="flex w-full max-w-[1400px] mx-auto px-4 justify-center mt-10 mb-[-40px]">
-                <div className="flex flex-col w-1/2 px-4 mt-10">
-                    <div className="flex flex-col justify-start items-start">
-                        <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
-                            상상 속 패턴을 지금 만들어보세요!
-                        </span>
-                        <div className="flex justify-between w-full max-w-[1400px] mx-auto px-4">
-                            <div className="w-1/2">
-                                {/* Positive 프롬프트 입력 */}
-                                <p className="text-lg font-['pretendard-bold'] mb-2">
-                                    패턴에 포함하고 싶은 요소를 입력하세요
-                                </p>
-                                <textarea
-                                    type="text"
-                                    value={positivePrompt}
-                                    onChange={(e) => setPositivePrompt(e.target.value)}
-                                    className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
-                                    placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
-                                />
+        <div className="flex flex-row min-h-screen bg-[#F2F2F2] pt-10 pb-10 w-full">
+            {/* 입력과 옵션 영역 */}
+            <div className="flex flex-col w-1/2 px-4 mt-10">
+                <div className="flex flex-col justify-start items-start">
+                    <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
+                        상상 속 패턴을 지금 만들어보세요!
+                    </span>
 
-                                {/* Negative 프롬프트 입력 */}
-                                <p className="text-lg font-['pretendard-bold'] mb-2">
-                                    패턴에 제외하고 싶은 요소를 입력하세요
-                                </p>
-                                <textarea
-                                    type="text"
-                                    value={negativePrompt}
-                                    onChange={(e) => setNegativePrompt(e.target.value)}
-                                    className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
-                                    placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
-                                />
-                            </div>
-                        </div>
+                    {/* Positive 프롬프트 입력 */}
+                    <p className="text-lg font-['pretendard-bold'] mb-2">패턴에 포함하고 싶은 요소를 입력하세요</p>
+                    <textarea
+                        type="text"
+                        value={positivePrompt}
+                        onChange={(e) => setPositivePrompt(e.target.value)}
+                        className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
+                        placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
+                    />
 
-                        {/* 분위기 선택 */}
-                        <div className="mb-4">
-                            <label className="block text-lg font-['pretendard-bold']">분위기 선택</label>
-                            <select
-                                value={selectedResultId}
-                                onChange={(e) => setSelectedResultId(e.target.value)}
-                                className="w-full p-2 border-3 border-[#8194EC] rounded-lg"
-                            >
-                                {moodOptions.map((option, index) => (
-                                    <option key={index} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                    {/* Negative 프롬프트 입력 */}
+                    <p className="text-lg font-['pretendard-bold'] mb-2">패턴에 제외하고 싶은 요소를 입력하세요</p>
+                    <textarea
+                        type="text"
+                        value={negativePrompt}
+                        onChange={(e) => setNegativePrompt(e.target.value)}
+                        className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
+                        placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
+                    />
 
-                        {/* 색상 선택 */}
-                        <div className="mb-4">
-                            <label className="block text-lg font-['pretendard-bold']">색상 선택</label>
-                            <select
-                                value={backgroundColor}
-                                onChange={(e) => setBackgroundColor(e.target.value)}
-                                className="w-full p-2 border-3 border-[#8194EC] rounded-lg"
-                            >
-                                {colorOptions.map((color, index) => (
-                                    <option key={index} value={color}>
-                                        {color}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                    {/* 분위기 선택 */}
+                    <div className="mb-4">
+                        <label className="block text-lg font-['pretendard-bold']">분위기 선택</label>
+                        <select
+                            value={selectedResultId}
+                            onChange={(e) => setSelectedResultId(e.target.value)}
+                            className="w-full p-2 border-3 border-[#8194EC] rounded-lg"
+                        >
+                            {moodOptions.map((option, index) => (
+                                <option key={index} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                        {/* 가로 세로 크기 입력 */}
-                        <div className="flex mb-4">
-                            <label className="mr-4">
-                                가로:
-                                <input
-                                    type="number"
-                                    value={width}
-                                    onChange={(e) => setWidth(Number(e.target.value))}
-                                    className="w-20 p-2 ml-2 border border-gray-300 rounded"
-                                />
-                            </label>
-                            <label>
-                                세로:
-                                <input
-                                    type="number"
-                                    value={height}
-                                    onChange={(e) => setHeight(Number(e.target.value))}
-                                    className="w-20 p-2 ml-2 border border-gray-300 rounded"
-                                />
-                            </label>
-                        </div>
+                    {/* 색상 선택 */}
+                    <div className="mb-4">
+                        <label className="block text-lg font-['pretendard-bold']">색상 선택</label>
+                        <select
+                            value={backgroundColor}
+                            onChange={(e) => setBackgroundColor(e.target.value)}
+                            className="w-full p-2 border-3 border-[#8194EC] rounded-lg"
+                        >
+                            {colorOptions.map((color, index) => (
+                                <option key={index} value={color}>
+                                    {color}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                        {/* CFG Scale */}
-                        <div className="flex items-center">
-                            <label className="text-lg font-['pretendard-bold'] mr-2">CFG Scale</label>
-                            <input
-                                type="range"
-                                min="1"
-                                max="13"
-                                value={cfgScale}
-                                onChange={(e) => setCfgScale(parseFloat(e.target.value))}
-                                ref={sliderRef1}
-                                className="flex-1 cursor-pointer"
-                            />
-                            <span className="ml-2 text-lg">{cfgScale}</span>
-                        </div>
-
-                        <div className="flex items-center">
-                            <label className="text-lg font-['pretendard-bold'] mr-2">Sampling Steps</label>
-                            <input
-                                type="range"
-                                min="5"
-                                max="150"
-                                value={samplingSteps}
-                                onChange={(e) => setSamplingSteps(Number(e.target.value))}
-                                ref={sliderRef2}
-                                className="flex-1 cursor-pointer"
-                            />
-                            <span className="ml-2 text-lg">{samplingSteps}</span>
-                        </div>
-
-                        {/* Seed 입력 및 랜덤 체크박스 */}
-                        <div className="flex items-center mb-4">
-                            <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
+                    {/* 가로 세로 크기 입력 */}
+                    <div className="flex mb-4">
+                        <label className="mr-4">
+                            가로:
                             <input
                                 type="number"
-                                className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
-                                value={seed}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    setSeed(value === '' ? '' : Number(value));
-                                }}
-                                disabled={isRandomSeed} // 랜덤 선택 시 입력 비활성화
+                                value={width}
+                                onChange={(e) => setWidth(Number(e.target.value))}
+                                className="w-20 p-2 ml-2 border border-gray-300 rounded"
                             />
-                            <label className="flex items-center ml-4 text-sm">
-                                <input
-                                    type="checkbox"
-                                    checked={isRandomSeed}
-                                    onChange={(e) => setIsRandomSeed(e.target.checked)}
-                                    className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
-                                />
-                                random
-                            </label>
-                        </div>
-
-                        {/* 생성하기 버튼 */}
-                        <button
-                            onClick={handleSubmit}
-                            className="w-full p-4 mt-6 font-['pretendard-bold'] bg-blue-500 text-white rounded"
-                        >
-                            생성하기
-                        </button>
+                        </label>
+                        <label>
+                            세로:
+                            <input
+                                type="number"
+                                value={height}
+                                onChange={(e) => setHeight(Number(e.target.value))}
+                                className="w-20 p-2 ml-2 border border-gray-300 rounded"
+                            />
+                        </label>
                     </div>
+
+                    {/* CFG Scale */}
+                    <div className="flex items-center">
+                        <label className="text-lg font-['pretendard-bold'] mr-2">CFG Scale</label>
+                        <input
+                            type="range"
+                            min="1"
+                            max="13"
+                            value={cfgScale}
+                            onChange={(e) => setCfgScale(parseFloat(e.target.value))}
+                            ref={sliderRef1}
+                            className="flex-1 cursor-pointer"
+                        />
+                        <span className="ml-2 text-lg">{cfgScale}</span>
+                    </div>
+
+                    <div className="flex items-center">
+                        <label className="text-lg font-['pretendard-bold'] mr-2">Sampling Steps</label>
+                        <input
+                            type="range"
+                            min="5"
+                            max="150"
+                            value={samplingSteps}
+                            onChange={(e) => setSamplingSteps(Number(e.target.value))}
+                            ref={sliderRef2}
+                            className="flex-1 cursor-pointer"
+                        />
+                        <span className="ml-2 text-lg">{samplingSteps}</span>
+                    </div>
+
+                    {/* Seed 입력 및 랜덤 체크박스 */}
+                    <div className="flex items-center mb-4">
+                        <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
+                        <input
+                            type="number"
+                            className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
+                            value={seed}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setSeed(value === '' ? '' : Number(value));
+                            }}
+                            disabled={isRandomSeed} // 랜덤 선택 시 입력 비활성화
+                        />
+                        <label className="flex items-center ml-4 text-sm">
+                            <input
+                                type="checkbox"
+                                checked={isRandomSeed}
+                                onChange={(e) => setIsRandomSeed(e.target.checked)}
+                                className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                            />
+                            random
+                        </label>
+                    </div>
+
+                    {/* 생성하기 버튼 */}
+                    <button
+                        onClick={handleSubmit}
+                        className="w-full p-4 mt-6 font-['pretendard-bold'] bg-blue-500 text-white rounded"
+                    >
+                        생성하기
+                    </button>
                 </div>
             </div>
 
             {/* 생성 결과 섹션 */}
-            <div className="flex flex-col w-1/2 px-4 mt-24 h-[730px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+            <div className="flex flex-col w-1/2 px-4 mt-10 h-[730px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
                 {results.map((result, index) =>
                     result.isLoading ? (
                         <SkeletonCard key={index} />
