@@ -316,7 +316,6 @@ const CreateImage = () => {
         const payload = JSON.parse(atob(token.split('.')[1]));
         return payload.exp < Date.now() / 1000;
     };
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -330,13 +329,20 @@ const CreateImage = () => {
             return;
         }
 
-        const finalMood = mood === '' ? 'a' : mood; // 입력이 없으면 'a'로 설정
-        const finalBackgroundColor = backgroundColor === '' ? 'white' : backgroundColor; // 입력이 없으면 'white'로 설정
+        // 필수 입력인 positivePrompt가 비어 있을 때 경고 표시
+        if (positivePrompt.trim() === '') {
+            setAlertMessage('패턴에 포함할 요소를 입력하세요.');
+            return;
+        }
+
+        const finalNegativePrompt = negativePrompt === '' ? 'none' : negativePrompt;
+        const finalMood = mood === '' ? 'none' : mood;
+        const finalBackgroundColor = backgroundColor === '' ? 'white' : backgroundColor;
 
         try {
             const formData = new FormData();
-            formData.append('positive_prompt', positivePrompt);
-            formData.append('negative_prompt', negativePrompt);
+            formData.append('positive_prompt', positivePrompt); // 필수 입력 필드
+            formData.append('negative_prompt', finalNegativePrompt); // 선택 입력 필드
             formData.append('width', width || 512);
             formData.append('height', height || 512);
             formData.append('background_color', finalBackgroundColor);
@@ -355,20 +361,19 @@ const CreateImage = () => {
 
             if (!response.ok) throw new Error('Network response was not ok');
 
-            const data = await response.json(); // 여기에 data 변수를 정의
+            const data = await response.json();
             console.log(data);
 
-            // 새 결과 추가
             const newResult = {
                 id: data.id,
                 content: data.content,
                 created_at: data.created_at,
                 user_id: data.user_id,
                 images: [],
-                isLoading: true, // 새로운 결과는 로딩 중으로 설정
+                isLoading: true,
             };
             setResults((prevResults) => [newResult, ...prevResults]);
-            pollForImages(data.id, newResult); // 이미지 폴링 시작
+            pollForImages(data.id, newResult);
         } catch (error) {
             console.error('Error occurred:', error);
             setAlertMessage('Error occurred while creating prompt.');
