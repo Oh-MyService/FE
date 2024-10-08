@@ -604,7 +604,7 @@ const CreateImage = () => {
                         </div>
 
                         {/* Seed 입력 및 랜덤 체크박스 */}
-                        <div className="flex items-center mb-2">
+                        <div className="flex items-center mb-4">
                             <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
                             <input
                                 type="number"
@@ -631,7 +631,7 @@ const CreateImage = () => {
                         <div className="flex justify-end w-full">
                             <button
                                 onClick={handleSubmit}
-                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl"
+                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl hover:bg-[#193174]"
                             >
                                 생성하기
                             </button>
