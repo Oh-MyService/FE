@@ -242,11 +242,9 @@ const CreateImage = () => {
 
     // 슬라이더 스타일 초기화
     useEffect(() => {
-        if (sliderRef1.current && sliderRef2.current) {
-            applySliderStyles(sliderRef1.current);
-            applySliderStyles(sliderRef2.current);
-        }
-    }, [sliderRef1, sliderRef2]);
+        if (sliderRef1.current) applySliderStyles(sliderRef1.current);
+        if (sliderRef2.current) applySliderStyles(sliderRef2.current);
+    }, []);
 
     const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
     const [moodPage, setMoodPage] = useState(0);
@@ -514,29 +512,24 @@ const CreateImage = () => {
                         </div>
 
                         {/* 가로 세로 크기 입력 */}
-                        <div className="flex mb-4">
-                            <label className="mr-4">
-                                가로:
-                                <input
-                                    type="number"
-                                    value={width}
-                                    onChange={(e) => setWidth(Number(e.target.value))}
-                                    className="w-20 p-2 ml-2 border border-gray-300 rounded"
-                                />
-                            </label>
-                            <label>
-                                세로:
-                                <input
-                                    type="number"
-                                    value={height}
-                                    onChange={(e) => setHeight(Number(e.target.value))}
-                                    className="w-20 p-2 ml-2 border border-gray-300 rounded"
-                                />
-                            </label>
+                        <div className="flex mb-4 items-center">
+                            <label className="mr-4 text-lg font-['pretendard-bold']">가로 X 세로:</label>
+                            <select
+                                value={`${width}X${height}`}
+                                onChange={(e) => {
+                                    const [newWidth, newHeight] = e.target.value.split('X').map(Number);
+                                    setWidth(newWidth);
+                                    setHeight(newHeight);
+                                }}
+                                className="w-32 p-2 border-2 border-[#8194EC] rounded-lg"
+                            >
+                                <option value="512X512">512 X 512</option>
+                                <option value="1024X1024">1024 X 1024</option>
+                            </select>
                         </div>
 
                         {/* CFG Scale */}
-                        <div className="flex items-center">
+                        <div className="flex items-center mb-6">
                             <label className="text-lg font-['pretendard-bold'] mr-2">CFG Scale</label>
                             <input
                                 type="range"
@@ -550,7 +543,8 @@ const CreateImage = () => {
                             <span className="ml-2 text-lg">{cfgScale}</span>
                         </div>
 
-                        <div className="flex items-center">
+                        {/* Sampling Steps */}
+                        <div className="flex items-center mb-6">
                             <label className="text-lg font-['pretendard-bold'] mr-2">Sampling Steps</label>
                             <input
                                 type="range"
@@ -565,7 +559,7 @@ const CreateImage = () => {
                         </div>
 
                         {/* Seed 입력 및 랜덤 체크박스 */}
-                        <div className="flex items-center mb-4">
+                        <div className="flex items-center mb-6">
                             <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
                             <input
                                 type="number"
