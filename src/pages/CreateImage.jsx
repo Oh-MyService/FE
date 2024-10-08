@@ -500,7 +500,7 @@ const CreateImage = () => {
                             <select
                                 value={selectedResultId}
                                 onChange={(e) => setSelectedResultId(e.target.value)}
-                                className="p-2 border-2 border-[#8194EC] rounded-lg mr-10"
+                                className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg mr-10"
                                 style={{ minWidth: '150px' }}
                             >
                                 {moodOptions.map((option, index) => (
@@ -515,7 +515,7 @@ const CreateImage = () => {
                             <select
                                 value={backgroundColor}
                                 onChange={(e) => setBackgroundColor(e.target.value)}
-                                className="p-2 border-2 border-[#8194EC] rounded-lg"
+                                className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg"
                                 style={{ minWidth: '150px' }}
                             >
                                 {colorOptions.map((color, index) => (
@@ -528,7 +528,7 @@ const CreateImage = () => {
 
                         {/* 가로 세로 크기 입력 */}
                         <div className="flex mb-6 items-center">
-                            <label className="mr-4 text-lg font-['pretendard-bold']">가로 X 세로:</label>
+                            <label className="mr-4 text-lg font-['pretendard-bold']">가로 X 세로</label>
                             <select
                                 value={`${width}X${height}`}
                                 onChange={(e) => {
@@ -536,7 +536,7 @@ const CreateImage = () => {
                                     setWidth(newWidth);
                                     setHeight(newHeight);
                                 }}
-                                className="w-36 p-2 border-2 border-[#8194EC] rounded-lg"
+                                className="w-36 p-2 pr-8 border-2 border-[#8194EC] rounded-lg"
                             >
                                 <option value="512X512">512 X 512</option>
                                 <option value="1024X1024">1024 X 1024</option>
@@ -545,7 +545,7 @@ const CreateImage = () => {
 
                         {/* CFG Scale */}
                         <div className="flex items-center mb-6">
-                            <label className="text-lg font-['pretendard-bold'] mr-2">CFG Scale</label>
+                            <label className="text-lg font-['pretendard-bold'] mr-2 whitespace-nowrap">CFG Scale</label>
                             <input
                                 type="range"
                                 min="1"
@@ -553,14 +553,16 @@ const CreateImage = () => {
                                 value={cfgScale}
                                 onChange={(e) => setCfgScale(parseFloat(e.target.value))}
                                 ref={sliderRef1}
-                                className="w-full cursor-pointer"
+                                className="flex-grow cursor-pointer mx-4"
                             />
-                            <span className="ml-2 text-lg">{cfgScale}</span>
+                            <span className="text-lg">{cfgScale}</span>
                         </div>
 
                         {/* Sampling Steps */}
                         <div className="flex items-center mb-6">
-                            <label className="text-lg font-['pretendard-bold'] mr-2">Sampling Steps</label>
+                            <label className="text-lg font-['pretendard-bold'] mr-2 whitespace-nowrap">
+                                Sampling Steps
+                            </label>
                             <input
                                 type="range"
                                 min="5"
@@ -568,9 +570,9 @@ const CreateImage = () => {
                                 value={samplingSteps}
                                 onChange={(e) => setSamplingSteps(Number(e.target.value))}
                                 ref={sliderRef2}
-                                className="w-full cursor-pointer"
+                                className="flex-grow cursor-pointer mx-4"
                             />
-                            <span className="ml-2 text-lg">{samplingSteps}</span>
+                            <span className="text-lg">{samplingSteps}</span>
                         </div>
 
                         {/* Seed 입력 및 랜덤 체크박스 */}
@@ -578,7 +580,7 @@ const CreateImage = () => {
                             <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
                             <input
                                 type="number"
-                                className="w-20 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
+                                className="w-16 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
                                 value={seed}
                                 onChange={(e) => {
                                     const value = e.target.value;
