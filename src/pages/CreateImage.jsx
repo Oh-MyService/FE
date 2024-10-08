@@ -481,13 +481,14 @@ const CreateImage = () => {
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
-                        {/* 분위기 선택 */}
-                        <div className="mb-4">
-                            <label className="block text-lg font-['pretendard-bold']">분위기 선택</label>
+                        <div className="flex items-center mb-4">
+                            {/* 분위기 선택 */}
+                            <label className="text-lg font-['pretendard-bold'] mr-4">분위기</label>
                             <select
                                 value={selectedResultId}
                                 onChange={(e) => setSelectedResultId(e.target.value)}
-                                className="w-full p-2 border-2 border-[#8194EC] rounded-lg"
+                                className="p-2 border-2 border-[#8194EC] rounded-lg mr-10"
+                                style={{ minWidth: '150px' }}
                             >
                                 {moodOptions.map((option, index) => (
                                     <option key={index} value={option}>
@@ -495,15 +496,14 @@ const CreateImage = () => {
                                     </option>
                                 ))}
                             </select>
-                        </div>
 
-                        {/* 색상 선택 */}
-                        <div className="mb-4">
-                            <label className="block text-lg font-['pretendard-bold']">색상 선택</label>
+                            {/* 색상 선택 */}
+                            <label className="text-lg font-['pretendard-bold'] mr-4">색상</label>
                             <select
                                 value={backgroundColor}
                                 onChange={(e) => setBackgroundColor(e.target.value)}
-                                className="w-full p-2 border-2 border-[#8194EC] rounded-lg"
+                                className="p-2 border-2 border-[#8194EC] rounded-lg"
+                                style={{ minWidth: '150px' }}
                             >
                                 {colorOptions.map((color, index) => (
                                     <option key={index} value={color}>
