@@ -242,9 +242,11 @@ const CreateImage = () => {
 
     // 슬라이더 스타일 초기화
     useEffect(() => {
-        if (sliderRef1.current) applySliderStyles(sliderRef1.current);
-        if (sliderRef2.current) applySliderStyles(sliderRef2.current);
-    }, []);
+        if (sliderRef1.current && sliderRef2.current) {
+            applySliderStyles(sliderRef1.current);
+            applySliderStyles(sliderRef2.current);
+        }
+    }, [sliderRef1, sliderRef2]);
 
     const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
     const [moodPage, setMoodPage] = useState(0);
@@ -458,24 +460,27 @@ const CreateImage = () => {
                         <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
                             상상 속 패턴을 지금 만들어보세요!
                         </span>
-                        {/* Positive 프롬프트 입력 */}
-                        <textarea
-                            type="text"
-                            value={positivePrompt}
-                            onChange={(e) => setPositivePrompt(e.target.value)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
-                            placeholder="패턴에 포함하고 싶은 요소를 입력하세요 (Positive)"
-                        />
+                        <div className="relative w-full">
+                            {/* Positive 프롬프트 입력 */}
+                            <textarea
+                                type="text"
+                                value={positivePrompt}
+                                onChange={(e) => setPositivePrompt(e.target.value)}
+                                className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
+                                placeholder="패턴에 포함하고 싶은 요소를 입력하세요 (Positive)"
+                            />
 
-                        {/* Negative 프롬프트 입력 */}
-                        <textarea
-                            type="text"
-                            value={negativePrompt}
-                            onChange={(e) => setNegativePrompt(e.target.value)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
-                            placeholder="패턴에 제외하고 싶은 요소를 입력하세요 (Negative)"
-                        />
+                            {/* Negative 프롬프트 입력 */}
+                            <textarea
+                                type="text"
+                                value={negativePrompt}
+                                onChange={(e) => setNegativePrompt(e.target.value)}
+                                className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
+                                placeholder="패턴에 제외하고 싶은 요소를 입력하세요 (Negative)"
+                            />
+                        </div>
                     </div>
+
                     {/* 분위기 선택 */}
                     <div className="mb-4">
                         <label className="block text-lg font-['pretendard-bold']">분위기 선택</label>
