@@ -498,32 +498,70 @@ const CreateImage = () => {
                             {/* 분위기 선택 */}
                             <label className="text-lg font-['pretendard-bold'] mr-4">분위기</label>
                             <select
-                                value={selectedResultId}
-                                onChange={(e) => setSelectedResultId(e.target.value)}
+                                value={selectedMood}
+                                onChange={(e) => {
+                                    const selectedValue = e.target.value;
+                                    if (selectedValue === 'custom') {
+                                        setIsCustomMood(true);
+                                        setSelectedMood(''); // 빈 값으로 초기화
+                                    } else {
+                                        setIsCustomMood(false);
+                                        setSelectedMood(selectedValue);
+                                    }
+                                }}
                                 className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg mr-10"
                                 style={{ minWidth: '150px' }}
                             >
+                                <option value="custom">직접 입력</option>
                                 {moodOptions.map((option, index) => (
                                     <option key={index} value={option}>
                                         {option}
                                     </option>
                                 ))}
                             </select>
+                            {isCustomMood && (
+                                <input
+                                    type="text"
+                                    value={mood}
+                                    onChange={(e) => setMood(e.target.value)}
+                                    placeholder="직접 입력"
+                                    className="p-2 border-2 border-[#8194EC] rounded-lg"
+                                />
+                            )}
 
                             {/* 색상 선택 */}
                             <label className="text-lg font-['pretendard-bold'] mr-4">색상</label>
                             <select
                                 value={backgroundColor}
-                                onChange={(e) => setBackgroundColor(e.target.value)}
+                                onChange={(e) => {
+                                    const selectedValue = e.target.value;
+                                    if (selectedValue === 'custom') {
+                                        setIsCustomColor(true);
+                                        setBackgroundColor(''); // 빈 값으로 초기화
+                                    } else {
+                                        setIsCustomColor(false);
+                                        setBackgroundColor(selectedValue);
+                                    }
+                                }}
                                 className="p-2 pr-8 border-2 border-[#8194EC] rounded-lg"
                                 style={{ minWidth: '150px' }}
                             >
+                                <option value="custom">직접 입력</option>
                                 {colorOptions.map((color, index) => (
                                     <option key={index} value={color}>
                                         {color}
                                     </option>
                                 ))}
                             </select>
+                            {isCustomColor && (
+                                <input
+                                    type="text"
+                                    value={backgroundColor}
+                                    onChange={(e) => setBackgroundColor(e.target.value)}
+                                    placeholder="직접 입력"
+                                    className="p-2 border-2 border-[#8194EC] rounded-lg"
+                                />
+                            )}
                         </div>
 
                         {/* 가로 세로 크기 입력 */}
@@ -544,7 +582,7 @@ const CreateImage = () => {
                         </div>
 
                         {/* CFG Scale */}
-                        <div className="flex items-center mb-6">
+                        <div className="flex items-center mb-6 w-full">
                             <label className="text-lg font-['pretendard-bold'] mr-2 whitespace-nowrap">CFG Scale</label>
                             <input
                                 type="range"
@@ -554,12 +592,13 @@ const CreateImage = () => {
                                 onChange={(e) => setCfgScale(parseFloat(e.target.value))}
                                 ref={sliderRef1}
                                 className="flex-grow cursor-pointer mx-4"
+                                style={{ width: '80%' }}
                             />
                             <span className="text-lg">{cfgScale}</span>
                         </div>
 
                         {/* Sampling Steps */}
-                        <div className="flex items-center mb-6">
+                        <div className="flex items-center mb-6 w-full">
                             <label className="text-lg font-['pretendard-bold'] mr-2 whitespace-nowrap">
                                 Sampling Steps
                             </label>
@@ -571,6 +610,7 @@ const CreateImage = () => {
                                 onChange={(e) => setSamplingSteps(Number(e.target.value))}
                                 ref={sliderRef2}
                                 className="flex-grow cursor-pointer mx-4"
+                                style={{ width: '80%' }}
                             />
                             <span className="text-lg">{samplingSteps}</span>
                         </div>
