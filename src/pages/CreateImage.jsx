@@ -179,9 +179,21 @@ const CreateImage = () => {
     const [samplingSteps, setSamplingSteps] = useState(20);
     const [width, setWidth] = useState(512);
     const [height, setHeight] = useState(512);
-    const [backgroundColor, setBackgroundColor] = useState('white');
+    const [backgroundColor, setBackgroundColor] = useState(''); // 직접 입력
+    const [mood, setMood] = useState(''); // 직접 입력
     const [seed, setSeed] = useState('');
-    const [isRandomSeed, setIsRandomSeed] = useState(false);
+    const [isRandomSeed, setIsRandomSeed] = useState(true);
+
+    // Seed를 랜덤 값으로 설정하기 위한 useEffect
+    useEffect(() => {
+        if (isRandomSeed) {
+            setSeed(Math.floor(Math.random() * 257)); // 0부터 256까지 랜덤 값
+        }
+    }, [isRandomSeed]);
+
+    // 직접 입력 옵션을 관리하는 상태
+    const [isCustomMood, setIsCustomMood] = useState(true); // 기본적으로 직접 입력이 활성화됨
+    const [isCustomColor, setIsCustomColor] = useState(true); // 기본적으로 직접 입력이 활성화됨
 
     // 기타 상태 관리
     const [alertMessage, setAlertMessage] = useState('');
@@ -315,22 +327,20 @@ const CreateImage = () => {
             return;
         }
 
-        if (isTokenExpired(token)) {
-            setAlertMessage('Session expired. Please login again.');
-            return;
-        }
+        const finalMood = mood === '' ? 'a' : mood; // 입력이 없으면 'a'로 설정
+        const finalBackgroundColor = backgroundColor === '' ? 'white' : backgroundColor; // 입력이 없으면 'white'로 설정
 
         try {
             const formData = new FormData();
-            formData.append('positive_prompt', positivePrompt); // Positive 프롬프트 추가
-            formData.append('negative_prompt', negativePrompt); // Negative 프롬프트 추가
-            formData.append('width', width || 512); // 기본값 512
-            formData.append('height', height || 512); // 기본값 512
-            formData.append('background_color', backgroundColor || 'white'); // 기본값 white
-            formData.append('mood', selectedResultId || '카툰'); // 선택된 분위기 추가
-            formData.append('cfg_scale', cfgScale || 7); // 기본값 7
-            formData.append('sampling_steps', samplingSteps || 20); // 기본값 20
-            formData.append('seed', isRandomSeed ? Math.floor(Math.random() * 10000) : seed || 0); // 랜덤 Seed 또는 입력된 Seed
+            formData.append('positive_prompt', positivePrompt);
+            formData.append('negative_prompt', negativePrompt);
+            formData.append('width', width || 512);
+            formData.append('height', height || 512);
+            formData.append('background_color', finalBackgroundColor);
+            formData.append('mood', finalMood);
+            formData.append('cfg_scale', cfgScale || 7);
+            formData.append('sampling_steps', samplingSteps || 20);
+            formData.append('seed', isRandomSeed ? Math.floor(Math.random() * 10000) : seed || 0);
 
             let response = await fetch('http://118.67.128.129:28282/api/prompts', {
                 method: 'POST',
@@ -343,23 +353,23 @@ const CreateImage = () => {
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             console.log(data);
-
-            // 새 결과 추가
-            const newResult = {
-                id: data.id,
-                content: data.content,
-                created_at: data.created_at,
-                user_id: data.user_id,
-                images: [],
-                isLoading: true, // 새로운 결과는 로딩 중으로 설정
-            };
-            setResults((prevResults) => [newResult, ...prevResults]);
-            pollForImages(data.id, newResult); // 이미지 폴링 시작
         } catch (error) {
             console.error('Error occurred:', error);
             setAlertMessage('Error occurred while creating prompt.');
         }
     };
+
+    // 새 결과 추가
+    const newResult = {
+        id: data.id,
+        content: data.content,
+        created_at: data.created_at,
+        user_id: data.user_id,
+        images: [],
+        isLoading: true, // 새로운 결과는 로딩 중으로 설정
+    };
+    setResults((prevResults) => [newResult, ...prevResults]);
+    pollForImages(data.id, newResult); // 이미지 폴링 시작
 
     // 이미지 생성 결과 폴링
     const pollForImages = (promptId, newResult) => {
@@ -479,7 +489,7 @@ const CreateImage = () => {
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
-                        <div className="flex items-center mb-4">
+                        <div className="flex items-center mb-6">
                             {/* 분위기 선택 */}
                             <label className="text-lg font-['pretendard-bold'] mr-4">분위기</label>
                             <select
@@ -512,7 +522,7 @@ const CreateImage = () => {
                         </div>
 
                         {/* 가로 세로 크기 입력 */}
-                        <div className="flex mb-4 items-center">
+                        <div className="flex mb-6 items-center">
                             <label className="mr-4 text-lg font-['pretendard-bold']">가로 X 세로:</label>
                             <select
                                 value={`${width}X${height}`}
@@ -521,7 +531,7 @@ const CreateImage = () => {
                                     setWidth(newWidth);
                                     setHeight(newHeight);
                                 }}
-                                className="w-32 p-2 border-2 border-[#8194EC] rounded-lg"
+                                className="w-36 p-2 border-2 border-[#8194EC] rounded-lg"
                             >
                                 <option value="512X512">512 X 512</option>
                                 <option value="1024X1024">1024 X 1024</option>
@@ -538,7 +548,7 @@ const CreateImage = () => {
                                 value={cfgScale}
                                 onChange={(e) => setCfgScale(parseFloat(e.target.value))}
                                 ref={sliderRef1}
-                                className="flex-1 cursor-pointer"
+                                className="w-full cursor-pointer"
                             />
                             <span className="ml-2 text-lg">{cfgScale}</span>
                         </div>
@@ -553,7 +563,7 @@ const CreateImage = () => {
                                 value={samplingSteps}
                                 onChange={(e) => setSamplingSteps(Number(e.target.value))}
                                 ref={sliderRef2}
-                                className="flex-1 cursor-pointer"
+                                className="w-full cursor-pointer"
                             />
                             <span className="ml-2 text-lg">{samplingSteps}</span>
                         </div>
@@ -585,7 +595,7 @@ const CreateImage = () => {
                         {/* 생성하기 버튼 */}
                         <button
                             onClick={handleSubmit}
-                            className="w-full p-4 mt-6 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded"
+                            className="w-36 p-4 mt-6 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded"
                         >
                             생성하기
                         </button>
