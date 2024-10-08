@@ -479,7 +479,7 @@ const CreateImage = () => {
                             type="text"
                             value={positivePrompt}
                             onChange={(e) => handleInputChange(e, setPositivePrompt)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7]  focus:border-[#8194EC]"
+                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
@@ -489,7 +489,7 @@ const CreateImage = () => {
                             type="text"
                             value={negativePrompt}
                             onChange={(e) => handleInputChange(e, setNegativePrompt)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7]"
+                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
@@ -508,7 +508,7 @@ const CreateImage = () => {
                                         setBackgroundColor(selectedValue);
                                     }
                                 }}
-                                className="p-2 pr-8 border-3 border-[#3A57A7] rounded-lg mr-2"
+                                className="p-2 pr-8 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC] rounded-lg mr-2"
                                 style={{ minWidth: '140px' }}
                             >
                                 <option value="custom">직접 입력</option>
@@ -524,7 +524,7 @@ const CreateImage = () => {
                                     value={backgroundColor}
                                     onChange={(e) => setBackgroundColor(e.target.value)}
                                     placeholder="직접 입력"
-                                    className="p-2 border-3 border-[#3A57A7] rounded-lg w-40"
+                                    className="p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC] rounded-lg w-40"
                                 />
                             )}
                         </div>
@@ -544,7 +544,7 @@ const CreateImage = () => {
                                         setSelectedMood(selectedValue);
                                     }
                                 }}
-                                className="p-2 pr-2 border-3 border-[#3A57A7] rounded-lg mr-2"
+                                className="p-2 pr-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC] rounded-lg mr-2"
                                 style={{ minWidth: '140px' }}
                             >
                                 <option value="custom">직접 입력</option>
@@ -560,7 +560,7 @@ const CreateImage = () => {
                                     value={mood}
                                     onChange={(e) => setMood(e.target.value)}
                                     placeholder="직접 입력"
-                                    className="p-2 border-3 border-[#3A57A7] rounded-lg w-40"
+                                    className="p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC] rounded-lg w-40"
                                 />
                             )}
                         </div>
@@ -575,7 +575,7 @@ const CreateImage = () => {
                                     setWidth(newWidth);
                                     setHeight(newHeight);
                                 }}
-                                className="p-2 pr-8 border-3 border-[#3A57A7] rounded-lg"
+                                className="p-2 pr-8 border-3 border-[#3A57A7] focus:outline-none focus:border-[#8194EC] rounded-lg"
                                 style={{ minWidth: '140px', width: 'auto' }}
                             >
                                 <option value="512X512">512 X 512</option>
@@ -645,7 +645,8 @@ const CreateImage = () => {
                         <div className="flex justify-end w-full">
                             <button
                                 onClick={handleSubmit}
-                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl mb-2"
+                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl"
+                                style={{ marginBottom: '0.5rem' }}
                             >
                                 생성하기
                             </button>
