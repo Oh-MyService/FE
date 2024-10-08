@@ -454,8 +454,8 @@ const CreateImage = () => {
 
     return (
         <div className="flex flex-row justify-center min-h-screen bg-[#F2F2F2] pt-10 pb-10 w-full">
-            <div className="flex w-full max-w-[1400px] px-4">
-                <div className="flex flex-col w-1/2 px-4 mt-10">
+            <div className="flex w-full max-w-[1400px] mx-auto px-4 gap-x-4">
+                <div className="flex flex-col w-[48%] px-4 mt-10">
                     <div className="flex flex-col justify-start items-start">
                         <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
                             상상 속 패턴을 지금 만들어보세요!
@@ -600,7 +600,8 @@ const CreateImage = () => {
             </div>
 
             {/* 생성 결과 섹션 */}
-            <div className="flex flex-col w-1/2 px-4 mt-10 h-[730px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+            <div className="flex flex-col w-[48%] px-4 mt-10 h-[730px] overflow-y-auto border-2 border-gray-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+                {' '}
                 {results.map((result, index) =>
                     result.isLoading ? (
                         <SkeletonCard key={index} />
