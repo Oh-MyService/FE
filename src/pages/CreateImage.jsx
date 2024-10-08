@@ -474,22 +474,22 @@ const CreateImage = () => {
                         </span>
 
                         {/* Positive 프롬프트 입력 */}
-                        <p className="text-lg font-['pretendard-bold'] mb-4">패턴에 포함하고 싶은 요소를 입력하세요</p>
+                        <p className="text-lg font-['pretendard-bold'] mb-2">패턴에 포함하고 싶은 요소를 입력하세요</p>
                         <textarea
                             type="text"
                             value={positivePrompt}
                             onChange={(e) => handleInputChange(e, setPositivePrompt)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
+                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
                         {/* Negative 프롬프트 입력 */}
-                        <p className="text-lg font-['pretendard-bold'] mb-4">패턴에 제외하고 싶은 요소를 입력하세요</p>
+                        <p className="text-lg font-['pretendard-bold'] mb-2">패턴에 제외하고 싶은 요소를 입력하세요</p>
                         <textarea
                             type="text"
                             value={negativePrompt}
                             onChange={(e) => handleInputChange(e, setNegativePrompt)}
-                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
+                            className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
 
@@ -644,7 +644,7 @@ const CreateImage = () => {
                         <div className="flex justify-end w-full">
                             <button
                                 onClick={handleSubmit}
-                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl"
+                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl mb-4"
                             >
                                 생성하기
                             </button>
