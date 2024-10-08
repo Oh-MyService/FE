@@ -231,7 +231,7 @@ const CreateImage = () => {
     const sliderRef2 = useRef(null);
 
     // 한글 입력 제한 함수
-    const handleInputChange = (e) => {
+    const handleInputChange = (e, setValue) => {
         const value = e.target.value;
         const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 체크하는 정규 표현식
 
@@ -239,8 +239,7 @@ const CreateImage = () => {
             setAlertMessage('한국어는 입력할 수 없습니다.');
         } else {
             setAlertMessage(''); // 알림 초기화
-            setPositivePrompt(value); // 한글이 아닐 때만 상태 업데이트
-            setNegativePrompt(value);
+            setValue(value); // 한글이 아닐 때만 상태 업데이트
         }
     };
 
@@ -479,7 +478,7 @@ const CreateImage = () => {
                         <textarea
                             type="text"
                             value={positivePrompt}
-                            onChange={(e) => setPositivePrompt(e.target.value)}
+                            onChange={(e) => handleInputChange(e, setPositivePrompt)}
                             className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
@@ -489,7 +488,7 @@ const CreateImage = () => {
                         <textarea
                             type="text"
                             value={negativePrompt}
-                            onChange={(e) => setNegativePrompt(e.target.value)}
+                            onChange={(e) => handleInputChange(e, setNegativePrompt)}
                             className="w-full h-24 bg-[#F2F2F2] text-black rounded-lg py-4 px-4 mb-4 border-3 border-[#3A57A7]"
                             placeholder="ex) Natural wave pattern, background color is blue and waves light yellow"
                         />
@@ -596,7 +595,7 @@ const CreateImage = () => {
                                 className="flex-grow cursor-pointer mx-4"
                                 style={{ width: '80%' }}
                             />
-                            <span className="text-lg font-['pretendard-medium']">{cfgScale}</span>
+                            <span className="text-lg font-['pretendard-regular']">{cfgScale}</span>
                         </div>
 
                         {/* Sampling Steps */}
@@ -614,7 +613,7 @@ const CreateImage = () => {
                                 className="flex-grow cursor-pointer mx-4"
                                 style={{ width: '80%' }}
                             />
-                            <span className="text-lg pretendard-medium">{samplingSteps}</span>
+                            <span className="text-lg  font-['pretendard-regular']">{samplingSteps}</span>
                         </div>
 
                         {/* Seed 입력 및 랜덤 체크박스 */}
@@ -622,7 +621,7 @@ const CreateImage = () => {
                             <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
                             <input
                                 type="number"
-                                className="w-16 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular']"
+                                className="w-16 p-2 focus:outline-[#8194EC] rounded-lg mr-2 font-['pretendard-regular'] text-center"
                                 value={seed}
                                 onChange={(e) => {
                                     const value = e.target.value;
@@ -630,7 +629,7 @@ const CreateImage = () => {
                                 }}
                                 disabled={isRandomSeed} // 랜덤 선택 시 입력 비활성화
                             />
-                            <label className="flex items-center ml-4 text-sm">
+                            <label className="flex items-center ml-4 text-sm font-['pretendard-regular']">
                                 <input
                                     type="checkbox"
                                     checked={isRandomSeed}
@@ -642,7 +641,7 @@ const CreateImage = () => {
                         </div>
 
                         {/* 생성하기 버튼 */}
-                        <div className="flex justify-end w-full mt-6">
+                        <div className="flex justify-end w-full mt-2">
                             <button
                                 onClick={handleSubmit}
                                 className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded"
