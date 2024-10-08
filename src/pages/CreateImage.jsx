@@ -474,7 +474,7 @@ const CreateImage = () => {
                         </span>
 
                         {/* Positive 프롬프트 입력 */}
-                        <p className="text-lg font-['pretendard-bold'] mb-2">패턴에 포함하고 싶은 요소를 입력하세요</p>
+                        <p className="text-lg font-['pretendard-bold'] mb-4">패턴에 포함하고 싶은 요소를 입력하세요</p>
                         <textarea
                             type="text"
                             value={positivePrompt}
@@ -484,7 +484,7 @@ const CreateImage = () => {
                         />
 
                         {/* Negative 프롬프트 입력 */}
-                        <p className="text-lg font-['pretendard-bold'] mb-2">패턴에 제외하고 싶은 요소를 입력하세요</p>
+                        <p className="text-lg font-['pretendard-bold'] mb-4">패턴에 제외하고 싶은 요소를 입력하세요</p>
                         <textarea
                             type="text"
                             value={negativePrompt}
@@ -617,7 +617,7 @@ const CreateImage = () => {
                         </div>
 
                         {/* Seed 입력 및 랜덤 체크박스 */}
-                        <div className="flex items-center mb-6">
+                        <div className="flex items-center mb-4">
                             <label className="text-lg font-['pretendard-bold'] mr-2">Seed</label>
                             <input
                                 type="number"
@@ -629,7 +629,7 @@ const CreateImage = () => {
                                 }}
                                 disabled={isRandomSeed} // 랜덤 선택 시 입력 비활성화
                             />
-                            <label className="flex items-center ml-4 text-sm font-['pretendard-regular']">
+                            <label className="flex items-center ml-2 text-sm font-['pretendard-regular']">
                                 <input
                                     type="checkbox"
                                     checked={isRandomSeed}
@@ -641,10 +641,10 @@ const CreateImage = () => {
                         </div>
 
                         {/* 생성하기 버튼 */}
-                        <div className="flex justify-end w-full mt-2">
+                        <div className="flex justify-end w-full">
                             <button
                                 onClick={handleSubmit}
-                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded"
+                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl"
                             >
                                 생성하기
                             </button>
