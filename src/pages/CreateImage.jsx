@@ -342,11 +342,11 @@ const CreateImage = () => {
         try {
             const formData = new FormData();
             formData.append('positive_prompt', positivePrompt); // 필수 입력 필드
-            formData.append('negative_prompt', finalNegativePrompt); // 선택 입력 필드
+            formData.append('negative_prompt', finalNegativePrompt || 'not_exist'); // 선택 입력 필드
             formData.append('width', width || 512);
             formData.append('height', height || 512);
-            formData.append('background_color', finalBackgroundColor);
-            formData.append('mood', finalMood);
+            formData.append('background_color', finalBackgroundColor || 'white');
+            formData.append('mood', finalMood || 'not_exist');
             formData.append('cfg_scale', cfgScale || 7);
             formData.append('sampling_steps', samplingSteps || 20);
             formData.append('seed', isRandomSeed ? Math.floor(Math.random() * 10000) : seed || 0);
