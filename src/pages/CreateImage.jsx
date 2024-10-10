@@ -335,8 +335,8 @@ const CreateImage = () => {
             return;
         }
 
-        const finalNegativePrompt = negativePrompt === '' ? 'none' : negativePrompt;
-        const finalMood = mood === '' ? 'none' : mood;
+        const finalNegativePrompt = negativePrompt === '' ? 'not_exist' : negativePrompt;
+        const finalMood = mood === '' ? 'not_exist' : mood;
         const finalBackgroundColor = backgroundColor === '' ? 'white' : backgroundColor;
 
         try {
