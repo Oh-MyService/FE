@@ -410,7 +410,7 @@ const RecentGeneration = () => {
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                  d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
                 />
               </svg>
             </button>
@@ -439,14 +439,6 @@ const RecentGeneration = () => {
                     </tr>
                     <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
-                        cfg scale
-                      </td>
-                      <td className="py-1 text-sm font-['pretendard-medium']">
-                        {promptData.ai_option.cfg_scale}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                         height
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
@@ -455,10 +447,10 @@ const RecentGeneration = () => {
                     </tr>
                     <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
-                        sampling steps
+                        background color
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
-                        {promptData.ai_option.sampling_steps}
+                        {promptData.ai_option.background_color}
                       </td>
                     </tr>
                     <tr>
@@ -471,18 +463,26 @@ const RecentGeneration = () => {
                     </tr>
                     <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
-                        seed
+                        cfg scale
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
-                        {promptData.ai_option.seed}
+                        {promptData.ai_option.cfg_scale}
                       </td>
                     </tr>
                     <tr>
                       <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
-                        background color
+                        sampling steps
                       </td>
                       <td className="py-1 text-sm font-['pretendard-medium']">
-                        {promptData.ai_option.background_color}
+                        {promptData.ai_option.sampling_steps}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
+                        seed
+                      </td>
+                      <td className="py-1 text-sm font-['pretendard-medium']">
+                        {promptData.ai_option.seed}
                       </td>
                     </tr>
                   </tbody>

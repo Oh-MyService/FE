@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import ArchiveDeleteModal from "../components/ArchiveDeleteModal";
-import EditModal from "../components/NameEditModal";
-import CollectionAddModal from "../components/CollectionAddModal";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import ArchiveDeleteModal from '../components/ArchiveDeleteModal';
+import EditModal from '../components/NameEditModal';
+import CollectionAddModal from '../components/CollectionAddModal';
 
 const CollectionName = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("user_id");
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('user_id');
 
   // 컬렉션 상태 관리
-  const [collectionName, setCollectionName] = useState("");
+  const [collectionName, setCollectionName] = useState('');
   const [images, setImages] = useState([]);
 
   // 모달 및 기타 상태 관리
@@ -22,14 +22,28 @@ const CollectionName = () => {
   const [addCollectionId, setAddCollectionId] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [fullScreenImageId, setFullScreenImageId] = useState(null);
+
+  // 프롬프트 데이터 상태 관리
+  const [promptData, setPromptData] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   // 이미지 전체 화면
-  const showFullScreenImage = (imageUrl) => {
+  const showFullScreenImage = (imageUrl, imageId) => {
     setFullScreenImage(imageUrl);
+    setFullScreenImageId(imageId);
+    setShowPopup(false);
   };
 
   const closeFullScreen = () => {
     setFullScreenImage(null);
+    setFullScreenImageId(null);
+  };
+
+  // 팝업을 닫는 함수
+  const closePopup = (e) => {
+    e.stopPropagation();
+    setShowPopup(false);
   };
 
   // 삭제 모달
@@ -70,9 +84,9 @@ const CollectionName = () => {
         const collectionsResponse = await fetch(
           `http://118.67.128.129:28282/api/collections/user/${userId}`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
           }
@@ -87,16 +101,16 @@ const CollectionName = () => {
           if (selectedCollection) {
             setCollectionName(selectedCollection.collection_name); // 해당 컬렉션의 이름 설정
           } else {
-            console.error("Collection not found");
+            console.error('Collection not found');
           }
 
           // 2. 이미지 정보 불러오기
           const imagesResponse = await fetch(
             `http://118.67.128.129:28282/api/collections/${collectionId}/images`,
             {
-              method: "GET",
+              method: 'GET',
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
               },
             }
@@ -106,13 +120,13 @@ const CollectionName = () => {
             const imagesData = await imagesResponse.json();
             setImages(imagesData.images.reverse()); // 최신순으로 정렬
           } else {
-            console.error("Failed to fetch images");
+            console.error('Failed to fetch images');
           }
         } else {
-          console.error("Failed to fetch collections");
+          console.error('Failed to fetch collections');
         }
       } catch (error) {
-        console.error("Error fetching collection details:", error);
+        console.error('Error fetching collection details:', error);
       }
     };
 
@@ -125,9 +139,9 @@ const CollectionName = () => {
       const response = await fetch(
         `http://118.67.128.129:28282/api/collections/${collectionId}`,
         {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: `Bearer ${token}`,
           },
           body: new URLSearchParams({ new_name: newName }),
@@ -137,11 +151,11 @@ const CollectionName = () => {
         setCollectionName(newName);
         closeEditModal();
       } else {
-        console.error("Failed to update collection name");
+        console.error('Failed to update collection name');
       }
     } catch (error) {
       console.error(
-        "An error occurred while updating the collection name:",
+        'An error occurred while updating the collection name:',
         error
       );
     }
@@ -153,7 +167,7 @@ const CollectionName = () => {
       const response = await fetch(
         `http://118.67.128.129:28282/api/collections/${collectionId}/results/${deleteId}`,
         {
-          method: "DELETE",
+          method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -166,10 +180,10 @@ const CollectionName = () => {
         );
         closeArchiveDeleteModal();
       } else {
-        console.error("Failed to delete image");
+        console.error('Failed to delete image');
       }
     } catch (error) {
-      console.error("An error occurred while deleting the image:", error);
+      console.error('An error occurred while deleting the image:', error);
     }
   };
 
@@ -178,7 +192,7 @@ const CollectionName = () => {
     fetch(imageUrl)
       .then((response) => response.blob())
       .then((blob) => {
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = `image_${imageId}.jpg`;
         document.body.appendChild(link);
@@ -187,7 +201,7 @@ const CollectionName = () => {
         URL.revokeObjectURL(link.href);
       })
       .catch((error) => {
-        console.error("Error downloading the image:", error);
+        console.error('Error downloading the image:', error);
       });
   };
 
@@ -197,12 +211,38 @@ const CollectionName = () => {
     openArchiveDeleteModal(id);
   };
 
+  // 프롬프트 정보를 불러오는 함수
+  const handleIconClick = async () => {
+    try {
+      const response = await fetch(
+        `http://118.67.128.129:28282/api/results/${fullScreenImageId}/prompt`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setPromptData(data);
+        setShowPopup(true);
+      } else {
+        console.error('Failed to fetch prompt data');
+      }
+    } catch (error) {
+      console.error('Error fetching prompt data:', error);
+    }
+  };
+
   return (
     <div className="bg-[#F2F2F2] min-h-screen">
       <div className="container mx-auto px-4 pt-24">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
-            <button onClick={() => navigate("/my-collection")}>
+            <button onClick={() => navigate('/my-collection')}>
               {/* 뒤로가기 버튼 */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -261,7 +301,7 @@ const CollectionName = () => {
                 />
                 <div className="flex justify-between items-center w-full mt-2 text-gray-600">
                   <p className="text-gray-600">
-                    {image.created_at.split("T")[0]}{" "}
+                    {image.created_at.split('T')[0]}{' '}
                     {/* 이미지 생성 날짜 표시 */}
                   </p>
                   <div className="flex items-center space-x-2">
@@ -339,7 +379,7 @@ const CollectionName = () => {
               저장된 패턴이 없습니다.
             </p>
             <button
-              onClick={() => navigate("/recent-generation")}
+              onClick={() => navigate('/recent-generation')}
               className="px-6 py-2 border bg-[#3A57A7] hover:bg-[#213261] text-white rounded-full font-['pretendard-medium'] text-xl mt-2"
             >
               패턴 추가하기
@@ -353,7 +393,7 @@ const CollectionName = () => {
           >
             <div
               className="grid grid-cols-3 gap-0"
-              style={{ width: "min(80vw, 80vh)", height: "min(80vw, 80vh)" }}
+              style={{ width: 'min(80vw, 80vh)', height: 'min(80vw, 80vh)' }}
             >
               {Array.from({ length: 9 }).map((_, index) => (
                 <img
@@ -364,6 +404,122 @@ const CollectionName = () => {
                 />
               ))}
             </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleIconClick();
+              }}
+              className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-10"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                />
+              </svg>
+            </button>
+            {showPopup && promptData && (
+              <div className="absolute top-16 right-16 bg-white shadow-lg rounded-lg p-4 w-auto max-w-xl max-h-[80vh] overflow-auto z-50">
+                <h3 className="text-lg font-['pretendard-bold'] mb-2 text-left">
+                  Prompt
+                </h3>
+                <hr className="my-2 border-gray-300" />
+                <p className="mb-4 text-base text-gray-700 font-['pretendard-medium'] whitespace-pre-wrap  break-words">
+                  {promptData.content.positive_prompt}
+                </p>
+                <h3 className="text-lg font-['pretendard-bold'] mb-2 text-left">
+                  Option
+                </h3>
+                <hr className="my-2 border-gray-300" />
+                <table className="w-full text-left border-separate border-spacing-0">
+                  <tbody>
+                    <tr>
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
+                        width
+                      </td>
+                      <td className="py-1 text-sm font-['pretendard-medium']">
+                        {promptData.ai_option.width}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
+                        height
+                      </td>
+                      <td className="py-1 text-sm font-['pretendard-medium']">
+                        {promptData.ai_option.height}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
+                        background color
+                      </td>
+                      <td className="py-1 text-sm font-['pretendard-medium']">
+                        {promptData.ai_option.background_color}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
+                        mood
+                      </td>
+                      <td className="py-1 text-sm font-['pretendard-medium']">
+                        {promptData.ai_option.mood}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
+                        cfg scale
+                      </td>
+                      <td className="py-1 text-sm font-['pretendard-medium']">
+                        {promptData.ai_option.cfg_scale}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
+                        sampling steps
+                      </td>
+                      <td className="py-1 text-sm font-['pretendard-medium']">
+                        {promptData.ai_option.sampling_steps}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
+                        seed
+                      </td>
+                      <td className="py-1 text-sm font-['pretendard-medium']">
+                        {promptData.ai_option.seed}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button
+                  onClick={closePopup}
+                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         )}
         {/* 모달 컴포넌트 렌더링 */}

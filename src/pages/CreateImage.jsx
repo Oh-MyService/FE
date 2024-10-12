@@ -73,13 +73,11 @@ const Bubble = ({ text }) => {
 };
 
 // 스켈레톤 카드 컴포넌트 정의
-const SkeletonCard = () => (
+const SkeletonCard = ({ positivePrompt }) => (
   <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3 animate-pulse">
     <div className="flex mt-2">
-      <div className="w-12 h-12 bg-gray-300 rounded-full"></div>{' '}
-      {/* 로고 위치 */}
-      <div className="ml-2 flex-1 bg-gray-300 rounded h-12"></div>{' '}
-      {/* 텍스트 공간 */}
+      <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
+      <Bubble text={positivePrompt} />
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
       {Array(4)
@@ -706,8 +704,7 @@ const CreateImage = () => {
                     height="50"
                     className="mt-2 flex-shrink-0"
                   />
-                  <Bubble text={result.content.positive_prompt}
-                   />
+                  <Bubble text={result.content.positive_prompt} />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
                   {result.images.map((imageResult, idx) => (
