@@ -73,42 +73,26 @@ const Bubble = ({ text }) => {
 };
 
 // 스켈레톤 카드 컴포넌트 정의
-const SkeletonCard = ({ positivePrompt }) => (
-  <div className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3 animate-pulse">
-    <div className="flex mt-2">
-      <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
-      <Bubble text={positivePrompt} />
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
-      {Array(4)
-        .fill(null)
-        .map((_, index) => (
-          <div
-            key={index}
-            className="flex flex-col justify-between items-center w-full"
-          >
-            <div
-              className="w-full bg-gray-300 rounded"
-              style={{
-                width: '100%',
-                height: 'auto',
-                maxWidth: '250px',
-                maxHeight: '250px',
-                aspectRatio: '1/1', // 이미지 비율 유지
-              }}
-            ></div>
-            <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
-              <div className="w-1/4 h-4 bg-gray-200 rounded"></div>{' '}
-              {/* 날짜 위치 */}
-              <div className="flex space-x-2 ml-auto">
-                <div className="h-6 w-6 bg-gray-200 rounded"></div>{' '}
-                {/* 북마크 아이콘 위치 */}
-                <div className="h-6 w-6 bg-gray-200 rounded"></div>{' '}
-                {/* 다운로드 아이콘 위치 */}
-              </div>
-            </div>
-          </div>
-        ))}
+const SkeletonCard = () => (
+  <div className="flex flex-col justify-between items-center w-full">
+    <div
+      className="w-full bg-gray-300 rounded"
+      style={{
+        width: '100%',
+        height: 'auto',
+        maxWidth: '250px',
+        maxHeight: '250px',
+        aspectRatio: '1/1', // 이미지 비율 유지
+      }}
+    ></div>
+    <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
+      <div className="w-1/4 h-4 bg-gray-200 rounded"></div> {/* 날짜 위치 */}
+      <div className="flex space-x-2 ml-auto">
+        <div className="h-6 w-6 bg-gray-200 rounded"></div>{' '}
+        {/* 북마크 아이콘 위치 */}
+        <div className="h-6 w-6 bg-gray-200 rounded"></div>{' '}
+        {/* 다운로드 아이콘 위치 */}
+      </div>
     </div>
   </div>
 );
@@ -496,7 +480,6 @@ const CreateImage = () => {
               className="w-full h-20 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
               placeholder="ex) a floral pattern with small, curious kittens"
             />
-            <Bubble text={positivePrompt} />
 
             {/* Negative 프롬프트 입력 */}
             <p className="text-lg font-['pretendard-bold'] mb-2">
@@ -671,7 +654,29 @@ const CreateImage = () => {
         <div className="flex flex-col w-1/2 px-4 mt-24 h-[730px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
           {results.map((result, index) =>
             result.isLoading ? (
-              <SkeletonCard key={index} />
+              <div
+                key={index}
+                className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3"
+              >
+                <div className="flex -mt-2">
+                  <DLlogo
+                    width="50"
+                    height="50"
+                    className="mt-2 flex-shrink-0"
+                  />
+                  <Bubble text={result.content.positive_prompt} />
+                </div>
+                <div
+                  key={index}
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6"
+                >
+                  {Array(4)
+                    .fill(null)
+                    .map((_, idx) => (
+                      <SkeletonCard key={idx} />
+                    ))}
+                </div>
+              </div>
             ) : (
               <div
                 key={index}
