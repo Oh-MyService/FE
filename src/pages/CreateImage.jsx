@@ -203,16 +203,18 @@ const CreateImage = () => {
     // useEffect를 통해 컴포넌트가 마운트될 때 로딩 상태를 업데이트
     useEffect(() => {
         const updatedResults = results.map((result) => {
-            // 이미지가 이미 생성된 경우 isLoading을 false로 설정
-            if (result.images.length > 0) {
+            // 이미지가 아직 로드되지 않은 경우에만 isLoading 유지
+            if (result.images && result.images.length > 0) {
                 return { ...result, isLoading: false };
             }
             return result;
         });
 
         setResults(updatedResults); // 상태 업데이트
-        localStorage.setItem('results', JSON.stringify(updatedResults)); // 로컬 스토리지 업데이트
-    }, [results]);
+
+        // results가 변경될 때마다 로컬 스토리지 업데이트
+        localStorage.setItem('results', JSON.stringify(updatedResults));
+    }, [results]); // 의존성 배열을 [results]로 설정
 
     // 슬라이더 상태 관리
     const sliderRef1 = useRef(null);
