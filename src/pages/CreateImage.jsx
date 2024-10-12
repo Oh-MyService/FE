@@ -200,21 +200,23 @@ const CreateImage = () => {
         );
     });
 
-    // useEffect를 통해 컴포넌트가 마운트될 때 로딩 상태를 업데이트
+    // useEffect를 통해 컴포넌트가 마운트될 때 로컬 스토리지에서 기록 불러오기
     useEffect(() => {
-        const updatedResults = results.map((result) => {
-            // 이미지가 아직 로드되지 않은 경우에만 isLoading 유지
-            if (result.images && result.images.length > 0) {
-                return { ...result, isLoading: false };
-            }
-            return result;
-        });
+        const savedResults = localStorage.getItem('results');
+        if (savedResults) {
+            setResults(
+                JSON.parse(savedResults).map((result) => ({
+                    ...result,
+                    isLoading: result.images && result.images.length > 0 ? false : true,
+                }))
+            );
+        }
+    }, []);
 
-        setResults(updatedResults); // 상태 업데이트
-
-        // results가 변경될 때마다 로컬 스토리지 업데이트
-        localStorage.setItem('results', JSON.stringify(updatedResults));
-    }, [results]); // 의존성 배열을 [results]로 설정
+    // results가 변경될 때마다 로컬 스토리지에 기록 저장
+    useEffect(() => {
+        localStorage.setItem('results', JSON.stringify(results));
+    }, [results]);
 
     // 슬라이더 상태 관리
     const sliderRef1 = useRef(null);
@@ -321,6 +323,9 @@ const CreateImage = () => {
             return;
         }
 
+        // 요청 전 로딩 상태 true로 설정
+        setIsLoading(true);
+
         const finalNegativePrompt = negativePrompt === '' ? 'not_exist' : negativePrompt;
         const finalMood = mood === '' ? 'not_exist' : mood;
         const finalBackgroundColor = backgroundColor === '' ? 'white' : backgroundColor;
@@ -379,7 +384,6 @@ const CreateImage = () => {
 
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
-                console.log('Received Image Data:', data);
 
                 if (data.results.length > 0) {
                     setResults((prevResults) =>
@@ -388,7 +392,6 @@ const CreateImage = () => {
                                 ? {
                                       ...result,
                                       images: [...result.images, ...data.results],
-                                      created_at: formatDateWithoutDot(new Date(result.created_at)),
                                       isLoading: false, // 로딩 완료
                                   }
                                 : result
