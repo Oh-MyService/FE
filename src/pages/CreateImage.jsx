@@ -496,6 +496,7 @@ const CreateImage = () => {
               className="w-full h-20 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
               placeholder="ex) a floral pattern with small, curious kittens"
             />
+            <Bubble text={positivePrompt} />
 
             {/* Negative 프롬프트 입력 */}
             <p className="text-lg font-['pretendard-bold'] mb-2">
