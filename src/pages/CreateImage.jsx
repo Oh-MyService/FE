@@ -74,7 +74,7 @@ const Bubble = ({ text }) => {
 
 // 스켈레톤 카드 컴포넌트 정의
 const SkeletonCard = () => (
-  <div className="flex flex-col justify-between items-center w-full">
+  <div className="flex flex-col justify-between items-center w-full animate-pulse">
     <div
       className="w-full bg-gray-300 rounded"
       style={{
