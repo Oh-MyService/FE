@@ -212,7 +212,7 @@ const CreateImage = () => {
 
         setResults(updatedResults); // 상태 업데이트
         localStorage.setItem('results', JSON.stringify(updatedResults)); // 로컬 스토리지 업데이트
-    }, []);
+    }, [results]);
 
     // 슬라이더 상태 관리
     const sliderRef1 = useRef(null);
