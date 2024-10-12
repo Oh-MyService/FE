@@ -155,6 +155,15 @@ const applySliderStyles = (element) => {
     document.head.appendChild(thumbStyles);
 };
 
+// 날짜 형식 변환 함수 추가
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date
+        .getDate()
+        .toString()
+        .padStart(2, '0')}`;
+};
+
 const CreateImage = () => {
     const token = localStorage.getItem('token'); // 토큰 가져오기
 
@@ -665,7 +674,7 @@ const CreateImage = () => {
                                                 />
                                             </div>
                                             <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
-                                                <p className="text-left mr-2">{result.created_at}</p>
+                                                <p className="text-left mr-2">{formatDate(result.created_at)}</p>
                                                 <div className="flex items-center space-x-2 ml-auto">
                                                     {/* 이미지 추가 모달 열기 버튼 */}
                                                     <button onClick={() => openAddModal(imageResult.id)}>
