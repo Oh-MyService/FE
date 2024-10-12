@@ -295,9 +295,11 @@ const CollectionName = () => {
               >
                 <img
                   src={image.image_data}
-                  alt={`Image ${index + 1}`}
+                  alt={'Image ID: ' + image.id}
                   className="w-full h-full object-cover"
-                  onClick={() => showFullScreenImage(image.image_data)} // 이미지 클릭 시 전체 화면으로 보기
+                  onClick={() =>
+                    showFullScreenImage(image.image_data, image.id)
+                  } // 이미지 클릭 시 전체 화면으로 보기
                 />
                 <div className="flex justify-between items-center w-full mt-2 text-gray-600">
                   <p className="text-gray-600">
@@ -412,18 +414,39 @@ const CollectionName = () => {
               className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full"
             >
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <path
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                />
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  {' '}
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="#ffffff"
+                    stroke-width="1.5"
+                  ></circle>{' '}
+                  <path
+                    d="M12 17V11"
+                    stroke="#ffffff"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  ></path>{' '}
+                  <circle
+                    cx="1"
+                    cy="1"
+                    r="1"
+                    transform="matrix(1 0 0 -1 11 9)"
+                    fill="#ffffff"
+                  ></circle>{' '}
+                </g>
               </svg>
             </button>
             {showPopup && promptData && (

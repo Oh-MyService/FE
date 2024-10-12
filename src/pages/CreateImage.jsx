@@ -509,7 +509,7 @@ const CreateImage = () => {
 
             {/* Positive 프롬프트 입력 */}
             <p className="text-lg font-['pretendard-bold'] mb-2">
-              패턴에 포함하고 싶은 요소를 입력하세요
+              패턴에 포함하고 싶은 요소를 입력하세요(영어만 입력 가능)
             </p>
             <textarea
               type="text"
