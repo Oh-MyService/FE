@@ -270,9 +270,6 @@ const CreateImage = () => {
     if (sliderRef2.current) applySliderStyles(sliderRef2.current);
   }, []);
 
-  const [repeatDirectionPage, setRepeatDirectionPage] = useState(0);
-  const [moodPage, setMoodPage] = useState(0);
-  const [selectedRepeatDirection, setSelectedRepeatDirection] = useState(null);
   const [selectedMood, setSelectedMood] = useState(null);
 
   const moodOptions = [
@@ -289,7 +286,6 @@ const CreateImage = () => {
     '내추럴',
     '레트로',
   ];
-  const optionsPerPage = 5; // 한 페이지당 옵션 수
 
   // 컬러 옵션
   const colorOptions = [
@@ -479,24 +475,6 @@ const CreateImage = () => {
         console.error('Error downloading the image:', error);
       });
   };
-
-  // 이전 페이지로 이동
-  const handlePrevPage = (setter) => {
-    setter((prev) => Math.max(prev - 1, 0));
-  };
-
-  // 다음 페이지로 이동
-  const handleNextPage = (setter, options) => {
-    setter((prev) =>
-      Math.min(prev + 1, Math.ceil(options.length / optionsPerPage) - 1)
-    );
-  };
-
-  // 현재 페이지의 분위기 옵션
-  const currentMoods = moodOptions.slice(
-    moodPage * optionsPerPage,
-    (moodPage + 1) * optionsPerPage
-  );
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F2F2F2] pt-10 pb-10 w-full">
