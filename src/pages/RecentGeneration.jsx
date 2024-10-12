@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import DeleteModal from "../components/DeleteModal";
-import CollectionAddModal from "../components/CollectionAddModal";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DeleteModal from '../components/DeleteModal';
+import CollectionAddModal from '../components/CollectionAddModal';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const SkeletonCard = () => (
   <div className="flex flex-col items-center cursor-pointer relative aspect-square w-full">
@@ -32,8 +32,8 @@ const SkeletonGroup = () => (
 
 const RecentGeneration = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("user_id");
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('user_id');
 
   // 모달 및 기타 상태 관리
   const [items, setItems] = useState([]);
@@ -64,13 +64,13 @@ const RecentGeneration = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // '맨위로가기' 버튼 클릭 핸들러
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // 최근 생성 이미지 불러오기
@@ -80,9 +80,9 @@ const RecentGeneration = () => {
         const response = await fetch(
           `http://118.67.128.129:28282/api/results/user/${userId}`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
           }
@@ -92,10 +92,10 @@ const RecentGeneration = () => {
           const sortedItems = data.results.sort((a, b) => b.id - a.id);
           setItems(sortedItems);
         } else {
-          throw new Error("Failed to fetch images");
+          throw new Error('Failed to fetch images');
         }
       } catch (error) {
-        console.error("Error fetching items:", error);
+        console.error('Error fetching items:', error);
       } finally {
         setIsLoading(false);
       }
@@ -104,7 +104,7 @@ const RecentGeneration = () => {
     if (userId) {
       fetchAllImages(userId);
     } else {
-      console.error("No userId found in localStorage");
+      console.error('No userId found in localStorage');
       setIsLoading(false);
     }
   }, [userId, token]);
@@ -115,9 +115,9 @@ const RecentGeneration = () => {
       const response = await fetch(
         `http://118.67.128.129:28282/api/results/${fullScreenImageId}/prompt`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         }
@@ -128,10 +128,10 @@ const RecentGeneration = () => {
         setPromptData(data);
         setShowPopup(true);
       } else {
-        console.error("Failed to fetch prompt data");
+        console.error('Failed to fetch prompt data');
       }
     } catch (error) {
-      console.error("Error fetching prompt data:", error);
+      console.error('Error fetching prompt data:', error);
     }
   };
 
@@ -166,9 +166,9 @@ const RecentGeneration = () => {
       const response = await fetch(
         `http://118.67.128.129:28282/api/results/${id}`,
         {
-          method: "DELETE",
+          method: 'DELETE',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         }
@@ -179,10 +179,10 @@ const RecentGeneration = () => {
         setDeleteId(null);
         closeDeleteModal();
       } else {
-        console.error("Failed to delete images");
+        console.error('Failed to delete images');
       }
     } catch (error) {
-      console.error("Error delete items:", error);
+      console.error('Error delete items:', error);
     }
   };
 
@@ -199,7 +199,7 @@ const RecentGeneration = () => {
     fetch(imageUrl)
       .then((response) => response.blob())
       .then((blob) => {
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = `image_${imageId}.jpg`;
         document.body.appendChild(link);
@@ -208,7 +208,7 @@ const RecentGeneration = () => {
         URL.revokeObjectURL(link.href);
       })
       .catch((error) => {
-        console.error("Error downloading the image:", error);
+        console.error('Error downloading the image:', error);
       });
   };
 
@@ -216,7 +216,7 @@ const RecentGeneration = () => {
   const groupItemsByDate = (items) => {
     const groupedItems = {};
     items.forEach((item) => {
-      const date = item.created_at.split("T")[0];
+      const date = item.created_at.split('T')[0];
       if (!groupedItems[date]) {
         groupedItems[date] = [];
       }
@@ -235,7 +235,7 @@ const RecentGeneration = () => {
       <div className="mx-auto px-4 pt-24 max-w-[85%]">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
-            <button onClick={() => navigate("/my-page")}>
+            <button onClick={() => navigate('/my-page')}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -269,7 +269,7 @@ const RecentGeneration = () => {
               지금 만들러 가보세요!
             </p>
             <button
-              onClick={() => navigate("/create-image")}
+              onClick={() => navigate('/create-image')}
               className="px-6 py-2 border bg-[#3A57A7] hover:bg-[#213261] text-white rounded-full font-['pretendard-medium'] text-xl mt-2"
             >
               패턴 생성하기
@@ -294,7 +294,7 @@ const RecentGeneration = () => {
                   >
                     <LazyLoadImage
                       src={item.image_data}
-                      alt={"Image ID: " + item.id}
+                      alt={'Image ID: ' + item.id}
                       className="w-full h-full object-cover"
                       effect="blur"
                       onClick={() =>
@@ -381,7 +381,7 @@ const RecentGeneration = () => {
           >
             <div
               className="grid grid-cols-3 gap-0"
-              style={{ width: "min(80vw, 80vh)", height: "min(80vw, 80vh)" }}
+              style={{ width: 'min(80vw, 80vh)', height: 'min(80vw, 80vh)' }}
             >
               {Array.from({ length: 9 }).map((_, index) => (
                 <img
@@ -421,7 +421,7 @@ const RecentGeneration = () => {
                 </h3>
                 <hr className="my-2 border-gray-300" />
                 <p className="mb-4 text-base text-gray-700 font-['pretendard-medium'] whitespace-pre-wrap  break-words">
-                  {promptData.content}
+                  {promptData.content.positive_prompt}
                 </p>
                 <h3 className="text-lg font-['pretendard-bold'] mb-2 text-left">
                   Option
