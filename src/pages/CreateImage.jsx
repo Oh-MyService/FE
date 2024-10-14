@@ -469,21 +469,20 @@ const CreateImage = () => {
               type="text"
               value={positivePrompt}
               onChange={(e) => handleInputChange(e, setPositivePrompt)}
-              className="w-full h-60 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
+              className="w-full h-40 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
               placeholder="ex) a floral pattern with small, curious kittens"
             />
 
             <div className="p-4 border-3 border-[#809DEC] rounded-lg mb-6 w-full">
-              <div className="flex flex-col mb-6">
-                {/* 색상 선택 */}
+              {/* 색상 선택 */}
+              <div className="flex flex-col mb-6 w-1/2">
                 <label className="text-lg font-['pretendard-bold'] mb-2 text-left">
                   색상
                 </label>
                 <select
                   value={backgroundColor}
                   onChange={(e) => setBackgroundColor(e.target.value)}
-                  className="p-2 pr-8 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg mr-2 font-['pretendard-regular']"
-                  style={{ minWidth: '140px' }}
+                  className="p-2 pr-8 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg font-['pretendard-regular']"
                 >
                   {colorOptions.map((color, index) => (
                     <option key={index} value={color}>
@@ -493,12 +492,12 @@ const CreateImage = () => {
                 </select>
               </div>
 
-              <div className="flex flex-row mb-6">
-                {/* 분위기 선택 */}
-                <div className="flex flex-col w-1/2 mr-4">
-                  <label className="text-lg font-['pretendard-bold'] mb-2 text-left">
-                    분위기
-                  </label>
+              {/* 분위기 선택 */}
+              <div className="flex flex-col mb-6 w-2/3">
+                <label className="text-lg font-['pretendard-bold'] mb-2 text-left">
+                  분위기
+                </label>
+                <div className="flex flex-row mr-4 w-1/2">
                   <select
                     value={selectedMood}
                     onChange={(e) => {
@@ -512,7 +511,6 @@ const CreateImage = () => {
                       }
                     }}
                     className="p-2 pr-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg mr-2 font-['pretendard-regular']"
-                    style={{ minWidth: '140px' }}
                   >
                     <option value="custom">직접 입력</option>
                     {moodOptions.map((option, index) => (
@@ -521,20 +519,20 @@ const CreateImage = () => {
                       </option>
                     ))}
                   </select>
+                  {isCustomMood && (
+                    <input
+                      type="text"
+                      value={mood}
+                      onChange={(e) => handleInputChange(e, setMood)}
+                      placeholder="직접 입력"
+                      className="p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg w-40 font-['pretendard-regular']"
+                    />
+                  )}
                 </div>
-                {isCustomMood && (
-                  <input
-                    type="text"
-                    value={mood}
-                    onChange={(e) => handleInputChange(e, setMood)}
-                    placeholder="직접 입력"
-                    className="p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg w-40 font-['pretendard-regular']"
-                  />
-                )}
               </div>
 
               {/* CFG Scale */}
-              <div className="flex flex-col mb-6 w-full">
+              <div className="flex flex-col mb-6 w-2/3">
                 <label className="text-lg font-['pretendard-bold'] mb-2 whitespace-nowrap text-left">
                   CFG Scale
                 </label>
