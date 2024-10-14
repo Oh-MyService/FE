@@ -594,10 +594,10 @@ const CreateImage = () => {
 
         {/* 생성 결과 섹션 */}
         <div className="flex flex-col w-1/2 px-4 mt-24">
-          <p className="text-lg font-['pretendard-bold'] mb-2 text-gray-500">
+          <p className="text-lg font-['pretendard-semibold'] mb-2 text-gray-500 text-left">
             지금 00명이 생성하고 있어요!
           </p>
-          <div className="flex flex-col w-1/2 px-4 mt-24 h-[730px] overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+          <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
             {results.map((result, index) =>
               result.isLoading ? (
                 <div
