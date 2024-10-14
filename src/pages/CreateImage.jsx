@@ -469,109 +469,115 @@ const CreateImage = () => {
               type="text"
               value={positivePrompt}
               onChange={(e) => handleInputChange(e, setPositivePrompt)}
-              className="w-full h-50 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
+              className="w-full h-60 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
               placeholder="ex) a floral pattern with small, curious kittens"
             />
 
-            <div className="flex flex-col mb-6">
-              {/* 색상 선택 */}
-              <label className="text-lg font-['pretendard-bold'] mb-3">
-                색상
-              </label>
-              <select
-                value={backgroundColor}
-                onChange={(e) => setBackgroundColor(e.target.value)}
-                className="p-2 pr-8 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg mr-2 font-['pretendard-regular']"
-                style={{ minWidth: '140px' }}
-              >
-                {colorOptions.map((color, index) => (
-                  <option key={index} value={color}>
-                    {color}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <div className="p-4 border-3 border-[#809DEC] rounded-lg mb-6 w-full">
+              <div className="flex flex-col mb-6">
+                {/* 색상 선택 */}
+                <label className="text-lg font-['pretendard-bold'] mb-2 text-left">
+                  색상
+                </label>
+                <select
+                  value={backgroundColor}
+                  onChange={(e) => setBackgroundColor(e.target.value)}
+                  className="p-2 pr-8 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg mr-2 font-['pretendard-regular']"
+                  style={{ minWidth: '140px' }}
+                >
+                  {colorOptions.map((color, index) => (
+                    <option key={index} value={color}>
+                      {color}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div className="flex flex-col mb-6">
-              {/* 분위기 선택 */}
-              <label className="text-lg font-['pretendard-bold'] mb-3">
-                분위기
-              </label>
-              <select
-                value={selectedMood}
-                onChange={(e) => {
-                  const selectedValue = e.target.value;
-                  if (selectedValue === 'custom') {
-                    setIsCustomMood(true);
-                    setSelectedMood(''); // 빈 값으로 초기화
-                  } else {
-                    setIsCustomMood(false);
-                    setSelectedMood(selectedValue);
-                  }
-                }}
-                className="p-2 pr-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg mr-2 font-['pretendard-regular']"
-                style={{ minWidth: '140px' }}
-              >
-                <option value="custom">직접 입력</option>
-                {moodOptions.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              {isCustomMood && (
-                <input
-                  type="text"
-                  value={mood}
-                  onChange={(e) => handleInputChange(e, setMood)}
-                  placeholder="직접 입력"
-                  className="p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg w-40 font-['pretendard-regular']"
-                />
-              )}
-            </div>
+              <div className="flex flex-row mb-6">
+                {/* 분위기 선택 */}
+                <div className="flex flex-col w-1/2 mr-4">
+                  <label className="text-lg font-['pretendard-bold'] mb-2 text-left">
+                    분위기
+                  </label>
+                  <select
+                    value={selectedMood}
+                    onChange={(e) => {
+                      const selectedValue = e.target.value;
+                      if (selectedValue === 'custom') {
+                        setIsCustomMood(true);
+                        setSelectedMood(''); // 빈 값으로 초기화
+                      } else {
+                        setIsCustomMood(false);
+                        setSelectedMood(selectedValue);
+                      }
+                    }}
+                    className="p-2 pr-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg mr-2 font-['pretendard-regular']"
+                    style={{ minWidth: '140px' }}
+                  >
+                    <option value="custom">직접 입력</option>
+                    {moodOptions.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {isCustomMood && (
+                  <input
+                    type="text"
+                    value={mood}
+                    onChange={(e) => handleInputChange(e, setMood)}
+                    placeholder="직접 입력"
+                    className="p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg w-40 font-['pretendard-regular']"
+                  />
+                )}
+              </div>
 
-            {/* CFG Scale */}
-            <div className="flex flex-col mb-6 w-full">
-              <label className="text-lg font-['pretendard-bold'] mb-3 whitespace-nowrap">
-                CFG Scale
-              </label>
-              <input
-                type="range"
-                min="1"
-                max="13"
-                value={cfgScale}
-                onChange={(e) => setCfgScale(parseFloat(e.target.value))}
-                ref={sliderRef1}
-                className="flex-grow cursor-pointer mx-4"
-                style={{ width: '80%' }}
-              />
-              <span className="text-lg font-['pretendard-regular']">
-                {cfgScale}
-              </span>
-            </div>
+              {/* CFG Scale */}
+              <div className="flex flex-col mb-6 w-full">
+                <label className="text-lg font-['pretendard-bold'] mb-2 whitespace-nowrap text-left">
+                  CFG Scale
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="13"
+                  value={cfgScale}
+                  onChange={(e) => setCfgScale(parseFloat(e.target.value))}
+                  ref={sliderRef1}
+                  className="flex-grow cursor-pointer mx-4"
+                  style={{ width: '60%' }}
+                />
+                <span className="text-lg font-['pretendard-regular']">
+                  {cfgScale}
+                </span>
+              </div>
 
-            {/* Seed 입력 및 랜덤 체크박스 */}
-            <div className="flex flex-col mb-4">
-              <label className="text-lg font-['pretendard-bold'] mb-3">
-                Seed
-              </label>
-              {!isRandomSeed && (
-                <input
-                  type="number"
-                  className="w-16 p-2 focus:outline-[#3A57A7] rounded-lg mr-2 font-['pretendard-medium'] text-center"
-                  value={seed}
-                  onChange={(e) => setSeed(Number(e.target.value))}
-                />
-              )}
-              <label className="flex items-center ml-2 text-sm font-['pretendard-regular']">
-                <input
-                  type="checkbox"
-                  checked={isRandomSeed}
-                  onChange={(e) => setIsRandomSeed(e.target.checked)}
-                  className="mr-2 h-4 w-4 border-gray-300 rounded font-['pretendard-regular']"
-                />
-                random
-              </label>
+              {/* Seed 입력 및 랜덤 체크박스 */}
+              <div className="flex flex-col mb-6 w-full">
+                <div className="flex items-center">
+                  <label className="text-lg font-['pretendard-bold'] mb-2 mr-4">
+                    Seed
+                  </label>
+                  <label className="flex items-center text-sm font-['pretendard-regular']">
+                    <input
+                      type="checkbox"
+                      checked={isRandomSeed}
+                      onChange={(e) => setIsRandomSeed(e.target.checked)}
+                      className="mr-2 h-4 w-4 border-gray-300 rounded"
+                    />
+                    random
+                  </label>
+                </div>
+                {!isRandomSeed && (
+                  <input
+                    type="number"
+                    className="w-20 p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg text-center mt-2"
+                    value={seed}
+                    onChange={(e) => setSeed(Number(e.target.value))}
+                  />
+                )}
+              </div>
             </div>
 
             {/* 생성하기 버튼 */}
