@@ -482,7 +482,7 @@ const CreateImage = () => {
                 <select
                   value={backgroundColor}
                   onChange={(e) => setBackgroundColor(e.target.value)}
-                  className="p-2 pr-8 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg font-['pretendard-regular']"
+                  className="p-2 pr-8 focus:outline-none rounded-lg font-['pretendard-regular']"
                 >
                   {colorOptions.map((color, index) => (
                     <option key={index} value={color}>
@@ -510,7 +510,7 @@ const CreateImage = () => {
                         setSelectedMood(selectedValue);
                       }
                     }}
-                    className="p-2 pr-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg mr-2 font-['pretendard-regular']"
+                    className="p-2 pr-2 focus:outline-none rounded-lg mr-2 font-['pretendard-regular']"
                   >
                     <option value="custom">직접 입력</option>
                     {moodOptions.map((option, index) => (
@@ -525,7 +525,7 @@ const CreateImage = () => {
                       value={mood}
                       onChange={(e) => handleInputChange(e, setMood)}
                       placeholder="직접 입력"
-                      className="p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg w-40 font-['pretendard-regular']"
+                      className="p-2 focus:outline-none rounded-lg w-40 font-['pretendard-regular']"
                     />
                   )}
                 </div>
@@ -536,19 +536,21 @@ const CreateImage = () => {
                 <label className="text-lg font-['pretendard-bold'] mb-2 whitespace-nowrap text-left">
                   CFG Scale
                 </label>
-                <input
-                  type="range"
-                  min="1"
-                  max="13"
-                  value={cfgScale}
-                  onChange={(e) => setCfgScale(parseFloat(e.target.value))}
-                  ref={sliderRef1}
-                  className="flex-grow cursor-pointer mx-4"
-                  style={{ width: '60%' }}
-                />
-                <span className="text-lg font-['pretendard-regular']">
-                  {cfgScale}
-                </span>
+                <div className="flex flex-row mr-4">
+                  <input
+                    type="range"
+                    min="1"
+                    max="13"
+                    value={cfgScale}
+                    onChange={(e) => setCfgScale(parseFloat(e.target.value))}
+                    ref={sliderRef1}
+                    className="flex-grow cursor-pointer mx-4"
+                    style={{ width: '60%' }}
+                  />
+                  <span className="text-lg font-['pretendard-regular']">
+                    {cfgScale}
+                  </span>
+                </div>
               </div>
 
               {/* Seed 입력 및 랜덤 체크박스 */}
@@ -557,7 +559,7 @@ const CreateImage = () => {
                   <label className="text-lg font-['pretendard-bold'] mb-2 mr-4">
                     Seed
                   </label>
-                  <label className="flex items-center text-sm font-['pretendard-regular']">
+                  <label className="flex items-center text-sm font-['pretendard-regular'] mb-2">
                     <input
                       type="checkbox"
                       checked={isRandomSeed}
@@ -570,7 +572,7 @@ const CreateImage = () => {
                 {!isRandomSeed && (
                   <input
                     type="number"
-                    className="w-20 p-2 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] rounded-lg text-center mt-2"
+                    className="w-20 p-2 focus:outline-none rounded-lg text-left"
                     value={seed}
                     onChange={(e) => setSeed(Number(e.target.value))}
                   />
