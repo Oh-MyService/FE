@@ -483,7 +483,7 @@ const CreateImage = () => {
                             {/* 분위기 선택 */}
                             <div className="flex flex-col">
                                 <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>
-                                <div className="flex items-start mb-6">
+                                <div className="flex items-start mb-6 w-1/3">
                                     <select
                                         value={selectedMood}
                                         onChange={(e) => {
@@ -497,7 +497,6 @@ const CreateImage = () => {
                                             }
                                         }}
                                         className="p-2 pr-2 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
-                                        style={{ width: '150px' }}
                                     >
                                         <option value="custom">직접 입력</option>
                                         {moodOptions.map((option, index) => (
@@ -525,7 +524,7 @@ const CreateImage = () => {
                                                     }
                                                 }}
                                                 placeholder="직접 입력"
-                                                className="p-2 w-52 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']"
+                                                className="p-2 w-48 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']"
                                             />
                                             {/* 경고 메시지 */}
                                             {moodErrorMessage && (
