@@ -483,7 +483,7 @@ const CreateImage = () => {
                             {/* 분위기 선택 */}
                             <div className="flex flex-col">
                                 <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>
-                                <div className="flex items-center mb-6" style={{ position: 'relative' }}>
+                                <div className="flex items-center mb-6">
                                     <select
                                         value={selectedMood}
                                         onChange={(e) => {
@@ -497,7 +497,7 @@ const CreateImage = () => {
                                             }
                                         }}
                                         className="p-2 pr-2 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
-                                        style={{ width: '150px', height: '40px' }}
+                                        style={{ width: '150px' }}
                                     >
                                         <option value="custom">직접 입력</option>
                                         {moodOptions.map((option, index) => (
@@ -526,26 +526,19 @@ const CreateImage = () => {
                                                 }}
                                                 placeholder="직접 입력"
                                                 className="p-2 w-52 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']"
-                                                style={{ height: '40px' }}
                                             />
+                                            {/* 경고 메시지 */}
+                                            {moodErrorMessage && (
+                                                <p
+                                                    className="text-red-600 font-['pretendard-medium'] mt-1 text-left"
+                                                    style={{ marginTop: '4px' }}
+                                                >
+                                                    {moodErrorMessage}
+                                                </p>
+                                            )}
                                         </div>
                                     )}
                                 </div>
-
-                                {/* 분위기 입력 경고 메시지 표시 */}
-                                {moodErrorMessage && (
-                                    <p
-                                        className="text-red-600 font-['pretendard-medium'] mt-1 text-left"
-                                        style={{
-                                            whiteSpace: 'nowrap',
-                                            marginLeft: '0px',
-                                            position: 'absolute',
-                                            bottom: '-20px',
-                                        }}
-                                    >
-                                        {moodErrorMessage}
-                                    </p>
-                                )}
                             </div>
 
                             {/* CFG Scale */}
