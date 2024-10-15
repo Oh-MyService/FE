@@ -480,63 +480,61 @@ const CreateImage = () => {
                                 </select>
                             </div>
 
-                            {/* 분위기 선택 */}
-                            <div className="flex flex-col mb-6 w-3/4">
-                                <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>
-                                <div className="flex flex-row mr-4 w-1/2">
-                                    <select
-                                        value={selectedMood}
-                                        onChange={(e) => {
-                                            const selectedValue = e.target.value;
-                                            if (selectedValue === 'custom') {
-                                                setIsCustomMood(true);
-                                                setSelectedMood(''); // 빈 값으로 초기화
-                                            } else {
-                                                setIsCustomMood(false);
-                                                setSelectedMood(selectedValue);
-                                            }
-                                        }}
-                                        className="p-2 pr-2 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
-                                    >
-                                        <option value="custom">직접 입력</option>
-                                        {moodOptions.map((option, index) => (
-                                            <option key={index} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {isCustomMood && (
-                                        <div className="flex flex-col">
-                                            <input
-                                                type="text"
-                                                value={mood}
-                                                onChange={(e) => {
-                                                    const value = e.target.value;
-                                                    const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g; // 한글 체크하는 정규 표현식
+                            {/* 분위기 선택 드롭다운 */}
+                            <div className="flex flex-row mr-4">
+                                <select
+                                    value={selectedMood}
+                                    onChange={(e) => {
+                                        const selectedValue = e.target.value;
+                                        if (selectedValue === 'custom') {
+                                            setIsCustomMood(true);
+                                            setSelectedMood(''); // 빈 값으로 초기화
+                                        } else {
+                                            setIsCustomMood(false);
+                                            setSelectedMood(selectedValue);
+                                        }
+                                    }}
+                                    className="p-2 w-32 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
+                                >
+                                    <option value="custom">직접 입력</option>
+                                    {moodOptions.map((option, index) => (
+                                        <option key={index} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
 
-                                                    if (koreanRegex.test(value)) {
-                                                        setMoodErrorMessage('한국어는 입력할 수 없습니다.');
-                                                    } else {
-                                                        setMoodErrorMessage('');
-                                                        setMood(value); // 한글이 아닐 때만 mood 상태 업데이트
-                                                    }
-                                                }}
-                                                placeholder="직접 입력"
-                                                className="p-2 border focus:outline-none focus:border-[#809DEC] rounded-lg w-40 font-['pretendard-regular']"
-                                            />
-                                            {/* 분위기 입력 경고 메시지 표시 */}
+                                {/* 분위기 직접 입력 필드 */}
+                                {isCustomMood && (
+                                    <div className="flex flex-col">
+                                        <input
+                                            type="text"
+                                            value={mood}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g; // 한글 체크하는 정규 표현식
 
-                                            {moodErrorMessage && (
-                                                <p
-                                                    className="text-red-600 font-['pretendard-medium'] mt-1"
-                                                    style={{ whiteSpace: 'nowrap' }}
-                                                >
-                                                    {moodErrorMessage}
-                                                </p>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
+                                                if (koreanRegex.test(value)) {
+                                                    setMoodErrorMessage('한국어는 입력할 수 없습니다.');
+                                                } else {
+                                                    setMoodErrorMessage('');
+                                                    setMood(value); // 한글이 아닐 때만 mood 상태 업데이트
+                                                }
+                                            }}
+                                            placeholder="직접 입력"
+                                            className="p-2 w-56 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']"
+                                        />
+                                        {/* 분위기 입력 경고 메시지 표시 */}
+                                        {moodErrorMessage && (
+                                            <p
+                                                className="text-red-600 font-['pretendard-medium'] mt-1"
+                                                style={{ whiteSpace: 'nowrap' }}
+                                            >
+                                                {moodErrorMessage}
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             {/* CFG Scale */}
