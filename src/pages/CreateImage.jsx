@@ -260,18 +260,18 @@ const CreateImage = () => {
     const [selectedMood, setSelectedMood] = useState(null);
 
     const moodOptions = [
-        '카툰',
-        '모던',
-        '아방가르드',
-        '빈티지',
-        '보헤미안',
-        '미니멀리스트',
-        '로맨틱',
-        '펑크',
-        '그래픽',
-        '에스닉',
-        '내추럴',
-        '레트로',
+        'Cartoon',
+        'Modern',
+        'Avant-garde',
+        'Vintage',
+        'Bohemian',
+        'Minimalist',
+        'Romantic',
+        'Punk',
+        'Graphic',
+        'Ethnic',
+        'Natural',
+        'Retro',
     ];
 
     // 컬러 옵션
@@ -508,13 +508,31 @@ const CreateImage = () => {
                                         ))}
                                     </select>
                                     {isCustomMood && (
-                                        <input
-                                            type="text"
-                                            value={mood}
-                                            onChange={(e) => handleInputChange(e, setMood)}
-                                            placeholder="직접 입력"
-                                            className="p-2 border focus:outline-none focus:border-[#809DEC] rounded-lg w-40 font-['pretendard-regular']"
-                                        />
+                                        <div className="flex flex-col">
+                                            <input
+                                                type="text"
+                                                value={mood}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g; // 한글 체크하는 정규 표현식
+
+                                                    if (koreanRegex.test(value)) {
+                                                        setErrorMessage('한국어는 입력할 수 없습니다.');
+                                                    } else {
+                                                        setErrorMessage(''); // 한글이 아닌 경우 경고 문구 제거
+                                                        setMood(value); // 한글이 아닐 때만 mood 상태 업데이트
+                                                    }
+                                                }}
+                                                placeholder="직접 입력"
+                                                className="p-2 border focus:outline-none focus:border-[#809DEC] rounded-lg w-40 font-['pretendard-regular']"
+                                            />
+                                            {/* 경고 메시지 표시 */}
+                                            {errorMessage && (
+                                                <p className="text-red-600 font-['pretendard-medium'] mt-1">
+                                                    {errorMessage}
+                                                </p>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                             </div>
