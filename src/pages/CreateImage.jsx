@@ -170,7 +170,8 @@ const CreateImage = () => {
     // 프롬프트 상태 관리
     const [positivePrompt, setPositivePrompt] = useState('');
 
-    const [errorMessage, setErrorMessage] = useState(''); //에러 메시지 상태
+    const [elementErrorMessage, setElementErrorMessage] = useState('');
+    const [moodErrorMessage, setMoodErrorMessage] = useState('');
 
     // 옵션 상태 관리
     const [cfgScale, setCfgScale] = useState(7);
@@ -228,20 +229,6 @@ const CreateImage = () => {
     // 슬라이더 상태 관리
     const sliderRef1 = useRef(null);
     const sliderRef2 = useRef(null);
-
-    // 한글 입력 제한 함수
-    const handleInputChange = (e) => {
-        const value = e.target.value;
-        const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g; // 한글 체크하는 정규 표현식
-
-        // 한글이 입력된 경우
-        if (koreanRegex.test(value)) {
-            setErrorMessage('한국어는 입력할 수 없습니다.');
-        } else {
-            setErrorMessage('');
-            setPositivePrompt(value);
-        }
-    };
 
     // 컬렉션 추가 모달
     const openAddModal = (imageId) => {
@@ -454,20 +441,31 @@ const CreateImage = () => {
                         <p className="text-lg font-['pretendard-bold'] mb-2">
                             패턴에 포함하고 싶은 요소를 영문으로 입력하세요
                         </p>
-                        {/* 경고 메시지 출력 */}
-                        {errorMessage && <p className="text-red-600 font-['pretendard-medium'] mb-2">{errorMessage}</p>}
-
+                        {/* 요소 입력 경고 메시지 출력 */}
+                        {elementErrorMessage && (
+                            <p className="text-red-600 font-['pretendard-medium'] mb-2">{elementErrorMessage}</p>
+                        )}
                         <textarea
                             type="text"
                             value={positivePrompt}
-                            onChange={handleInputChange}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g; // 한글 체크하는 정규 표현식
+
+                                if (koreanRegex.test(value)) {
+                                    setElementErrorMessage('한국어는 입력할 수 없습니다.');
+                                } else {
+                                    setElementErrorMessage('');
+                                    setPositivePrompt(value);
+                                }
+                            }}
                             className="w-full h-40 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
                             placeholder="ex) a floral pattern with small, curious kittens"
                         />
 
                         <div className="p-4 border-3 border-[#809DEC] rounded-lg mb-6 w-full">
                             {/* 색상 선택 */}
-                            <div className="flex flex-col mb-6 w-1/2">
+                            <div className="flex flex-col mb-6 w-1/3">
                                 <label className="text-lg font-['pretendard-bold'] mb-2 text-left">색상</label>
                                 <select
                                     value={backgroundColor}
@@ -483,7 +481,7 @@ const CreateImage = () => {
                             </div>
 
                             {/* 분위기 선택 */}
-                            <div className="flex flex-col mb-6 w-2/3">
+                            <div className="flex flex-col mb-6 w-3/4">
                                 <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>
                                 <div className="flex flex-row mr-4 w-1/2">
                                     <select
@@ -517,19 +515,19 @@ const CreateImage = () => {
                                                     const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g; // 한글 체크하는 정규 표현식
 
                                                     if (koreanRegex.test(value)) {
-                                                        setErrorMessage('한국어는 입력할 수 없습니다.');
+                                                        setMoodErrorMessage('한국어는 입력할 수 없습니다.');
                                                     } else {
-                                                        setErrorMessage(''); // 한글이 아닌 경우 경고 문구 제거
+                                                        setMoodErrorMessage('');
                                                         setMood(value); // 한글이 아닐 때만 mood 상태 업데이트
                                                     }
                                                 }}
                                                 placeholder="직접 입력"
                                                 className="p-2 border focus:outline-none focus:border-[#809DEC] rounded-lg w-40 font-['pretendard-regular']"
                                             />
-                                            {/* 경고 메시지 표시 */}
-                                            {errorMessage && (
+                                            {/* 분위기 입력 경고 메시지 표시 */}
+                                            {moodErrorMessage && (
                                                 <p className="text-red-600 font-['pretendard-medium'] mt-1">
-                                                    {errorMessage}
+                                                    {moodErrorMessage}
                                                 </p>
                                             )}
                                         </div>
