@@ -57,22 +57,22 @@ function Main() {
 
             <div className="background absolute top-0 left-0 w-full h-full"></div>
 
-            <h1 className="text-6xl font-['pretendard-black'] text-left pl-80 z-10">
+            <h1 className="text-6xl font-['pretendard-black'] text-neutral-800 text-left pl-80 z-10">
                 세상의 모든 원단 디자인, 디자이노블에서
             </h1>
             <p
-                className="text-2xl text-left font-['pretendard-medium'] pl-80 pt-10 z-10"
+                className="text-2xl  text-neutral-800 text-left font-['pretendard-medium'] pl-80 pt-10 z-10"
                 style={{ lineHeight: '1.4em' }}
             >
                 원하는 패턴이 없으신가요? <br /> AI를 사용해 직접 만들어보세요!
             </p>
 
-            <div className="flex justify-center items-center w-full" style={{ marginTop: '40px' }}>
+            <div className="flex justify-center items-center w-full " style={{ marginTop: '40px' }}>
                 <img
                     src={TipImage}
                     alt="Tip Image"
                     className="w-3/4 h-auto"
-                    style={{ borderRadius: '26px', marginLeft: '20px' }}
+                    style={{ borderRadius: '26px', marginLeft: '20px', opacity: '0.9' }}
                 />
             </div>
         </div>
