@@ -481,10 +481,10 @@ const CreateImage = () => {
                             </div>
 
                             {/* 분위기 선택 드롭다운 */}
-                            <div className="flex flex-col mb-6">
+                            <div className="flex flex-col ">
                                 {' '}
                                 <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>{' '}
-                                <div className="flex items-center">
+                                <div className="flex items-center mb-6">
                                     {' '}
                                     <select
                                         value={selectedMood}
