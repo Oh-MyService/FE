@@ -525,8 +525,12 @@ const CreateImage = () => {
                                                 className="p-2 border focus:outline-none focus:border-[#809DEC] rounded-lg w-40 font-['pretendard-regular']"
                                             />
                                             {/* 분위기 입력 경고 메시지 표시 */}
+
                                             {moodErrorMessage && (
-                                                <p className="text-red-600 font-['pretendard-medium'] mt-1">
+                                                <p
+                                                    className="text-red-600 font-['pretendard-medium'] mt-1"
+                                                    style={{ whiteSpace: 'nowrap' }}
+                                                >
                                                     {moodErrorMessage}
                                                 </p>
                                             )}
