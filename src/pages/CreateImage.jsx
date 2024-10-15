@@ -483,7 +483,7 @@ const CreateImage = () => {
                             {/* 분위기 선택 */}
                             <div className="flex flex-col">
                                 <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>
-                                <div className="flex items-center mb-6">
+                                <div className="flex items-start mb-6">
                                     <select
                                         value={selectedMood}
                                         onChange={(e) => {
@@ -509,7 +509,7 @@ const CreateImage = () => {
 
                                     {/* 분위기 직접 입력 필드 */}
                                     {isCustomMood && (
-                                        <div className="flex flex-col">
+                                        <div className="relative flex items-center">
                                             <input
                                                 type="text"
                                                 value={mood}
@@ -530,8 +530,10 @@ const CreateImage = () => {
                                             {/* 경고 메시지 */}
                                             {moodErrorMessage && (
                                                 <p
-                                                    className="text-red-600 font-['pretendard-medium'] mt-1 text-left"
-                                                    style={{ marginTop: '4px' }}
+                                                    className="text-red-600 font-['pretendard-medium'] ml-2"
+                                                    style={{
+                                                        whiteSpace: 'nowrap',
+                                                    }}
                                                 >
                                                     {moodErrorMessage}
                                                 </p>
