@@ -481,69 +481,69 @@ const CreateImage = () => {
                             </div>
 
                             {/* 분위기 선택 드롭다운 */}
-                            <div className="flex items-center">
+                            <div className="flex flex-col">
                                 {' '}
-                                {/* 드롭다운과 입력 필드를 수평으로 배치 */}
-                                <label className="text-lg font-['pretendard-bold'] mb-2 text-left mr-4">
-                                    분위기
-                                </label>{' '}
-                                {/* 라벨을 드롭다운과 맞추어 배치 */}
-                                <select
-                                    value={selectedMood}
-                                    onChange={(e) => {
-                                        const selectedValue = e.target.value;
-                                        if (selectedValue === 'custom') {
-                                            setIsCustomMood(true);
-                                            setSelectedMood(''); // 빈 값으로 초기화
-                                        } else {
-                                            setIsCustomMood(false);
-                                            setSelectedMood(selectedValue);
-                                        }
-                                    }}
-                                    className="p-2 pr-2 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
-                                    style={{ width: '150px' }}
-                                >
-                                    <option value="custom">직접 입력</option>
-                                    {moodOptions.map((option, index) => (
-                                        <option key={index} value={option}>
-                                            {option}
-                                        </option>
-                                    ))}
-                                </select>
-                                {/* 분위기 직접 입력 필드 */}
-                                {isCustomMood && (
-                                    <div className="flex flex-col">
-                                        <input
-                                            type="text"
-                                            value={mood}
-                                            onChange={(e) => {
-                                                const value = e.target.value;
-                                                const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g; // 한글 체크하는 정규 표현식
+                                {/* 전체를 세로로 배치 */}
+                                <div className="flex items-center">
+                                    {' '}
+                                    {/* 드롭다운과 입력 필드를 수평으로 배치 */}
+                                    <label className="text-lg font-['pretendard-bold'] mb-2 text-left mr-4">
+                                        분위기
+                                    </label>{' '}
+                                    {/* 라벨을 드롭다운과 맞추어 배치 */}
+                                    <select
+                                        value={selectedMood}
+                                        onChange={(e) => {
+                                            const selectedValue = e.target.value;
+                                            if (selectedValue === 'custom') {
+                                                setIsCustomMood(true);
+                                                setSelectedMood(''); // 빈 값으로 초기화
+                                            } else {
+                                                setIsCustomMood(false);
+                                                setSelectedMood(selectedValue);
+                                            }
+                                        }}
+                                        className="p-2 pr-2 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
+                                        style={{ width: '150px' }} // 드롭다운 너비를 고정
+                                    >
+                                        <option value="custom">직접 입력</option>
+                                        {moodOptions.map((option, index) => (
+                                            <option key={index} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {/* 분위기 직접 입력 필드 */}
+                                    {isCustomMood && (
+                                        <div className="flex flex-col">
+                                            <input
+                                                type="text"
+                                                value={mood}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g; // 한글 체크하는 정규 표현식
 
-                                                if (koreanRegex.test(value)) {
-                                                    setMoodErrorMessage('한국어는 입력할 수 없습니다.');
-                                                } else {
-                                                    setMoodErrorMessage('');
-                                                    setMood(value); // 한글이 아닐 때만 mood 상태 업데이트
-                                                }
-                                            }}
-                                            placeholder="직접 입력"
-                                            className="p-2 w-72 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']" // 직접 입력 필드의 너비를 더 넓게 설정
-                                        />
-                                        {/* 분위기 입력 경고 메시지 표시 */}
-                                        {moodErrorMessage && (
-                                            <p
-                                                className="text-red-600 font-['pretendard-medium'] mt-1"
-                                                style={{
-                                                    whiteSpace: 'nowrap',
-                                                    marginTop: '0.5rem',
-                                                    marginLeft: '10px',
-                                                }} // 경고 문구의 여백을 설정하여 드롭다운과 간격 유지
-                                            >
-                                                {moodErrorMessage}
-                                            </p>
-                                        )}
-                                    </div>
+                                                    if (koreanRegex.test(value)) {
+                                                        setMoodErrorMessage('한국어는 입력할 수 없습니다.');
+                                                    } else {
+                                                        setMoodErrorMessage('');
+                                                        setMood(value); // 한글이 아닐 때만 mood 상태 업데이트
+                                                    }
+                                                }}
+                                                placeholder="직접 입력"
+                                                className="p-2 w-64 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']" // 직접 입력 필드의 너비를 더 넓게 설정
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                                {/* 분위기 입력 경고 메시지 표시 */}
+                                {moodErrorMessage && (
+                                    <p
+                                        className="text-red-600 font-['pretendard-medium'] mt-1"
+                                        style={{ whiteSpace: 'nowrap', marginTop: '0.5rem' }}
+                                    >
+                                        {moodErrorMessage}
+                                    </p>
                                 )}
                             </div>
 
