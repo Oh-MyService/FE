@@ -480,12 +480,10 @@ const CreateImage = () => {
                                 </select>
                             </div>
 
-                            {/* 분위기 선택 드롭다운 */}
-                            <div className="flex flex-col ">
-                                {' '}
-                                <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>{' '}
+                            {/* 분위기 선택 */}
+                            <div className="flex flex-col">
+                                <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>
                                 <div className="flex items-center mb-6">
-                                    {' '}
                                     <select
                                         value={selectedMood}
                                         onChange={(e) => {
@@ -499,7 +497,7 @@ const CreateImage = () => {
                                             }
                                         }}
                                         className="p-2 pr-2 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
-                                        style={{ width: '150px' }} // 드롭다운 너비를 고정
+                                        style={{ width: '150px', height: '40px' }}
                                     >
                                         <option value="custom">직접 입력</option>
                                         {moodOptions.map((option, index) => (
@@ -508,9 +506,10 @@ const CreateImage = () => {
                                             </option>
                                         ))}
                                     </select>
+
                                     {/* 분위기 직접 입력 필드 */}
                                     {isCustomMood && (
-                                        <div className="flex flex-col mb-6">
+                                        <div className="flex flex-col">
                                             <input
                                                 type="text"
                                                 value={mood}
@@ -526,15 +525,17 @@ const CreateImage = () => {
                                                     }
                                                 }}
                                                 placeholder="직접 입력"
-                                                className="p-2 w-52 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']" // 직접 입력 필드의 너비를 더 넓게 설정
+                                                className="p-2 w-52 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']"
+                                                style={{ height: '40px' }}
                                             />
                                         </div>
                                     )}
                                 </div>
+
                                 {/* 분위기 입력 경고 메시지 표시 */}
                                 {moodErrorMessage && (
                                     <p
-                                        className="text-red-600 font-['pretendard-medium'] mt-1 text-left"
+                                        className="text-red-600 font-['pretendard-medium'] mt-1"
                                         style={{ whiteSpace: 'nowrap', marginLeft: '0px' }}
                                     >
                                         {moodErrorMessage}
