@@ -170,6 +170,8 @@ const CreateImage = () => {
     // 프롬프트 상태 관리
     const [positivePrompt, setPositivePrompt] = useState('');
 
+    const [errorMessage, setErrorMessage] = useState(''); //에러 메시지 상태
+
     // 옵션 상태 관리
     const [cfgScale, setCfgScale] = useState(7);
     const [backgroundColor, setBackgroundColor] = useState(''); // 직접 입력
@@ -228,16 +230,16 @@ const CreateImage = () => {
     const sliderRef2 = useRef(null);
 
     // 한글 입력 제한 함수
-    const handleInputChange = (e, setValue) => {
+    const handleInputChange = (e) => {
         const value = e.target.value;
         const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 체크하는 정규 표현식
 
         if (koreanRegex.test(value)) {
-            setAlertMessage('한국어는 입력할 수 없습니다.');
+            setErrorMessage('한국어는 입력할 수 없습니다.'); // 에러 메시지 설정
         } else {
-            setAlertMessage(''); // 알림 초기화
-            setValue(value); // 한글이 아닐 때만 상태 업데이트
+            setErrorMessage(''); // 에러 메시지 초기화
         }
+        setPositivePrompt(value); // 입력 값 상태 업데이트
     };
 
     // 컬렉션 추가 모달
@@ -446,10 +448,12 @@ const CreateImage = () => {
                         <span className="block text-3xl font-['pretendard-extrabold'] text-black mb-5">
                             상상 속 패턴을 지금 만들어보세요!
                         </span>
+                        {/* 경고 메시지 출력 */}
+                        {errorMessage && <p className="text-red-600 font-['pretendard-medium'] mb-2">{errorMessage}</p>}
 
                         {/* Positive 프롬프트 입력 */}
                         <p className="text-lg font-['pretendard-bold'] mb-2">
-                            패턴에 포함하고 싶은 요소를 입력하세요(영어만 입력 가능)
+                            패턴에 포함하고 싶은 요소를 영문으로 입력하세요
                         </p>
                         <textarea
                             type="text"
@@ -457,9 +461,6 @@ const CreateImage = () => {
                             onChange={(e) => handleInputChange(e, setPositivePrompt)}
                             className="w-full h-40 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
                             placeholder="ex) a floral pattern with small, curious kittens"
-                            required // 필수 입력
-                            pattern="[A-Za-z\s]+"
-                            title="영어만 입력할 수 있습니다." // 경고 메시지
                         />
 
                         <div className="p-4 border-3 border-[#809DEC] rounded-lg mb-6 w-full">
