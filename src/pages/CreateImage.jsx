@@ -234,10 +234,9 @@ const CreateImage = () => {
 
         if (koreanRegex.test(value)) {
             setAlertMessage('한국어는 입력할 수 없습니다.');
-            alert('한국어는 입력할 수 없습니다.');
         } else {
-            setAlertMessage('');
-            setValue(value);
+            setAlertMessage(''); // 알림 초기화
+            setValue(value); // 한글이 아닐 때만 상태 업데이트
         }
     };
 
@@ -458,6 +457,9 @@ const CreateImage = () => {
                             onChange={(e) => handleInputChange(e, setPositivePrompt)}
                             className="w-full h-40 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
                             placeholder="ex) a floral pattern with small, curious kittens"
+                            required // 필수 입력
+                            pattern="[A-Za-z\s]+"
+                            title="영어만 입력할 수 있습니다." // 경고 메시지
                         />
 
                         <div className="p-4 border-3 border-[#809DEC] rounded-lg mb-6 w-full">
