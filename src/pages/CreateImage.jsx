@@ -483,14 +483,9 @@ const CreateImage = () => {
                             {/* 분위기 선택 드롭다운 */}
                             <div className="flex flex-col">
                                 {' '}
-                                {/* 전체를 세로로 배치 */}
+                                <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>{' '}
                                 <div className="flex items-center">
                                     {' '}
-                                    {/* 드롭다운과 입력 필드를 수평으로 배치 */}
-                                    <label className="text-lg font-['pretendard-bold'] mb-2 text-left mr-4">
-                                        분위기
-                                    </label>{' '}
-                                    {/* 라벨을 드롭다운과 맞추어 배치 */}
                                     <select
                                         value={selectedMood}
                                         onChange={(e) => {
@@ -531,7 +526,7 @@ const CreateImage = () => {
                                                     }
                                                 }}
                                                 placeholder="직접 입력"
-                                                className="p-2 w-64 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']" // 직접 입력 필드의 너비를 더 넓게 설정
+                                                className="p-2 w-52 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']" // 직접 입력 필드의 너비를 더 넓게 설정
                                             />
                                         </div>
                                     )}
