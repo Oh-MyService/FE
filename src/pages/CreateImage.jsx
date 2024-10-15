@@ -481,7 +481,13 @@ const CreateImage = () => {
                             </div>
 
                             {/* 분위기 선택 드롭다운 */}
-                            <div className="flex flex-row mr-4">
+                            <div className="flex items-center">
+                                {' '}
+                                {/* 드롭다운과 입력 필드를 수평으로 배치 */}
+                                <label className="text-lg font-['pretendard-bold'] mb-2 text-left mr-4">
+                                    분위기
+                                </label>{' '}
+                                {/* 라벨을 드롭다운과 맞추어 배치 */}
                                 <select
                                     value={selectedMood}
                                     onChange={(e) => {
@@ -494,7 +500,8 @@ const CreateImage = () => {
                                             setSelectedMood(selectedValue);
                                         }
                                     }}
-                                    className="p-2 w-32 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
+                                    className="p-2 pr-2 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
+                                    style={{ width: '150px' }}
                                 >
                                     <option value="custom">직접 입력</option>
                                     {moodOptions.map((option, index) => (
@@ -503,7 +510,6 @@ const CreateImage = () => {
                                         </option>
                                     ))}
                                 </select>
-
                                 {/* 분위기 직접 입력 필드 */}
                                 {isCustomMood && (
                                     <div className="flex flex-col">
@@ -522,13 +528,17 @@ const CreateImage = () => {
                                                 }
                                             }}
                                             placeholder="직접 입력"
-                                            className="p-2 w-56 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']"
+                                            className="p-2 w-72 border focus:outline-none focus:border-[#809DEC] rounded-lg font-['pretendard-regular']" // 직접 입력 필드의 너비를 더 넓게 설정
                                         />
                                         {/* 분위기 입력 경고 메시지 표시 */}
                                         {moodErrorMessage && (
                                             <p
                                                 className="text-red-600 font-['pretendard-medium'] mt-1"
-                                                style={{ whiteSpace: 'nowrap' }}
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    marginTop: '0.5rem',
+                                                    marginLeft: '10px',
+                                                }} // 경고 문구의 여백을 설정하여 드롭다운과 간격 유지
                                             >
                                                 {moodErrorMessage}
                                             </p>
