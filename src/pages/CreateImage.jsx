@@ -510,7 +510,7 @@ const CreateImage = () => {
                                     </select>
                                     {/* 분위기 직접 입력 필드 */}
                                     {isCustomMood && (
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col mb-6">
                                             <input
                                                 type="text"
                                                 value={mood}
@@ -534,8 +534,8 @@ const CreateImage = () => {
                                 {/* 분위기 입력 경고 메시지 표시 */}
                                 {moodErrorMessage && (
                                     <p
-                                        className="text-red-600 font-['pretendard-medium'] mt-1"
-                                        style={{ whiteSpace: 'nowrap', marginTop: '0.5rem' }}
+                                        className="text-red-600 font-['pretendard-medium'] mt-1 text-left"
+                                        style={{ whiteSpace: 'nowrap', marginLeft: '0px' }}
                                     >
                                         {moodErrorMessage}
                                     </p>
