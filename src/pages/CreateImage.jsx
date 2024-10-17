@@ -699,11 +699,11 @@ const CreateImage = () => {
                         style={{ width: '50%' }}
                       ></div>
                     </div>
-                    <span className="ml-2 text-sm font-['pretendard-medium'] text-black">
+                    <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
                       50%
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-gray-500 text-center">
+                  <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500 text-center">
                     예상 소요시간 : 0분 00초
                   </p>
                 </div>
