@@ -600,7 +600,7 @@ const CreateImage = () => {
                   <label className="text-lg font-['pretendard-bold'] mb-2 mr-4">
                     Seed
                   </label>
-                  <div className="flex items-start">
+                  <div className="flex items-center">
                     <label className="flex items-center text-sm font-['pretendard-regular'] mb-2">
                       <input
                         type="checkbox"
@@ -621,12 +621,12 @@ const CreateImage = () => {
                       onChange={(e) => setSeed(Number(e.target.value))}
                     />
                   )}
+                  {seedError && (
+                    <p className="text-red-600 font-['pretendard-medium'] text-sm">
+                      {seedError}
+                    </p>
+                  )}
                 </div>
-                {seedError && (
-                  <p className="text-red-600 font-['pretendard-medium'] text-sm">
-                    {seedError}
-                  </p>
-                )}
               </div>
             </div>
 
