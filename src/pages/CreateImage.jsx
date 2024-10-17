@@ -596,33 +596,35 @@ const CreateImage = () => {
 
               {/* Seed 입력 및 랜덤 체크박스 */}
               <div className="flex flex-col mb-6 w-full">
+                <label className="text-lg font-['pretendard-bold'] mb-2 mr-4">
+                  Seed
+                </label>
                 <div className="flex items-center">
-                  <label className="text-lg font-['pretendard-bold'] mb-2 mr-4">
-                    Seed
-                  </label>
-                  <div className="flex items-center">
-                    <label className="flex items-center text-sm font-['pretendard-regular'] mb-2">
-                      <input
-                        type="checkbox"
-                        checked={isRandomSeed}
-                        onChange={(e) => setIsRandomSeed(e.target.checked)}
-                        className="mr-1 h-4 w-4 border-gray-300 rounded"
-                      />
-                      random
-                    </label>
-                  </div>
                   {!isRandomSeed && (
-                    <input
-                      type="number"
-                      className="w-20 p-2 border focus:outline-none focus:border-[#809DEC] rounded-lg text-left"
-                      value={seed}
-                      onChange={(e) => setSeed(Number(e.target.value))}
-                    />
+                    <>
+                      <input
+                        type="number"
+                        className="w-40 p-2 border focus:outline-none focus:border-[#809DEC] rounded-lg text-left"
+                        value={seed}
+                        onChange={(e) => setSeed(Number(e.target.value))}
+                      />
+                      {seedError && (
+                        <span className="text-red-600 font-['pretendard-medium'] ml-2">
+                          {seedError}
+                        </span> // 에러 메시지를 입력창 옆에 표시
+                      )}
+                    </>
                   )}
                 </div>
-                {seedError && (
-                  <p className="text-red-500 text-sm">{seedError}</p>
-                )}
+                <label className="flex items-center text-sm font-['pretendard-regular'] mb-2 mt-2">
+                  <input
+                    type="checkbox"
+                    checked={isRandomSeed}
+                    onChange={(e) => setIsRandomSeed(e.target.checked)}
+                    className="mr-1 h-4 w-4 border-gray-300 rounded"
+                  />
+                  random
+                </label>
               </div>
             </div>
 
@@ -639,7 +641,7 @@ const CreateImage = () => {
         </div>
 
         {/* 생성 결과 섹션 */}
-        <div className="flex flex-col w-1/2 px-4 mt-24 h-[760px]">
+        <div className="flex flex-col w-1/2 px-4 mt-24 h-[720px]">
           <p className="text-lg font-['pretendard-semibold'] mb-2 text-gray-500 text-left">
             지금 00명이 생성하고 있어요!
           </p>
