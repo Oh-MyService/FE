@@ -692,6 +692,15 @@ const CreateImage = () => {
                         <SkeletonCard key={idx} />
                       ))}
                   </div>
+                  <div className="mt-4 h-2.5 bg-gray-500 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-[#444655]"
+                      style={{ width: '50%' }}
+                    ></div>
+                  </div>
+                  <p className="mt-2 text-sm text-gray-500 text-center">
+                    예상 소요시간 : 0분 00초
+                  </p>
                 </div>
               ) : (
                 <div
