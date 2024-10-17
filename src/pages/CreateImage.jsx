@@ -204,6 +204,9 @@ const CreateImage = () => {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [seedError, setSeedError] = useState('');
 
+  // 전체 생성 테스트 수
+  const [totalQueueCount, setTotalQueueCount] = useState(0);
+
   // 로컬 스토리지에서 불러온 결과 기록 상태 관리
   const [results, setResults] = useState(() => {
     const savedResults = localStorage.getItem('results');
@@ -309,6 +312,23 @@ const CreateImage = () => {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.exp < Date.now() / 1000;
   };
+
+  // 큐 상태를 가져오기
+  const fetchQueueStatus = async () => {
+    try {
+      const response = await fetch(
+        'http://118.67.128.129:28282/rabbitmq/queue_status'
+      );
+      const data = await response.json();
+      setTotalQueueCount(data.total_count); // 큐의 총 수를 상태로 설정
+    } catch (error) {
+      console.error('Error fetching queue status:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQueueStatus();
+  }, []);
 
   // 생성하기 요청
   const handleSubmit = async (event) => {
@@ -622,7 +642,7 @@ const CreateImage = () => {
                     />
                   )}
                   {seedError && (
-                    <p className="text-red-600 font-['pretendard-medium'] text-sm">
+                    <p className="text-red-600 font-['pretendard-medium'] text-sm ml-2">
                       {seedError}
                     </p>
                   )}
@@ -645,7 +665,7 @@ const CreateImage = () => {
         {/* 생성 결과 섹션 */}
         <div className="flex flex-col w-1/2 px-4 mt-24 h-[720px]">
           <p className="text-lg font-['pretendard-semibold'] mb-2 text-gray-500 text-left">
-            지금 00명이 생성하고 있어요!
+            지금 {totalQueueCount}명이 생성하고 있어요!
           </p>
           <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
             {results.map((result, index) =>
