@@ -321,12 +321,12 @@ const CreateImage = () => {
         fetchQueueStatus();
     }, []);
 
-    // **프로그레스바 상태를 업데이트하는 함수 추가**
+    // **프로그레스바 상태를 업데이트하는 함수**
     const fetchProgress = async (taskId) => {
         try {
             const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`);
             const data = await response.json();
-            setProgress(data.progress); // 서버에서 받아온 진행 상태를 업데이트
+            setProgress(Number(data));
         } catch (error) {
             console.error('Error fetching progress:', error);
         }
@@ -397,22 +397,26 @@ const CreateImage = () => {
             const data = await response.json();
             console.log(data);
 
-            const newResult = {
-                id: data.id,
-                content: data.content,
-                created_at: data.created_at,
-                user_id: data.user_id,
-                images: [],
-                isLoading: true,
-            };
-            setResults((prevResults) => [newResult, ...prevResults]);
-            pollForImages(data.id, newResult);
+            if (data && data.id && data.task_id) {
+                // data.id와 data.task_id가 정의되었는지 확인
+                const newResult = {
+                    id: data.id,
+                    content: data.content,
+                    created_at: data.created_at,
+                    user_id: data.user_id,
+                    images: [],
+                    isLoading: true,
+                };
+                setResults((prevResults) => [newResult, ...prevResults]);
+                pollForImages(data.task_id, newResult); // task_id를 사용
+            } else {
+                console.error('id 또는 task_id가 undefined입니다.');
+            }
         } catch (error) {
             console.error('Error occurred:', error);
             setAlertMessage('Error occurred while creating prompt.');
         }
     };
-
     // 이미지 생성 결과 폴링
     const pollForImages = (promptId, newResult) => {
         const interval = setInterval(async () => {
