@@ -324,11 +324,20 @@ const CreateImage = () => {
     // **프로그레스바 상태를 업데이트하는 함수**
     const fetchProgress = async (taskId) => {
         try {
+            // taskId를 사용하여 올바른 요청을 보냄
             const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch progress');
+            }
             const data = await response.json();
-            setProgress(Number(data));
+            const progressValue = Number(data); // 받은 값이 숫자인지 확인하고 변환
+            if (isNaN(progressValue)) {
+                throw new Error('Invalid progress value received');
+            }
+            setProgress(progressValue); // NaN이 아닌 경우에만 progress 설정
         } catch (error) {
             console.error('Error fetching progress:', error);
+            setProgress(0); // 실패 시 기본 값 설정
         }
     };
 
@@ -398,17 +407,19 @@ const CreateImage = () => {
             console.log(data);
 
             if (data && data.id && data.task_id) {
-                // data.id와 data.task_id가 정의되었는지 확인
                 const newResult = {
                     id: data.id,
                     content: data.content,
                     created_at: data.created_at,
                     user_id: data.user_id,
+                    task_id: data.task_id,
                     images: [],
                     isLoading: true,
                 };
                 setResults((prevResults) => [newResult, ...prevResults]);
-                pollForImages(data.task_id, newResult); // task_id를 사용
+                // 로그 추가: pollForImages 호출 전에 값 확인
+                console.log('pollForImages 호출 전: ', data.task_id, newResult);
+                pollForImages(data.task_id, newResult); // task_id 사용
             } else {
                 console.error('id 또는 task_id가 undefined입니다.');
             }
@@ -418,23 +429,23 @@ const CreateImage = () => {
         }
     };
     // 이미지 생성 결과 폴링
-    const pollForImages = (promptId, newResult) => {
+    const pollForImages = (taskId, newResult) => {
+        console.log('pollForImages 함수 내: taskId:', taskId, 'newResult:', newResult); // 로그 추가
         const interval = setInterval(async () => {
             try {
-                const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
+                const response = await fetch(`http://118.67.128.129:28282/api/results/${taskId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
                 });
-
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
 
                 if (data.results.length > 0) {
                     setResults((prevResults) =>
                         prevResults.map((result) =>
-                            result.id === promptId
+                            result.task_id === taskId
                                 ? {
                                       ...result,
                                       images: [...result.images, ...data.results],
@@ -451,7 +462,7 @@ const CreateImage = () => {
             } catch (error) {
                 console.error('Error occurred while fetching the image:', error);
                 setResults((prevResults) =>
-                    prevResults.map((result) => (result.id === promptId ? { ...result, isLoading: false } : result))
+                    prevResults.map((result) => (result.task_id === taskId ? { ...result, isLoading: false } : result))
                 );
                 clearInterval(interval);
             }
