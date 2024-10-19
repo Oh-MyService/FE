@@ -450,7 +450,12 @@ const CreateImage = () => {
                 });
 
                 if (!response.ok) throw new Error('Network response was not ok');
+
+                // 응답 데이터를 JSON 형식으로 변환
                 const data = await response.json();
+
+                // 응답 데이터를 콘솔에 출력
+                console.log('API 응답 데이터:', data);
 
                 if (data.results.length > 0) {
                     setResults((prevResults) =>
