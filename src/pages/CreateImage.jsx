@@ -450,12 +450,7 @@ const CreateImage = () => {
                 });
 
                 if (!response.ok) throw new Error('Network response was not ok');
-
-                // 응답 데이터를 JSON 형식으로 변환
                 const data = await response.json();
-
-                // 응답 데이터를 콘솔에 출력
-                console.log('API 응답 데이터:', data);
 
                 if (data.results.length > 0) {
                     setResults((prevResults) =>
@@ -471,8 +466,9 @@ const CreateImage = () => {
                     );
                 }
 
+                // 이미지가 4개 이상 생성되었으면 interval을 중단
                 if (data.results.length >= 4) {
-                    clearInterval(interval);
+                    clearInterval(interval); // interval 중단
                 }
             } catch (error) {
                 console.error('Error occurred while fetching the image:', error);
