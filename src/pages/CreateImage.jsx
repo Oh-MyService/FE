@@ -321,7 +321,7 @@ const CreateImage = () => {
         fetchQueueStatus();
     }, []);
 
-    // **프로그레스바 상태를 업데이트하는 함수**
+    // 프로그래스바 상태를 업데이트하는 함수
     const fetchProgress = async (taskId) => {
         try {
             // taskId를 사용하여 올바른 요청을 보냄
@@ -329,15 +329,18 @@ const CreateImage = () => {
             if (!response.ok) {
                 throw new Error('Failed to fetch progress');
             }
-            const data = await response.json();
-            const progressValue = Number(data); // 받은 값이 숫자인지 확인하고 변환
-            if (isNaN(progressValue)) {
-                throw new Error('Invalid progress value received');
+
+            const progressData = await response.json();
+            console.log('Progress data received:', progressData);
+
+            if (typeof progressData === 'string') {
+                setProgress(progressData); // 서버에서 받은 string 데이터를 그대로 설정
+            } else {
+                throw new Error('Invalid progress data type received');
             }
-            setProgress(progressValue); // NaN이 아닌 경우에만 progress 설정
         } catch (error) {
             console.error('Error fetching progress:', error);
-            setProgress(0); // 실패 시 기본 값 설정
+            setProgress('0'); // 실패 시 기본 값 설정
         }
     };
 
@@ -430,7 +433,7 @@ const CreateImage = () => {
     };
     // 이미지 생성 결과 폴링
     const pollForImages = (taskId, newResult) => {
-        console.log('pollForImages 함수 내: taskId:', taskId, 'newResult:', newResult); // 로그 추가
+        console.log('pollForImages 함수 내: taskId:', taskId, 'newResult:', newResult);
         const interval = setInterval(async () => {
             try {
                 const response = await fetch(`http://118.67.128.129:28282/api/results/${taskId}`, {
@@ -440,9 +443,11 @@ const CreateImage = () => {
                     },
                 });
                 if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
 
-                if (data.results.length > 0) {
+                const data = await response.json();
+                console.log('Image results data:', data);
+
+                if (data.results && Array.isArray(data.results) && data.results.length > 0) {
                     setResults((prevResults) =>
                         prevResults.map((result) =>
                             result.task_id === taskId
@@ -454,8 +459,11 @@ const CreateImage = () => {
                                 : result
                         )
                     );
+                } else {
+                    console.error('No results found in response.');
                 }
 
+                // 일정 수 이상의 결과가 도착하면 폴링 중단
                 if (data.results.length >= 4) {
                     clearInterval(interval);
                 }
@@ -466,7 +474,7 @@ const CreateImage = () => {
                 );
                 clearInterval(interval);
             }
-        }, 10000);
+        }, 10000); // 10초마다 폴링
     };
 
     // Enter 키로 이미지 생성 요청 처리
