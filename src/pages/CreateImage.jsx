@@ -443,8 +443,8 @@ const CreateImage = () => {
         console.log('pollForImages 함수 내: promptId:', promptId, 'newResult:', newResult);
         const interval = setInterval(async () => {
             try {
-                // progress를 확인할 필요 없이 prompt_id에 맞게 이미지를 바로 가져오는 요청을 보냄
-                const imageResponse = await fetch(`http://118.67.128.129:28282/images/${promptId}`, {
+                // prompt_id에 맞게 이미지를 가져오는 요청을 보냄
+                const imageResponse = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
