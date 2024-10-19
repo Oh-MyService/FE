@@ -440,39 +440,43 @@ const CreateImage = () => {
     };
     // 이미지 생성 결과 폴링
     const pollForImages = (promptId, newResult) => {
-        console.log('pollForImages 함수 내: promptId:', promptId, 'newResult:', newResult);
         const interval = setInterval(async () => {
             try {
-                // prompt_id에 맞게 이미지를 가져오는 요청을 보냄
-                const imageResponse = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
+                const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
                 });
 
-                if (!imageResponse.ok) throw new Error('Failed to fetch images');
-                const imagesData = await imageResponse.json(); // 이미지 데이터 받기
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
 
-                if (imagesData && imagesData.length > 0) {
-                    // 이미지가 성공적으로 반환되면 폴링 중단 및 results 업데이트
-                    clearInterval(interval); // 이미지를 성공적으로 받으면 폴링 중단
+                if (data.results.length > 0) {
                     setResults((prevResults) =>
                         prevResults.map((result) =>
-                            result.id === promptId ? { ...result, images: imagesData, isLoading: false } : result
+                            result.id === promptId
+                                ? {
+                                      ...result,
+                                      images: [...result.images, ...data.results],
+                                      isLoading: false, // 로딩 완료
+                                  }
+                                : result
                         )
                     );
-                } else {
-                    console.log('이미지를 아직 받을 수 없습니다. 계속 폴링 중...');
+                }
+
+                if (data.results.length >= 4) {
+                    clearInterval(interval);
                 }
             } catch (error) {
-                console.error('Error occurred while fetching images:', error);
+                console.error('Error occurred while fetching the image:', error);
                 setResults((prevResults) =>
                     prevResults.map((result) => (result.id === promptId ? { ...result, isLoading: false } : result))
                 );
-                clearInterval(interval); // 에러 발생 시 폴링 중단
+                clearInterval(interval);
             }
-        }, 10000); // 10초마다 폴링
+        }, 10000);
     };
 
     // Enter 키로 이미지 생성 요청 처리
