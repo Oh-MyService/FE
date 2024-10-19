@@ -439,43 +439,36 @@ const CreateImage = () => {
         }
     };
     // 이미지 생성 결과 폴링
-    const pollForImages = (taskId, newResult) => {
-        console.log('pollForImages 함수 내: taskId:', taskId, 'newResult:', newResult);
+    const pollForImages = (promptId, newResult) => {
+        console.log('pollForImages 함수 내: promptId:', promptId, 'newResult:', newResult);
         const interval = setInterval(async () => {
             try {
-                // task_id에 맞게 진행 상태를 확인하는 요청을 보냄
-                const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`, {
+                // progress를 확인할 필요 없이 prompt_id에 맞게 이미지를 바로 가져오는 요청을 보냄
+                const imageResponse = await fetch(`http://118.67.128.129:28282/images/${promptId}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`, // 필요한 경우 토큰 사용
+                        Authorization: `Bearer ${token}`,
                     },
                 });
-                if (!response.ok) throw new Error('Network response was not ok');
 
-                const data = await response.json();
-                console.log('Progress data received:', data);
+                if (!imageResponse.ok) throw new Error('Failed to fetch images');
+                const imagesData = await imageResponse.json(); // 이미지 데이터 받기
 
-                // 진행 상황(progress)을 확인하여 상태 업데이트
-                if (data && typeof data.progress === 'number') {
-                    setProgress(data.progress); // 프로그레스 바 업데이트
-
-                    if (data.progress >= 100) {
-                        clearInterval(interval); // 100% 도달 시 폴링 중단
-                        setResults((prevResults) =>
-                            prevResults.map((result) =>
-                                result.task_id === taskId
-                                    ? { ...result, isLoading: false } // 로딩 완료로 표시
-                                    : result
-                            )
-                        );
-                    }
+                if (imagesData && imagesData.length > 0) {
+                    // 이미지가 성공적으로 반환되면 폴링 중단 및 results 업데이트
+                    clearInterval(interval); // 이미지를 성공적으로 받으면 폴링 중단
+                    setResults((prevResults) =>
+                        prevResults.map((result) =>
+                            result.id === promptId ? { ...result, images: imagesData, isLoading: false } : result
+                        )
+                    );
                 } else {
-                    console.error('Invalid progress data received.');
+                    console.log('이미지를 아직 받을 수 없습니다. 계속 폴링 중...');
                 }
             } catch (error) {
-                console.error('Error occurred while fetching progress:', error);
+                console.error('Error occurred while fetching images:', error);
                 setResults((prevResults) =>
-                    prevResults.map((result) => (result.task_id === taskId ? { ...result, isLoading: false } : result))
+                    prevResults.map((result) => (result.id === promptId ? { ...result, isLoading: false } : result))
                 );
                 clearInterval(interval); // 에러 발생 시 폴링 중단
             }
