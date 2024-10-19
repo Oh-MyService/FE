@@ -355,7 +355,7 @@ const CreateImage = () => {
             results.forEach((result) => {
                 const interval = setInterval(() => {
                     fetchProgress(result.task_id); // task_id별로 진행 상황 확인
-                }, 5000); // 5초마다 상태 확인
+                }, 10000);
                 return () => clearInterval(interval); // 클린업 함수로 폴링 중단
             });
         }
