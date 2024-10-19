@@ -324,7 +324,6 @@ const CreateImage = () => {
     // 프로그래스바 상태를 업데이트하는 함수
     const fetchProgress = async (taskId) => {
         try {
-            // taskId를 사용하여 올바른 요청을 보냄
             const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch progress');
@@ -333,27 +332,34 @@ const CreateImage = () => {
             const progressData = await response.json();
             console.log('Progress data received:', progressData);
 
-            if (typeof progressData === 'string') {
-                setProgress(progressData); // 서버에서 받은 string 데이터를 그대로 설정
+            if (typeof progressData.progress === 'number') {
+                // 개별 결과에 대해 progress 상태 업데이트
+                setResults((prevResults) =>
+                    prevResults.map((result) =>
+                        result.task_id === taskId ? { ...result, progress: progressData.progress } : result
+                    )
+                );
             } else {
                 throw new Error('Invalid progress data type received');
             }
         } catch (error) {
             console.error('Error fetching progress:', error);
-            setProgress('0'); // 실패 시 기본 값 설정
+            setProgress(0); // 실패 시 기본 값 설정
         }
     };
 
     // **폴링 추가 부분**
     useEffect(() => {
-        if (isLoading) {
-            const interval = setInterval(() => {
-                fetchProgress(results[0].id); // 예시로 첫 번째 결과에 대해 진행 상황을 확인
-            }, 5000); // 5초마다 상태 확인
-
-            return () => clearInterval(interval); // 클린업 함수로 폴링 중단
+        if (isLoading && results.length > 0) {
+            // 결과의 각 항목마다 progress를 개별적으로 확인
+            results.forEach((result) => {
+                const interval = setInterval(() => {
+                    fetchProgress(result.task_id); // task_id별로 진행 상황 확인
+                }, 5000); // 5초마다 상태 확인
+                return () => clearInterval(interval); // 클린업 함수로 폴링 중단
+            });
         }
-    }, [isLoading]);
+    }, [isLoading, results]);
 
     // 생성하기 요청
     const handleSubmit = async (event) => {
@@ -710,11 +716,11 @@ const CreateImage = () => {
                                         <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-[#809DEC]"
-                                                style={{ width: `${progress}%` }}
+                                                style={{ width: `${result.progress}%` }}
                                             ></div>
                                         </div>
                                         <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
-                                            {progress}%
+                                            {result.progress}% {/* 개별 result의 progress 표시 */}
                                         </span>
                                     </div>
 
