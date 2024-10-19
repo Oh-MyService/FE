@@ -429,7 +429,7 @@ const CreateImage = () => {
                 setResults((prevResults) => [newResult, ...prevResults]);
                 // 로그 추가: pollForImages 호출 전에 값 확인
                 console.log('pollForImages 호출 전: ', data.task_id, newResult);
-                pollForImages(data.task_id, newResult); // task_id 사용
+                pollForImages(data.id, newResult);
             } else {
                 console.error('id 또는 task_id가 undefined입니다.');
             }
