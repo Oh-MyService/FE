@@ -349,15 +349,16 @@ const CreateImage = () => {
     };
 
     // **폴링 추가 부분**
+
     useEffect(() => {
         if (isLoading && results.length > 0) {
-            // 결과의 각 항목마다 progress를 개별적으로 확인
-            results.forEach((result) => {
-                const interval = setInterval(() => {
+            const interval = setInterval(() => {
+                results.forEach((result) => {
                     fetchProgress(result.task_id); // task_id별로 진행 상황 확인
-                }, 10000);
-                return () => clearInterval(interval); // 클린업 함수로 폴링 중단
-            });
+                });
+            }, 10000); // 10초마다 상태 확인
+
+            return () => clearInterval(interval); // 컴포넌트가 언마운트 될 때 클린업 함수 실행
         }
     }, [isLoading, results]);
 
@@ -442,43 +443,41 @@ const CreateImage = () => {
         console.log('pollForImages 함수 내: taskId:', taskId, 'newResult:', newResult);
         const interval = setInterval(async () => {
             try {
-                const response = await fetch(`http://118.67.128.129:28282/api/results/${taskId}`, {
+                // task_id에 맞게 진행 상태를 확인하는 요청을 보냄
+                const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`, // 필요한 경우 토큰 사용
                     },
                 });
                 if (!response.ok) throw new Error('Network response was not ok');
 
                 const data = await response.json();
-                console.log('Image results data:', data);
+                console.log('Progress data received:', data);
 
-                if (data.results && Array.isArray(data.results) && data.results.length > 0) {
-                    setResults((prevResults) =>
-                        prevResults.map((result) =>
-                            result.task_id === taskId
-                                ? {
-                                      ...result,
-                                      images: [...result.images, ...data.results],
-                                      isLoading: false, // 로딩 완료
-                                  }
-                                : result
-                        )
-                    );
+                // 진행 상황(progress)을 확인하여 상태 업데이트
+                if (data && typeof data.progress === 'number') {
+                    setProgress(data.progress); // 프로그레스 바 업데이트
+
+                    if (data.progress >= 100) {
+                        clearInterval(interval); // 100% 도달 시 폴링 중단
+                        setResults((prevResults) =>
+                            prevResults.map((result) =>
+                                result.task_id === taskId
+                                    ? { ...result, isLoading: false } // 로딩 완료로 표시
+                                    : result
+                            )
+                        );
+                    }
                 } else {
-                    console.error('No results found in response.');
-                }
-
-                // 일정 수 이상의 결과가 도착하면 폴링 중단
-                if (data.results.length >= 4) {
-                    clearInterval(interval);
+                    console.error('Invalid progress data received.');
                 }
             } catch (error) {
-                console.error('Error occurred while fetching the image:', error);
+                console.error('Error occurred while fetching progress:', error);
                 setResults((prevResults) =>
                     prevResults.map((result) => (result.task_id === taskId ? { ...result, isLoading: false } : result))
                 );
-                clearInterval(interval);
+                clearInterval(interval); // 에러 발생 시 폴링 중단
             }
         }, 10000); // 10초마다 폴링
     };
