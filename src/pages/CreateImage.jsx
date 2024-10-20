@@ -198,7 +198,6 @@ const CreateImage = () => {
     const [seedError, setSeedError] = useState('');
 
     const [progress, setProgress] = useState(0); // 프로그래스바 상태 관리
-    const [startTime, setStartTime] = useState(null); // 시작 시간을 저장할 상태
     const [remainingTime, setRemainingTime] = useState(''); // 남은 시간을 저장할 상태
 
     // 전체 생성 테스트 수
@@ -324,6 +323,7 @@ const CreateImage = () => {
     }, []);
 
     // 프로그래스바 상태를 업데이트하는 함수
+    // Progress 데이터를 받아온 후
     const fetchProgress = async (taskId) => {
         try {
             const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`);
@@ -335,15 +335,16 @@ const CreateImage = () => {
             console.log('Progress data received:', progressData);
 
             if (typeof progressData.progress === 'number') {
-                // 개별 결과에 대해 progress 상태 업데이트
                 setResults((prevResults) =>
                     prevResults.map((result) =>
                         result.task_id === taskId ? { ...result, progress: progressData.progress } : result
                     )
                 );
 
-                // 예상 소요 시간 계산 함수 호출
-                updateEstimatedTime(progressData.progress); // 예상 소요 시간을 업데이트
+                // 서버에서 제공하는 예상 남은 시간을 사용
+                if (progressData.estimated_remaining_time) {
+                    setRemainingTime(progressData.estimated_remaining_time); // 남은 시간 설정
+                }
 
                 // progress가 100%에 도달하면 폴링을 중단
                 if (progressData.progress >= 100) {
@@ -356,22 +357,6 @@ const CreateImage = () => {
         } catch (error) {
             console.error('Error fetching progress:', error);
             setProgress(0); // 실패 시 기본 값 설정
-        }
-    };
-
-    // 예상 소요 시간 업데이트 함수
-    const updateEstimatedTime = (currentProgress) => {
-        if (startTime && currentProgress > 0) {
-            const elapsedTime = (Date.now() - startTime) / 1000; // 경과 시간 (초 단위)
-            const estimatedTotalTime = (elapsedTime / currentProgress) * 100; // 전체 소요 시간 예상
-            const remaining = estimatedTotalTime - elapsedTime; // 남은 시간 계산
-
-            const minutes = Math.floor(remaining / 60);
-            const seconds = Math.floor(remaining % 60);
-
-            setRemainingTime(`${minutes}분 ${seconds}초`);
-        } else {
-            setRemainingTime('0분 00초');
         }
     };
 
@@ -396,7 +381,6 @@ const CreateImage = () => {
         event.preventDefault();
         setProgress(0); // 진행률 초기화
         setIsLoading(true);
-        setStartTime(Date.now()); // 시작 시간 기록
 
         if (!token) {
             setAlertMessage('로그인이 필요합니다.');
@@ -468,33 +452,6 @@ const CreateImage = () => {
         }
     };
 
-    // 진행 상태를 폴링하는 함수 (예상 소요 시간 포함)
-    const pollForProgress = (taskId) => {
-        const intervalId = setInterval(async () => {
-            try {
-                const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`);
-                if (response.ok) {
-                    const progressData = await response.json();
-                    setProgress(progressData.progress);
-
-                    // 예상 소요 시간 업데이트 함수 호출
-                    updateEstimatedTime(progressData.progress);
-
-                    // progress가 100%에 도달하면 폴링을 중단
-                    if (progressData.progress >= 100) {
-                        clearInterval(intervalId);
-                        setIsLoading(false); // 로딩 완료
-                    }
-                } else {
-                    throw new Error('Failed to fetch progress');
-                }
-            } catch (error) {
-                console.error('Error fetching progress:', error);
-                clearInterval(intervalId); // 에러 발생 시 폴링 중단
-            }
-        }, 5000); // 5초마다 요청
-    };
-
     // 이미지 생성 결과 폴링
     const pollForImages = (promptId, newResult) => {
         const interval = setInterval(async () => {
@@ -526,6 +483,7 @@ const CreateImage = () => {
                 // 이미지가 4개 이상 생성되었으면 interval을 중단
                 if (data.results.length >= 4) {
                     clearInterval(interval); // interval 중단
+                    return;
                 }
             } catch (error) {
                 console.error('Error occurred while fetching the image:', error);
@@ -758,7 +716,7 @@ const CreateImage = () => {
                                         <DLlogo width="50" height="50" className="mt-2 flex-shrink-0" />
                                         <Bubble text={result.content.positive_prompt} />
                                     </div>
-                                    <div key={index} className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
                                         {Array(4)
                                             .fill(null)
                                             .map((_, idx) => (
