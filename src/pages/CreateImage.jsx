@@ -339,6 +339,12 @@ const CreateImage = () => {
                         result.task_id === taskId ? { ...result, progress: progressData.progress } : result
                     )
                 );
+
+                // progress가 100%에 도달하면 폴링을 중단
+                if (progressData.progress >= 100) {
+                    clearInterval(pollingInterval);
+                    console.log('Polling stopped as progress reached 100%.');
+                }
             } else {
                 throw new Error('Invalid progress data type received');
             }
@@ -348,17 +354,19 @@ const CreateImage = () => {
         }
     };
 
-    // **폴링 추가 부분**
-
+    // 폴링 추가 부분
+    let pollingInterval;
     useEffect(() => {
         if (isLoading && results.length > 0) {
-            const interval = setInterval(() => {
+            pollingInterval = setInterval(() => {
                 results.forEach((result) => {
-                    fetchProgress(result.task_id); // task_id별로 진행 상황 확인
+                    if (result.isLoading) {
+                        fetchProgress(result.task_id); // task_id별로 진행 상황 확인
+                    }
                 });
-            }, 10000); // 10초마다 상태 확인
+            }, 10000);
 
-            return () => clearInterval(interval); // 컴포넌트가 언마운트 될 때 클린업 함수 실행
+            return () => clearInterval(pollingInterval); // 컴포넌트가 언마운트 될 때 클린업 함수 실행
         }
     }, [isLoading, results]);
 
@@ -427,8 +435,6 @@ const CreateImage = () => {
                     isLoading: true,
                 };
                 setResults((prevResults) => [newResult, ...prevResults]);
-                // 로그 추가: pollForImages 호출 전에 값 확인
-                console.log('pollForImages 호출 전: ', data.task_id, newResult);
                 pollForImages(data.id, newResult);
             } else {
                 console.error('id 또는 task_id가 undefined입니다.');
