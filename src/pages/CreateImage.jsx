@@ -456,7 +456,9 @@ const CreateImage = () => {
                     isLoading: true,
                 };
                 setResults((prevResults) => [newResult, ...prevResults]);
+
                 pollForImages(data.id, newResult);
+                pollForProgress(data.task_id); // 진행 상태 폴링 시작 (예상 소요 시간 업데이트)
             } else {
                 console.error('id 또는 task_id가 undefined입니다.');
             }
@@ -465,6 +467,34 @@ const CreateImage = () => {
             setAlertMessage('Error occurred while creating prompt.');
         }
     };
+
+    // 진행 상태를 폴링하는 함수 (예상 소요 시간 포함)
+    const pollForProgress = (taskId) => {
+        const intervalId = setInterval(async () => {
+            try {
+                const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`);
+                if (response.ok) {
+                    const progressData = await response.json();
+                    setProgress(progressData.progress);
+
+                    // 예상 소요 시간 업데이트 함수 호출
+                    updateEstimatedTime(progressData.progress);
+
+                    // progress가 100%에 도달하면 폴링을 중단
+                    if (progressData.progress >= 100) {
+                        clearInterval(intervalId);
+                        setIsLoading(false); // 로딩 완료
+                    }
+                } else {
+                    throw new Error('Failed to fetch progress');
+                }
+            } catch (error) {
+                console.error('Error fetching progress:', error);
+                clearInterval(intervalId); // 에러 발생 시 폴링 중단
+            }
+        }, 5000); // 5초마다 요청
+    };
+
     // 이미지 생성 결과 폴링
     const pollForImages = (promptId, newResult) => {
         const interval = setInterval(async () => {
@@ -748,9 +778,9 @@ const CreateImage = () => {
                                         </span>
                                     </div>
 
-                                    {/* 예상 소요시간 표시 */}
+                                    {/* 예상 소요 시간 표시 */}
                                     <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500 text-center">
-                                        예상 소요시간 : 0분 00초
+                                        예상 소요시간 : {remainingTime}
                                     </p>
                                 </div>
                             ) : (
