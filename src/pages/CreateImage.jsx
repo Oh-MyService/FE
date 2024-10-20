@@ -442,7 +442,6 @@ const CreateImage = () => {
                 setResults((prevResults) => [newResult, ...prevResults]);
 
                 pollForImages(data.id, newResult);
-                pollForProgress(data.task_id); // 진행 상태 폴링 시작 (예상 소요 시간 업데이트)
             } else {
                 console.error('id 또는 task_id가 undefined입니다.');
             }
