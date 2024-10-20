@@ -198,6 +198,8 @@ const CreateImage = () => {
     const [seedError, setSeedError] = useState('');
 
     const [progress, setProgress] = useState(0); // 프로그래스바 상태 관리
+    const [startTime, setStartTime] = useState(null); // 시작 시간을 저장할 상태
+    const [remainingTime, setRemainingTime] = useState(''); // 남은 시간을 저장할 상태
 
     // 전체 생성 테스트 수
     const [totalQueueCount, setTotalQueueCount] = useState(0);
@@ -340,6 +342,9 @@ const CreateImage = () => {
                     )
                 );
 
+                // 예상 소요 시간 계산 함수 호출
+                updateEstimatedTime(progressData.progress); // 예상 소요 시간을 업데이트
+
                 // progress가 100%에 도달하면 폴링을 중단
                 if (progressData.progress >= 100) {
                     clearInterval(pollingInterval);
@@ -351,6 +356,22 @@ const CreateImage = () => {
         } catch (error) {
             console.error('Error fetching progress:', error);
             setProgress(0); // 실패 시 기본 값 설정
+        }
+    };
+
+    // 예상 소요 시간 업데이트 함수
+    const updateEstimatedTime = (currentProgress) => {
+        if (startTime && currentProgress > 0) {
+            const elapsedTime = (Date.now() - startTime) / 1000; // 경과 시간 (초 단위)
+            const estimatedTotalTime = (elapsedTime / currentProgress) * 100; // 전체 소요 시간 예상
+            const remaining = estimatedTotalTime - elapsedTime; // 남은 시간 계산
+
+            const minutes = Math.floor(remaining / 60);
+            const seconds = Math.floor(remaining % 60);
+
+            setRemainingTime(`${minutes}분 ${seconds}초`);
+        } else {
+            setRemainingTime('0분 00초');
         }
     };
 
@@ -373,6 +394,9 @@ const CreateImage = () => {
     // 생성하기 요청
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setProgress(0); // 진행률 초기화
+        setIsLoading(true);
+        setStartTime(Date.now()); // 시작 시간 기록
 
         if (!token) {
             setAlertMessage('로그인이 필요합니다.');
@@ -396,9 +420,6 @@ const CreateImage = () => {
             return;
         }
         setSeedError('');
-
-        // 요청 전 로딩 상태 true로 설정
-        setIsLoading(true);
 
         const finalMood = mood === '' ? 'not_exist' : mood;
         const finalBackgroundColor = backgroundColor === '지정 안함' ? 'not_exist' : backgroundColor;
@@ -444,10 +465,9 @@ const CreateImage = () => {
             setAlertMessage('Error occurred while creating prompt.');
         }
     };
-
     // 이미지 생성 결과 폴링
     const pollForImages = (promptId, newResult) => {
-        const fetchImages = async () => {
+        const interval = setInterval(async () => {
             try {
                 const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
                     headers: {
@@ -484,12 +504,7 @@ const CreateImage = () => {
                 );
                 clearInterval(interval);
             }
-        };
-
-        // 처음에 바로 이미지 가져오기 시도
-        fetchImages();
-
-        const interval = setInterval(fetchImages, 2000); // 폴링 주기를 2초로 설정
+        }, 10000);
     };
 
     // Enter 키로 이미지 생성 요청 처리
