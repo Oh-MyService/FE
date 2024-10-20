@@ -444,9 +444,10 @@ const CreateImage = () => {
             setAlertMessage('Error occurred while creating prompt.');
         }
     };
+
     // 이미지 생성 결과 폴링
     const pollForImages = (promptId, newResult) => {
-        const interval = setInterval(async () => {
+        const fetchImages = async () => {
             try {
                 const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
                     headers: {
@@ -483,7 +484,12 @@ const CreateImage = () => {
                 );
                 clearInterval(interval);
             }
-        }, 10000);
+        };
+
+        // 처음에 바로 이미지 가져오기 시도
+        fetchImages();
+
+        const interval = setInterval(fetchImages, 2000); // 폴링 주기를 2초로 설정
     };
 
     // Enter 키로 이미지 생성 요청 처리
