@@ -374,6 +374,13 @@ const CreateImage = () => {
 
         // progress가 100%에 도달하면 폴링을 중단
         if (progressData.progress >= 100) {
+          setResults((prevResults) =>
+            prevResults.map((result) =>
+              result.task_id === taskId
+                ? { ...result, isLoading: false }
+                : result
+            )
+          );
           clearInterval(pollingInterval);
           console.log('Polling stopped as progress reached 100%.');
         }
