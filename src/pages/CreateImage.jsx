@@ -345,7 +345,7 @@ const CreateImage = () => {
   }, []);
 
   // 프로그래스바 상태를 업데이트하는 함수
-  const fetchProgress = async (taskId) => {
+  const fetchProgress = async (taskId, promptId) => {
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/progress/${taskId}`
@@ -368,7 +368,7 @@ const CreateImage = () => {
 
         // 서버에서 제공하는 예상 남은 시간을 사용
         if (progressData.estimated_remaining_time) {
-          setRemainingTime(progressData.estimated_remaining_time); 
+          setRemainingTime(progressData.estimated_remaining_time);
         }
 
         // progress가 100%가 되었을 때만 pollForImages를 호출
@@ -381,7 +381,7 @@ const CreateImage = () => {
             )
           );
           clearInterval(pollingInterval);
-          // pollForImages(promptId); // prompt_id로 이미지 요청
+          pollForImages(promptId); // prompt_id로 이미지 요청
         }
       }
     } catch (error) {
@@ -471,8 +471,7 @@ const CreateImage = () => {
           isLoading: true,
         };
         setResults((prevResults) => [newResult, ...prevResults]);
-
-        pollForImages(data.id, newResult);
+        fetchProgress(data.task_id, data.id); 
       } else {
         console.error('id 또는 task_id가 undefined입니다.');
       }
