@@ -231,6 +231,14 @@ const CreateImage = () => {
         }
     }, []); // 컴포넌트가 마운트될 때 한번만 실행
 
+    useEffect(() => {
+        // isLoading 상태가 false인 경우 버튼을 활성화
+        const isAnyLoading = results.some((result) => result.isLoading);
+        if (!isAnyLoading) {
+            setIsLoading(false); // 모든 로딩이 끝났으면 버튼 활성화
+        }
+    }, [results]); // results 상태가 변경될 때마다 실행
+
     // results가 변경될 때마다 로컬 스토리지에 기록 저장
     useEffect(() => {
         localStorage.setItem('results', JSON.stringify(results));
@@ -695,10 +703,10 @@ const CreateImage = () => {
                         <div className="flex justify-end w-full">
                             <button
                                 onClick={handleSubmit}
+                                disabled={isLoading} // isLoading이 true일 때 버튼 비활성화
                                 className={`w-36 p-4 font-['pretendard-bold'] text-white rounded text-xl ${
                                     isLoading ? 'bg-gray-400' : 'bg-[#3A57A7] hover:bg-[#193174]'
                                 }`}
-                                disabled={isLoading} // 생성 중일 때 비활성화
                             >
                                 {isLoading ? '생성 중...' : '생성하기'}
                             </button>
