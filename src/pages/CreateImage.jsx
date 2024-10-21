@@ -397,7 +397,7 @@ const CreateImage = () => {
       pollingInterval = setInterval(() => {
         results.forEach((result) => {
           if (result.isLoading) {
-            fetchProgress(result.task_id); // task_id별로 진행 상황 확인
+            fetchProgress(result.task_id, result.id); // task_id별로 진행 상황 확인
           }
         });
       }, 10000);
