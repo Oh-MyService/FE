@@ -226,26 +226,14 @@ const CreateImage = () => {
   useEffect(() => {
     const savedResults = localStorage.getItem('results');
     if (savedResults) {
-      const parsedResults = JSON.parse(savedResults);
-
-      setResults(parsedResults);
-
-      // isLoading 상태인 경우 프로그래스 폴링 시작
-      parsedResults.forEach((result) => {
-        if (result.isLoading) {
-          fetchProgress(result.task_id); // task_id별로 진행 상황 확인
-        }
-      });
+      setResults(
+        JSON.parse(savedResults).map((result) => ({
+          ...result,
+          isLoading: result.images && result.images.length > 0 ? false : true,
+        }))
+      );
     }
-  }, []); // 컴포넌트가 마운트될 때 한번만 실행
-
-  useEffect(() => {
-    // isLoading 상태가 false인 경우 버튼을 활성화
-    const isAnyLoading = results.some((result) => result.isLoading);
-    if (!isAnyLoading) {
-      setIsLoading(false); // 모든 로딩이 끝났으면 버튼 활성화
-    }
-  }, [results]); // results 상태가 변경될 때마다 실행
+  }, []);
 
   // results가 변경될 때마다 로컬 스토리지에 기록 저장
   useEffect(() => {
@@ -733,10 +721,10 @@ const CreateImage = () => {
             <div className="flex justify-end w-full">
               <button
                 onClick={handleSubmit}
-                disabled={isLoading} // isLoading이 true일 때 버튼 비활성화
                 className={`w-36 p-4 font-['pretendard-bold'] text-white rounded text-xl ${
                   isLoading ? 'bg-gray-400' : 'bg-[#3A57A7] hover:bg-[#193174]'
                 }`}
+                disabled={isLoading} // 생성 중일 때 비활성화
               >
                 {isLoading ? '생성 중...' : '생성하기'}
               </button>
@@ -775,7 +763,7 @@ const CreateImage = () => {
                   <div className="flex items-center mt-4">
                     <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[#444655]"
+                        className="h-full bg-[#809DEC]"
                         style={{ width: `${result.progress}%` }}
                       ></div>
                     </div>
