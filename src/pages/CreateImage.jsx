@@ -358,7 +358,6 @@ const CreateImage = () => {
       }
 
       const progressData = await response.json();
-      console.log('Progress data received:', progressData);
 
       if (typeof progressData.progress === 'number') {
         setResults((prevResults) =>
@@ -803,78 +802,82 @@ const CreateImage = () => {
                     <Bubble text={result.content.positive_prompt} />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
-                    {result.images.map((imageResult, idx) => (
-                      <div
-                        key={idx}
-                        className="flex flex-col justify-between items-center w-full"
-                      >
+                    {result.images.map((imageResult, idx) => {
+                      console.log('Image Result:', imageResult); // 이미지 객체 확인
+                      console.log('Image URL:', imageResult.image_data); // 이미지 URL 확인
+                      return (
                         <div
-                          className="overflow-hidden"
-                          style={{
-                            width: '100%',
-                            height: 'auto',
-                            maxWidth: '250px',
-                            maxHeight: '250px',
-                          }}
+                          key={idx}
+                          className="flex flex-col justify-between items-center w-full"
                         >
-                          <img
-                            src={imageResult.image_data}
-                            alt="Generated Image"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
-                          <p className="text-left mr-2">
-                            {formatDate(result.created_at)}
-                          </p>
-                          <div className="flex items-center space-x-2 ml-auto">
-                            {/* 이미지 추가 모달 열기 버튼 */}
-                            <button
-                              onClick={() => openAddModal(imageResult.id)}
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                className="w-6 h-6"
+                          <div
+                            className="overflow-hidden"
+                            style={{
+                              width: '100%',
+                              height: 'auto',
+                              maxWidth: '250px',
+                              maxHeight: '250px',
+                            }}
+                          >
+                            <img
+                              src={imageResult.image_data}
+                              alt="Generated Image"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
+                            <p className="text-left mr-2">
+                              {formatDate(result.created_at)}
+                            </p>
+                            <div className="flex items-center space-x-2 ml-auto">
+                              {/* 이미지 추가 모달 열기 버튼 */}
+                              <button
+                                onClick={() => openAddModal(imageResult.id)}
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                                />
-                              </svg>
-                            </button>
-                            {/* 이미지 저장 버튼 */}
-                            <button
-                              onClick={() =>
-                                handleSaveImage(
-                                  imageResult.image_data,
-                                  imageResult.id + '_' + idx
-                                )
-                              }
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="2"
-                                stroke="currentColor"
-                                className="w-6 h-6"
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="2"
+                                  stroke="currentColor"
+                                  className="w-6 h-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                                  />
+                                </svg>
+                              </button>
+                              {/* 이미지 저장 버튼 */}
+                              <button
+                                onClick={() =>
+                                  handleSaveImage(
+                                    imageResult.image_data,
+                                    imageResult.id + '_' + idx
+                                  )
+                                }
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                                />
-                              </svg>
-                            </button>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="2"
+                                  stroke="currentColor"
+                                  className="w-6 h-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                   {isAddModalOpen && (
                     <CollectionAddModal
