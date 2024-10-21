@@ -222,9 +222,6 @@ const CreateImage = () => {
     );
   });
 
-  // pollingInterval을 useRef로 관리
-  const pollingIntervalRef = useRef(null);
-
   // useEffect를 통해 컴포넌트가 마운트될 때 로컬 스토리지에서 기록 불러오기
   useEffect(() => {
     const savedResults = localStorage.getItem('results');
@@ -248,20 +245,6 @@ const CreateImage = () => {
     if (!isAnyLoading) {
       setIsLoading(false); // 모든 로딩이 끝났으면 버튼 활성화
     }
-  }, [results]); // results 상태가 변경될 때마다 실행
-
-  // useEffect를 통해 프로그래스가 100%인 경우 이미지 데이터를 다시 요청
-  useEffect(() => {
-    const fetchImageIfCompleted = async () => {
-      results.forEach((result) => {
-        // 프로그래스가 100%에 도달했지만 이미지가 없는 경우 이미지 폴링
-        if (result.progress === 100 && result.images.length === 0) {
-          pollForImages(result.id, result);
-        }
-      });
-    };
-
-    fetchImageIfCompleted();
   }, [results]); // results 상태가 변경될 때마다 실행
 
   // results가 변경될 때마다 로컬 스토리지에 기록 저장
@@ -391,40 +374,31 @@ const CreateImage = () => {
 
         // progress가 100%에 도달하면 폴링을 중단
         if (progressData.progress >= 100) {
-          clearInterval(pollingIntervalRef.current);
+          clearInterval(pollingInterval);
           console.log('Polling stopped as progress reached 100%.');
         }
       } else {
-        setResults((prevResults) =>
-          prevResults.map((result) =>
-            result.task_id === taskId ? { ...result, progress: 0 } : result
-          )
-        );
+        throw new Error('Invalid progress data type received');
       }
     } catch (error) {
       console.error('Error fetching progress:', error);
-      setResults((prevResults) =>
-        prevResults.map((result) =>
-          result.task_id === taskId ? { ...result, progress: 0 } : result
-        )
-      );
+      setProgress(0); // 실패 시 기본 값 설정
     }
   };
 
-  // pollingInterval 설정 및 관리
+  // 폴링 추가 부분
+  let pollingInterval;
   useEffect(() => {
     if (isLoading && results.length > 0) {
-      pollingIntervalRef.current = setInterval(() => {
+      pollingInterval = setInterval(() => {
         results.forEach((result) => {
           if (result.isLoading) {
-            fetchProgress(result.task_id);
+            fetchProgress(result.task_id); // task_id별로 진행 상황 확인
           }
         });
-      }, 5000); // 5초마다 progress 업데이트
+      }, 10000);
 
-      return () => {
-        clearInterval(pollingIntervalRef.current); // 컴포넌트 언마운트 시 polling 중단
-      };
+      return () => clearInterval(pollingInterval); // 컴포넌트가 언마운트 될 때 클린업 함수 실행
     }
   }, [isLoading, results]);
 
@@ -775,7 +749,7 @@ const CreateImage = () => {
           <p className="text-lg font-['pretendard-semibold'] mb-2 text-gray-500 text-left">
             지금 {totalQueueCount}명이 생성하고 있어요!
           </p>
-          <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 rounded-lg shadow-lg bg-[#F2F2F2]">
+          <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
             {results.map((result, index) =>
               result.isLoading ? (
                 <div
