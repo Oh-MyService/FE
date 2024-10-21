@@ -392,7 +392,11 @@ const CreateImage = () => {
           console.log('Polling stopped as progress reached 100%.');
         }
       } else {
-        throw new Error('Invalid progress data type received');
+        setResults((prevResults) =>
+          prevResults.map((result) =>
+            result.task_id === taskId ? { ...result, progress: 0 } : result
+          )
+        );
       }
     } catch (error) {
       console.error('Error fetching progress:', error);
@@ -782,29 +786,30 @@ const CreateImage = () => {
                     />
                     <Bubble text={result.content.positive_prompt} />
                   </div>
-                  <div className="flex flex-col items-center justify-center w-full h-64 bg-gray-300 rounded-lg mt-6">
-                    <p className="text-2xl font-['pretendard-semibold'] text-black">
-                      3번째로 생성중
-                    </p>
-
-                    {/* 프로그래스 바 */}
-                    <div className="flex items-center mt-4 w-full px-4">
-                      <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-[#444655]"
-                          style={{ width: `${result.progress}%` }} // 프로그래스 값 적용
-                        ></div>
-                      </div>
-                      <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
-                        {result.progress}% {/* 개별 result의 progress 표시 */}
-                      </span>
-                    </div>
-
-                    {/* 예상 소요 시간 표시 */}
-                    <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500 text-center">
-                      예상 소요시간 : {remainingTime}
-                    </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
+                    {Array(4)
+                      .fill(null)
+                      .map((_, idx) => (
+                        <SkeletonCard key={idx} />
+                      ))}
                   </div>
+                  {/* 프로그래스바 추가 */}
+                  <div className="flex items-center mt-4">
+                    <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[#444655]"
+                        style={{ width: `${result.progress}%` }}
+                      ></div>
+                    </div>
+                    <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
+                      {result.progress}% {/* 개별 result의 progress 표시 */}
+                    </span>
+                  </div>
+
+                  {/* 예상 소요 시간 표시 */}
+                  <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500 text-center">
+                    예상 소요시간 : {remainingTime}
+                  </p>
                 </div>
               ) : (
                 <div
