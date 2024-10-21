@@ -222,6 +222,9 @@ const CreateImage = () => {
     );
   });
 
+  // pollingInterval을 useRef로 관리
+  const pollingIntervalRef = useRef(null);
+
   // useEffect를 통해 컴포넌트가 마운트될 때 로컬 스토리지에서 기록 불러오기
   useEffect(() => {
     const savedResults = localStorage.getItem('results');
@@ -388,7 +391,7 @@ const CreateImage = () => {
 
         // progress가 100%에 도달하면 폴링을 중단
         if (progressData.progress >= 100) {
-          clearInterval(pollingInterval);
+          clearInterval(pollingIntervalRef.current);
           console.log('Polling stopped as progress reached 100%.');
         }
       } else {
@@ -408,19 +411,20 @@ const CreateImage = () => {
     }
   };
 
-  // 폴링 추가 부분
-  let pollingInterval;
+  // pollingInterval 설정 및 관리
   useEffect(() => {
     if (isLoading && results.length > 0) {
-      pollingInterval = setInterval(() => {
+      pollingIntervalRef.current = setInterval(() => {
         results.forEach((result) => {
           if (result.isLoading) {
-            fetchProgress(result.task_id); // task_id별로 진행 상황 확인
+            fetchProgress(result.task_id);
           }
         });
-      }, 10000);
+      }, 5000); // 5초마다 progress 업데이트
 
-      return () => clearInterval(pollingInterval); // 컴포넌트가 언마운트 될 때 클린업 함수 실행
+      return () => {
+        clearInterval(pollingIntervalRef.current); // 컴포넌트 언마운트 시 polling 중단
+      };
     }
   }, [isLoading, results]);
 
