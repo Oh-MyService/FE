@@ -232,7 +232,7 @@ const CreateImage = () => {
 
       // isLoading 상태인 경우 프로그래스 폴링 시작
       parsedResults.forEach((result) => {
-        if (result.isLoading === 'true') {
+        if (result.isLoading) {
           fetchProgress(result.task_id); // task_id별로 진행 상황 확인
         }
       });
@@ -345,7 +345,7 @@ const CreateImage = () => {
   }, []);
 
   // 프로그래스바 상태를 업데이트하는 함수
-  const fetchProgress = async (taskId, promptId) => {
+  const fetchProgress = async (taskId) => {
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/progress/${taskId}`
@@ -368,7 +368,7 @@ const CreateImage = () => {
 
         // 서버에서 제공하는 예상 남은 시간을 사용
         if (progressData.estimated_remaining_time) {
-          setRemainingTime(progressData.estimated_remaining_time); // 남은 시간 설정
+          setRemainingTime(progressData.estimated_remaining_time); 
         }
 
         // progress가 100%가 되었을 때만 pollForImages를 호출
@@ -381,12 +381,12 @@ const CreateImage = () => {
             )
           );
           clearInterval(pollingInterval);
-          pollForImages(promptId); // prompt_id로 이미지 요청
+          // pollForImages(promptId); // prompt_id로 이미지 요청
         }
       }
     } catch (error) {
       console.error('Error fetching progress:', error);
-      setTimeout(() => fetchProgress(taskId, promptId), 10000); // 오류 발생 시 재시도
+      setTimeout(() => fetchProgress(taskId), 10000); // 오류 발생 시 재시도
     }
   };
 
@@ -397,7 +397,7 @@ const CreateImage = () => {
       pollingInterval = setInterval(() => {
         results.forEach((result) => {
           if (result.isLoading) {
-            fetchProgress(result.task_id, result.id); // task_id별로 진행 상황 확인
+            fetchProgress(result.task_id); // task_id별로 진행 상황 확인
           }
         });
       }, 10000);
@@ -409,7 +409,7 @@ const CreateImage = () => {
   // 생성하기 요청
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setProgress(0); // 진행률 초기화
+    setProgress(0);
     setIsLoading(true);
 
     if (!token) {
