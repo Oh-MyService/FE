@@ -232,7 +232,7 @@ const CreateImage = () => {
 
       // isLoading 상태인 경우 프로그래스 폴링 시작
       parsedResults.forEach((result) => {
-        if (result.isLoading) {
+        if (result.isLoading === 'true') {
           fetchProgress(result.task_id); // task_id별로 진행 상황 확인
         }
       });
@@ -345,8 +345,7 @@ const CreateImage = () => {
   }, []);
 
   // 프로그래스바 상태를 업데이트하는 함수
-  // Progress 데이터를 받아온 후
-  const fetchProgress = async (taskId) => {
+  const fetchProgress = async (taskId, promptId) => {
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/progress/${taskId}`
@@ -372,7 +371,7 @@ const CreateImage = () => {
           setRemainingTime(progressData.estimated_remaining_time); // 남은 시간 설정
         }
 
-        // progress가 100%에 도달하면 폴링을 중단
+        // progress가 100%가 되었을 때만 pollForImages를 호출
         if (progressData.progress >= 100) {
           setResults((prevResults) =>
             prevResults.map((result) =>
@@ -382,14 +381,12 @@ const CreateImage = () => {
             )
           );
           clearInterval(pollingInterval);
-          console.log('Polling stopped as progress reached 100%.');
+          pollForImages(promptId); // prompt_id로 이미지 요청
         }
-      } else {
-        throw new Error('Invalid progress data type received');
       }
     } catch (error) {
       console.error('Error fetching progress:', error);
-      setTimeout(() => fetchProgress(taskId), 10000);
+      setTimeout(() => fetchProgress(taskId, promptId), 10000); // 오류 발생 시 재시도
     }
   };
 
@@ -486,51 +483,42 @@ const CreateImage = () => {
   };
 
   // 이미지 생성 결과 폴링
-  const pollForImages = (promptId, newResult) => {
-    const interval = setInterval(async () => {
-      try {
-        const response = await fetch(
-          `http://118.67.128.129:28282/api/results/${promptId}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.json();
-
-        if (data.results.length > 0) {
-          setResults((prevResults) =>
-            prevResults.map((result) =>
-              result.id === promptId
-                ? {
-                    ...result,
-                    images: [...result.images, ...data.results],
-                    isLoading: false, // 로딩 완료
-                  }
-                : result
-            )
-          );
+  const pollForImages = async (promptId) => {
+    try {
+      const response = await fetch(
+        `http://118.67.128.129:28282/api/results/${promptId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        // 이미지가 4개 이상 생성되었으면 interval을 중단
-        if (data.results.length >= 4) {
-          clearInterval(interval); // interval 중단
-          return;
-        }
-      } catch (error) {
-        console.error('Error occurred while fetching the image:', error);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+
+      if (data.results.length > 0) {
         setResults((prevResults) =>
           prevResults.map((result) =>
-            result.id === promptId ? { ...result, isLoading: false } : result
+            result.id === promptId
+              ? {
+                  ...result,
+                  images: [...data.results],
+                  isLoading: false, // 로딩 완료
+                }
+              : result
           )
         );
-        clearInterval(interval);
       }
-    }, 10000);
+    } catch (error) {
+      console.error('Error occurred while fetching the image:', error);
+      setResults((prevResults) =>
+        prevResults.map((result) =>
+          result.id === promptId ? { ...result, isLoading: false } : result
+        )
+      );
+    }
   };
 
   // Enter 키로 이미지 생성 요청 처리
