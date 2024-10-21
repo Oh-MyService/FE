@@ -691,9 +691,12 @@ const CreateImage = () => {
                         <div className="flex justify-end w-full">
                             <button
                                 onClick={handleSubmit}
-                                className="w-36 p-4 font-['pretendard-bold'] bg-[#3A57A7] text-white rounded text-xl hover:bg-[#193174]"
+                                className={`w-36 p-4 font-['pretendard-bold'] text-white rounded text-xl ${
+                                    isLoading ? 'bg-gray-400' : 'bg-[#3A57A7] hover:bg-[#193174]'
+                                }`}
+                                disabled={isLoading} // 생성 중일 때 비활성화
                             >
-                                생성하기
+                                {isLoading ? '생성 중...' : '생성하기'}
                             </button>
                         </div>
                     </div>
