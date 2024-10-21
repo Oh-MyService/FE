@@ -239,6 +239,20 @@ const CreateImage = () => {
         }
     }, [results]); // results 상태가 변경될 때마다 실행
 
+    // useEffect를 통해 프로그래스가 100%인 경우 이미지 데이터를 다시 요청
+    useEffect(() => {
+        const fetchImageIfCompleted = async () => {
+            results.forEach((result) => {
+                // 프로그래스가 100%에 도달했지만 이미지가 없는 경우 이미지 폴링
+                if (result.progress === 100 && result.images.length === 0) {
+                    pollForImages(result.id, result);
+                }
+            });
+        };
+
+        fetchImageIfCompleted();
+    }, [results]); // results 상태가 변경될 때마다 실행
+
     // results가 변경될 때마다 로컬 스토리지에 기록 저장
     useEffect(() => {
         localStorage.setItem('results', JSON.stringify(results));
@@ -368,7 +382,9 @@ const CreateImage = () => {
             }
         } catch (error) {
             console.error('Error fetching progress:', error);
-            setProgress(0); // 실패 시 기본 값 설정
+            setResults((prevResults) =>
+                prevResults.map((result) => (result.task_id === taskId ? { ...result, progress: 0 } : result))
+            );
         }
     };
 
@@ -719,7 +735,7 @@ const CreateImage = () => {
                     <p className="text-lg font-['pretendard-semibold'] mb-2 text-gray-500 text-left">
                         지금 {totalQueueCount}명이 생성하고 있어요!
                     </p>
-                    <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+                    <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 rounded-lg shadow-lg bg-[#F2F2F2]">
                         {results.map((result, index) =>
                             result.isLoading ? (
                                 <div
