@@ -239,20 +239,6 @@ const CreateImage = () => {
         }
     }, [results]); // results 상태가 변경될 때마다 실행
 
-    // useEffect를 통해 프로그래스가 100%인 경우 이미지 데이터를 다시 요청
-    useEffect(() => {
-        const fetchImageIfCompleted = async () => {
-            results.forEach((result) => {
-                // 프로그래스가 100%에 도달했지만 이미지가 없는 경우 이미지 폴링
-                if (result.progress === 100 && result.images.length === 0) {
-                    pollForImages(result.id, result);
-                }
-            });
-        };
-
-        fetchImageIfCompleted();
-    }, [results]); // results 상태가 변경될 때마다 실행
-
     // results가 변경될 때마다 로컬 스토리지에 기록 저장
     useEffect(() => {
         localStorage.setItem('results', JSON.stringify(results));
@@ -348,9 +334,11 @@ const CreateImage = () => {
         fetchQueueStatus();
     }, []);
 
+    const promptIdRef = useRef(null);
+
     // 프로그래스바 상태를 업데이트하는 함수
-    // Progress 데이터를 받아온 후
     const fetchProgress = async (taskId) => {
+        const promptId = promptIdRef.current;
         try {
             const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`);
             if (!response.ok) {
@@ -358,7 +346,6 @@ const CreateImage = () => {
             }
 
             const progressData = await response.json();
-            console.log('Progress data received:', progressData);
 
             if (typeof progressData.progress === 'number') {
                 setResults((prevResults) =>
@@ -369,22 +356,25 @@ const CreateImage = () => {
 
                 // 서버에서 제공하는 예상 남은 시간을 사용
                 if (progressData.estimated_remaining_time) {
-                    setRemainingTime(progressData.estimated_remaining_time); // 남은 시간 설정
+                    setRemainingTime(progressData.estimated_remaining_time);
                 }
 
-                // progress가 100%에 도달하면 폴링을 중단
+                // progress가 100%가 되었을 때만 pollForImages를 호출
                 if (progressData.progress >= 100) {
+                    setResults((prevResults) =>
+                        prevResults.map((result) =>
+                            result.task_id === taskId ? { ...result, isLoading: false } : result
+                        )
+                    );
                     clearInterval(pollingInterval);
-                    console.log('Polling stopped as progress reached 100%.');
+                    setTimeout(() => {
+                        pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
+                    }, 10000);
                 }
-            } else {
-                throw new Error('Invalid progress data type received');
             }
         } catch (error) {
             console.error('Error fetching progress:', error);
-            setResults((prevResults) =>
-                prevResults.map((result) => (result.task_id === taskId ? { ...result, progress: 0 } : result))
-            );
+            setTimeout(() => fetchProgress(taskId), 10000); // 오류 발생 시 재시도
         }
     };
 
@@ -407,7 +397,7 @@ const CreateImage = () => {
     // 생성하기 요청
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setProgress(0); // 진행률 초기화
+        setProgress(0);
         setIsLoading(true);
 
         if (!token) {
@@ -468,8 +458,8 @@ const CreateImage = () => {
                     isLoading: true,
                 };
                 setResults((prevResults) => [newResult, ...prevResults]);
-
-                pollForImages(data.id, newResult);
+                promptIdRef.current = data.id;
+                fetchProgress(data.task_id);
             } else {
                 console.error('id 또는 task_id가 undefined입니다.');
             }
@@ -480,46 +470,37 @@ const CreateImage = () => {
     };
 
     // 이미지 생성 결과 폴링
-    const pollForImages = (promptId, newResult) => {
-        const interval = setInterval(async () => {
-            try {
-                const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+    const pollForImages = async (promptId) => {
+        try {
+            const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
 
-                if (data.results.length > 0) {
-                    setResults((prevResults) =>
-                        prevResults.map((result) =>
-                            result.id === promptId
-                                ? {
-                                      ...result,
-                                      images: [...result.images, ...data.results],
-                                      isLoading: false, // 로딩 완료
-                                  }
-                                : result
-                        )
-                    );
-                }
-
-                // 이미지가 4개 이상 생성되었으면 interval을 중단
-                if (data.results.length >= 4) {
-                    clearInterval(interval); // interval 중단
-                    return;
-                }
-            } catch (error) {
-                console.error('Error occurred while fetching the image:', error);
+            if (data.results.length > 0) {
                 setResults((prevResults) =>
-                    prevResults.map((result) => (result.id === promptId ? { ...result, isLoading: false } : result))
+                    prevResults.map((result) =>
+                        result.id === promptId
+                            ? {
+                                  ...result,
+                                  images: data.results, // 새로운 이미지 업데이트
+                                  isLoading: false, // 로딩 종료
+                              }
+                            : result
+                    )
                 );
-                clearInterval(interval);
             }
-        }, 10000);
+        } catch (error) {
+            console.error('Error occurred while fetching the image:', error);
+            setResults((prevResults) =>
+                prevResults.map((result) => (result.id === promptId ? { ...result, isLoading: false } : result))
+            );
+        }
     };
 
     // Enter 키로 이미지 생성 요청 처리
@@ -735,7 +716,7 @@ const CreateImage = () => {
                     <p className="text-lg font-['pretendard-semibold'] mb-2 text-gray-500 text-left">
                         지금 {totalQueueCount}명이 생성하고 있어요!
                     </p>
-                    <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 rounded-lg shadow-lg bg-[#F2F2F2]">
+                    <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
                         {results.map((result, index) =>
                             result.isLoading ? (
                                 <div
@@ -781,74 +762,80 @@ const CreateImage = () => {
                                         <Bubble text={result.content.positive_prompt} />
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
-                                        {result.images.map((imageResult, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="flex flex-col justify-between items-center w-full"
-                                            >
+                                        {result.images.map((imageResult, idx) => {
+                                            console.log('Image Result:', imageResult); // 이미지 객체 확인
+                                            console.log('Image URL:', imageResult.image_data); // 이미지 URL 확인
+                                            return (
                                                 <div
-                                                    className="overflow-hidden"
-                                                    style={{
-                                                        width: '100%',
-                                                        height: 'auto',
-                                                        maxWidth: '250px',
-                                                        maxHeight: '250px',
-                                                    }}
+                                                    key={idx}
+                                                    className="flex flex-col justify-between items-center w-full"
                                                 >
-                                                    <img
-                                                        src={imageResult.image_data}
-                                                        alt="Generated Image"
-                                                        className="w-full h-full object-cover"
-                                                    />
-                                                </div>
-                                                <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
-                                                    <p className="text-left mr-2">{formatDate(result.created_at)}</p>
-                                                    <div className="flex items-center space-x-2 ml-auto">
-                                                        {/* 이미지 추가 모달 열기 버튼 */}
-                                                        <button onClick={() => openAddModal(imageResult.id)}>
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none"
-                                                                viewBox="0 0 24 24"
-                                                                strokeWidth="2"
-                                                                stroke="currentColor"
-                                                                className="w-6 h-6"
+                                                    <div
+                                                        className="overflow-hidden"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: 'auto',
+                                                            maxWidth: '250px',
+                                                            maxHeight: '250px',
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={imageResult.image_data}
+                                                            alt="Generated Image"
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="flex items-center justify-between w-full mt-2 font-['pretendard-medium'] text-gray-600 max-w-[255px]">
+                                                        <p className="text-left mr-2">
+                                                            {formatDate(result.created_at)}
+                                                        </p>
+                                                        <div className="flex items-center space-x-2 ml-auto">
+                                                            {/* 이미지 추가 모달 열기 버튼 */}
+                                                            <button onClick={() => openAddModal(imageResult.id)}>
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    fill="none"
+                                                                    viewBox="0 0 24 24"
+                                                                    strokeWidth="2"
+                                                                    stroke="currentColor"
+                                                                    className="w-6 h-6"
+                                                                >
+                                                                    <path
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                                                                    />
+                                                                </svg>
+                                                            </button>
+                                                            {/* 이미지 저장 버튼 */}
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleSaveImage(
+                                                                        imageResult.image_data,
+                                                                        imageResult.id + '_' + idx
+                                                                    )
+                                                                }
                                                             >
-                                                                <path
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-                                                                />
-                                                            </svg>
-                                                        </button>
-                                                        {/* 이미지 저장 버튼 */}
-                                                        <button
-                                                            onClick={() =>
-                                                                handleSaveImage(
-                                                                    imageResult.image_data,
-                                                                    imageResult.id + '_' + idx
-                                                                )
-                                                            }
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none"
-                                                                viewBox="0 0 24 24"
-                                                                strokeWidth="2"
-                                                                stroke="currentColor"
-                                                                className="w-6 h-6"
-                                                            >
-                                                                <path
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                                                                />
-                                                            </svg>
-                                                        </button>
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    fill="none"
+                                                                    viewBox="0 0 24 24"
+                                                                    strokeWidth="2"
+                                                                    stroke="currentColor"
+                                                                    className="w-6 h-6"
+                                                                >
+                                                                    <path
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                                                                    />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            );
+                                        })}
                                     </div>
                                     {isAddModalOpen && (
                                         <CollectionAddModal onClose={closeAddModal} resultId={selectedResultId} />
