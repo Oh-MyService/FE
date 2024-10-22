@@ -488,8 +488,8 @@ const CreateImage = () => {
                         result.id === promptId
                             ? {
                                   ...result,
-                                  images: data.results, // 새로운 이미지 업데이트
-                                  isLoading: false, // 로딩 종료
+                                  images: data.results,
+                                  isLoading: false, // 로딩 완료
                               }
                             : result
                     )
