@@ -363,7 +363,7 @@ const CreateImage = () => {
 
                 // progress가 100%에 도달하면 이미지를 한꺼번에 불러오기
                 if (progressData.progress >= 100) {
-                    clearInterval(pollingInterval);
+                    clearInterval(pollingIntervalRef.current); // 여기서 pollingInterval 대신 pollingIntervalRef.current 사용
                     console.log('Polling stopped as progress reached 100%.');
                     setTimeout(() => {
                         pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
