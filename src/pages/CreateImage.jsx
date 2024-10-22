@@ -486,6 +486,7 @@ const CreateImage = () => {
 
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
+            console.log('Data: ', data);
 
             if (data.results.length > 0) {
                 setResults((prevResults) =>
