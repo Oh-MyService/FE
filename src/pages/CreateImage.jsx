@@ -338,7 +338,6 @@ const CreateImage = () => {
 
     // 프로그래스바 상태를 업데이트하는 함수
     const fetchProgress = async (taskId) => {
-        const promptId = promptIdRef.current;
         try {
             const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`);
             if (!response.ok) {
@@ -346,6 +345,7 @@ const CreateImage = () => {
             }
 
             const progressData = await response.json();
+            console.log('Progress data received:', progressData);
 
             if (typeof progressData.progress === 'number') {
                 setResults((prevResults) =>
@@ -354,35 +354,40 @@ const CreateImage = () => {
                     )
                 );
 
-                // 서버에서 제공하는 예상 남은 시간을 사용
+                // 서버에서 제공하는 예상 남은 시간이 없을 경우 기본값 0%로 설정
                 if (progressData.estimated_remaining_time) {
-                    setRemainingTime(progressData.estimated_remaining_time);
+                    setRemainingTime(progressData.estimated_remaining_time); // 남은 시간 설정
+                } else {
+                    setRemainingTime('0%'); // 제공되지 않으면 0%로 설정
                 }
 
-                // progress가 100%가 되었을 때만 pollForImages를 호출
+                // progress가 100%에 도달하면 이미지를 한꺼번에 불러오기
                 if (progressData.progress >= 100) {
-                    setResults((prevResults) =>
-                        prevResults.map((result) =>
-                            result.task_id === taskId ? { ...result, isLoading: false } : result
-                        )
-                    );
                     clearInterval(pollingInterval);
+                    console.log('Polling stopped as progress reached 100%.');
                     setTimeout(() => {
                         pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
-                    }, 10000);
+                    }, 5000); // 약간의 딜레이 후 이미지를 한 번에 가져옴
                 }
+            } else {
+                throw new Error('Invalid progress data type received');
             }
         } catch (error) {
             console.error('Error fetching progress:', error);
-            setTimeout(() => fetchProgress(taskId), 10000); // 오류 발생 시 재시도
+            setProgress(0); // 실패 시 기본 값 설정
+            setRemainingTime('0%'); // 오류 발생 시에도 기본값 0%로 설정
         }
     };
 
+    // 폴링 변수를 useRef로 선언
+    const pollingIntervalRef = useRef(null);
+
     // 폴링 추가 부분
-    let pollingInterval;
     useEffect(() => {
         if (isLoading && results.length > 0) {
-            pollingInterval = setInterval(() => {
+            if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current); // 중복 폴링 방지
+
+            pollingIntervalRef.current = setInterval(() => {
                 results.forEach((result) => {
                     if (result.isLoading) {
                         fetchProgress(result.task_id); // task_id별로 진행 상황 확인
@@ -390,7 +395,7 @@ const CreateImage = () => {
                 });
             }, 10000);
 
-            return () => clearInterval(pollingInterval); // 컴포넌트가 언마운트 될 때 클린업 함수 실행
+            return () => clearInterval(pollingIntervalRef.current); // 컴포넌트 언마운트 시 클린업
         }
     }, [isLoading, results]);
 
@@ -488,12 +493,20 @@ const CreateImage = () => {
                         result.id === promptId
                             ? {
                                   ...result,
-                                  images: data.results, // 새로운 이미지 업데이트
-                                  isLoading: false, // 로딩 종료
+                                  images: [...result.images, ...data.results],
+                                  isLoading: result.images.length + data.results.length < 4, // 이미지가 4개 미만일 때는 로딩 유지
                               }
                             : result
                     )
                 );
+
+                // 모든 이미지 로드 후 로딩 상태 해제
+                const allImagesLoaded = data.results.length >= 4; // 결과 이미지가 4개 이상 생성되었는지 확인
+                if (allImagesLoaded) {
+                    setIsLoading(false); // 모든 이미지 로드 후 로딩 상태 해제
+                }
+            } else {
+                console.log('No images found for this prompt');
             }
         } catch (error) {
             console.error('Error occurred while fetching the image:', error);
