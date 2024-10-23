@@ -59,12 +59,14 @@ const Bubble = ({ text, taskId, isLoading }) => {
       >
         {remainingCount > 1 ? (
           <span>
-            "{text}" {remainingCount - 1}번째로 생성 중
+            "{text}" {remainingCount - 1}번째로 생성 대기 중
           </span>
         ) : remainingCount === 1 ? (
           <span>"{text}" 생성 중</span>
-        ) : (
+        ) : remainingCount === 0 ? (
           <span>"{text}" 생성 결과</span>
+        ) : (
+          <span>"{text}" 생성 대기 중</span>
         )}
 
         <button onClick={handleCopy} className="ml-2">
@@ -484,12 +486,14 @@ const CreateImage = () => {
     // 필수 입력인 positivePrompt가 비어 있을 때 경고 표시
     if (positivePrompt.trim() === '') {
       setAlertMessage('패턴에 포함할 요소를 입력하세요.');
+      setIsLoading(false);
       return;
     }
 
     // seed 값 없을 경우
     if (!seed && !isRandomSeed) {
       setSeedError('Seed 값을 입력해주세요.');
+      setIsLoading(false);
       return;
     }
     setSeedError('');
