@@ -36,12 +36,12 @@ const Bubble = ({ text, taskId, isLoading }) => {
     }
   };
 
-  // 30초마다 API 요청을 반복하는 useEffect
+  // 5초마다 API 요청을 반복하는 useEffect
   useEffect(() => {
     if (taskId && isLoading) {
       const interval = setInterval(() => {
         fetchRemainingCount();
-      }, 30000);
+      }, 5000);
 
       return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 해제
     }
@@ -63,10 +63,8 @@ const Bubble = ({ text, taskId, isLoading }) => {
           </span>
         ) : remainingCount === 1 ? (
           <span>"{text}" 생성 중</span>
-        ) : remainingCount === 0 ? (
-          <span>"{text}" 생성 결과</span>
         ) : (
-          <span>"{text}" 생성 대기 중</span>
+          <span>"{text}" 생성 결과</span>
         )}
 
         <button onClick={handleCopy} className="ml-2">
@@ -461,7 +459,7 @@ const CreateImage = () => {
             fetchProgress(result.task_id); // task_id별로 진행 상황 확인
           }
         });
-      }, 10000);
+      }, 5000);
 
       return () => clearInterval(pollingIntervalRef.current); // 컴포넌트 언마운트 시 클린업
     }
