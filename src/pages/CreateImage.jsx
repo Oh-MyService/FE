@@ -29,6 +29,7 @@ const Bubble = ({ text, taskId }) => {
         `http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`
       );
       const data = await response.json();
+      console.log('remaining_count:', data.remaining_count);
 
       setRemainingCount(data.remaining_count);
     } catch (error) {
@@ -39,6 +40,7 @@ const Bubble = ({ text, taskId }) => {
   // 5초마다 API 요청을 반복하는 useEffect
   useEffect(() => {
     if (taskId) {
+      console.log('taskId:', taskId);
       const interval = setInterval(() => {
         fetchRemainingCount();
       }, 5000); // 5초마다 API 호출
@@ -863,7 +865,10 @@ const CreateImage = () => {
                       height="50"
                       className="mt-2 flex-shrink-0"
                     />
-                    <Bubble text={result.content.positive_prompt} />
+                    <Bubble
+                      text={result.content.positive_prompt}
+                      taskId={result.task_id}
+                    />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
                     {result.images.map((imageResult, idx) => {
