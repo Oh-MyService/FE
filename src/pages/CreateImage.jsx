@@ -5,7 +5,6 @@ import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 const Bubble = ({ text, taskId }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [remainingCount, setRemainingCount] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   // 텍스트 복사 처리
   const handleCopy = () => {
@@ -30,13 +29,9 @@ const Bubble = ({ text, taskId }) => {
         `http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`
       );
       const data = await response.json();
+      console.log('remaining_count:', data.remaining_count);
 
       setRemainingCount(data.remaining_count);
-      if (data.remaining_count > 0) {
-        setIsLoading(true);
-      } else {
-        setIsLoading(false);
-      }
     } catch (error) {
       console.error('Error fetching remaining count:', error);
     }
@@ -416,7 +411,6 @@ const CreateImage = () => {
       }
 
       const progressData = await response.json();
-      console.log('Progress data received:', progressData);
 
       if (typeof progressData.progress === 'number') {
         setResults((prevResults) =>
@@ -564,7 +558,6 @@ const CreateImage = () => {
 
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      console.log('Data: ', data);
 
       if (data.results.length > 0) {
         setResults((prevResults) =>
@@ -872,8 +865,6 @@ const CreateImage = () => {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
                     {result.images.map((imageResult, idx) => {
-                      console.log('Image Result:', imageResult); // 이미지 객체 확인
-                      console.log('Image URL:', imageResult.image_data); // 이미지 URL 확인
                       return (
                         <div
                           key={idx}
