@@ -367,11 +367,11 @@ const CreateImage = () => {
                     )
                 );
 
-                // 서버에서 제공하는 예상 남은 시간이 없을 경우 기본값 0%로 설정
+                // 서버에서 제공하는 예상 남은 시간이 없을 경우
                 if (progressData.estimated_remaining_time) {
                     setRemainingTime(progressData.estimated_remaining_time); // 남은 시간 설정
                 } else {
-                    setRemainingTime('0%'); // 제공되지 않으면 0%로 설정
+                    setRemainingTime('');
                 }
 
                 // progress가 100%에 도달하면 이미지를 한꺼번에 불러오기
@@ -380,7 +380,7 @@ const CreateImage = () => {
                     console.log('Polling stopped as progress reached 100%.');
                     setTimeout(() => {
                         pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
-                    }, 5000); // 약간의 딜레이 후 이미지를 한 번에 가져옴
+                    }, 5000);
                 }
             } else {
                 throw new Error('Invalid progress data type received');
@@ -388,7 +388,7 @@ const CreateImage = () => {
         } catch (error) {
             console.error('Error fetching progress:', error);
             setProgress(0); // 실패 시 기본 값 설정
-            setRemainingTime('0%'); // 오류 발생 시에도 기본값 0%로 설정
+            setRemainingTime('');
         }
     };
 
@@ -756,17 +756,22 @@ const CreateImage = () => {
                                         <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-[#444655]"
-                                                style={{ width: `${result.progress}%` }}
+                                                style={{ width: `${result.progress === 0 ? 0 : result.progress}%` }} // progress가 0일 경우 너비도 0으로 설정
                                             ></div>
                                         </div>
                                         <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
-                                            {result.progress}% {/* 개별 result의 progress 표시 */}
+                                            {result.progress === 0 ? '0%' : `${result.progress}%`}{' '}
+                                            {/* progress가 0일 때는 0%로 표시 */}
                                         </span>
                                     </div>
 
                                     {/* 예상 소요 시간 표시 */}
                                     <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500 text-center">
-                                        예상 소요시간 : {remainingTime}
+                                        {result.progress < 100 && remainingTime === ''
+                                            ? '생성 대기중입니다.' // 남은 시간이 없고 progress가 100% 미만일 경우
+                                            : result.progress >= 100
+                                            ? '생성 결과를 불러오는 중입니다.' // progress가 100%일 경우 생성 완료 메시지
+                                            : `예상 소요시간 : ${remainingTime}`}{' '}
                                     </p>
                                 </div>
                             ) : (
