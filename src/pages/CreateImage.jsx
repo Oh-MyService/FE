@@ -546,14 +546,6 @@ const CreateImage = () => {
 
   // 이미지 생성 결과 폴링
   const pollForImages = async (promptId) => {
-    if (!promptId) {
-      const storedResults = JSON.parse(localStorage.getItem('results'));
-      if (storedResults && storedResults.length > 0) {
-        promptId = storedResults[0].id;
-        console.log('Restored promptId from localStorage:', promptId);
-      }
-    }
-
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/api/results/${promptId}`,
@@ -816,7 +808,7 @@ const CreateImage = () => {
               result.isLoading ? (
                 <div
                   key={index}
-                  className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md"
+                  className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mb-3"
                 >
                   <div className="flex -mt-2">
                     <DLlogo
