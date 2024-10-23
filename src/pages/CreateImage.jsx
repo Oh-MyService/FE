@@ -29,7 +29,6 @@ const Bubble = ({ text, taskId, isLoading }) => {
         `http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`
       );
       const data = await response.json();
-      console.log('remaining_count:', data.remaining_count);
 
       setRemainingCount(data.remaining_count);
     } catch (error) {
@@ -58,10 +57,12 @@ const Bubble = ({ text, taskId, isLoading }) => {
           textAlign: 'justify',
         }}
       >
-        {remainingCount > 0 ? (
+        {remainingCount > 1 ? (
           <span>
-            "{text}" {remainingCount}번째로 생성 중...
+            "{text}" {remainingCount - 1}번째로 생성 중
           </span>
+        ) : remainingCount === 1 ? (
+          <span>"{text}" 생성 중</span>
         ) : (
           <span>"{text}" 생성 결과</span>
         )}
@@ -432,9 +433,7 @@ const CreateImage = () => {
         if (progressData.progress >= 100) {
           clearInterval(pollingIntervalRef.current); // 여기서 pollingInterval 대신 pollingIntervalRef.current 사용
           console.log('Polling stopped as progress reached 100%.');
-          setTimeout(() => {
-            pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
-          }, 5000);
+          pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
         }
       } else {
         throw new Error('Invalid progress data type received');
@@ -802,12 +801,12 @@ const CreateImage = () => {
           <p className="text-lg font-['pretendard-semibold'] mb-2 text-gray-500 text-left">
             지금 {totalQueueCount}명이 생성하고 있어요!
           </p>
-          <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 p-6 rounded-lg shadow-lg bg-[#F2F2F2]">
+          <div className="flex flex-col w-full px-4 h-full overflow-y-auto border-3 border-200 p-4 rounded-lg shadow-lg bg-[#F2F2F2]">
             {results.map((result, index) =>
               result.isLoading ? (
                 <div
                   key={index}
-                  className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md mt-3"
+                  className="flex flex-col justify-center w-full bg-white p-4 rounded-lg shadow-md"
                 >
                   <div className="flex -mt-2">
                     <DLlogo
