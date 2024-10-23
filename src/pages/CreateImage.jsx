@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import CollectionAddModal from '../components/CollectionAddModal';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 
-const Bubble = ({ text, taskId }) => {
+const Bubble = ({ text, taskId, isLoading }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [remainingCount, setRemainingCount] = useState(null);
 
@@ -37,13 +37,12 @@ const Bubble = ({ text, taskId }) => {
     }
   };
 
-  // 5초마다 API 요청을 반복하는 useEffect
+  // 30초마다 API 요청을 반복하는 useEffect
   useEffect(() => {
-    if (taskId) {
-      console.log('taskId:', taskId);
+    if (taskId && isLoading) {
       const interval = setInterval(() => {
         fetchRemainingCount();
-      }, 5000); // 5초마다 API 호출
+      }, 30000);
 
       return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 해제
     }
@@ -59,7 +58,7 @@ const Bubble = ({ text, taskId }) => {
           textAlign: 'justify',
         }}
       >
-        {remainingCount > 1 ? (
+        {remainingCount > 0 ? (
           <span>
             "{text}" {remainingCount}번째로 생성 중...
           </span>
@@ -819,6 +818,7 @@ const CreateImage = () => {
                     <Bubble
                       text={result.content.positive_prompt}
                       taskId={result.task_id}
+                      isLoading={isLoading}
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
@@ -868,6 +868,7 @@ const CreateImage = () => {
                     <Bubble
                       text={result.content.positive_prompt}
                       taskId={result.task_id}
+                      isLoading={isLoading}
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
