@@ -756,12 +756,12 @@ const CreateImage = () => {
                                         <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-[#444655]"
-                                                style={{ width: `${result.progress === 0 ? 0 : result.progress}%` }} // progress가 0일 경우 너비도 0으로 설정
+                                                style={{ width: `${result.progress ? result.progress : 0}%` }} // progress가 undefined일 때 0으로 설정
                                             ></div>
                                         </div>
                                         <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
-                                            {result.progress === 0 ? '0%' : `${result.progress}%`}{' '}
-                                            {/* progress가 0일 때는 0%로 표시 */}
+                                            {result.progress ? `${result.progress}%` : '0%'}{' '}
+                                            {/* progress가 undefined일 때 0%로 표시 */}
                                         </span>
                                     </div>
 
@@ -771,7 +771,7 @@ const CreateImage = () => {
                                             ? '생성 대기중입니다.' // 남은 시간이 없고 progress가 100% 미만일 경우
                                             : result.progress >= 100
                                             ? '생성 결과를 불러오는 중입니다.' // progress가 100%일 경우 생성 완료 메시지
-                                            : `예상 소요시간 : ${remainingTime}`}{' '}
+                                            : `예상 소요시간 : ${remainingTime}`}
                                     </p>
                                 </div>
                             ) : (
