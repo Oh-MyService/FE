@@ -40,6 +40,7 @@ const Bubble = ({ text, taskId }) => {
   // 5초마다 API 요청을 반복하는 useEffect
   useEffect(() => {
     if (taskId) {
+      console.log('taskId:', taskId);
       const interval = setInterval(() => {
         fetchRemainingCount();
       }, 5000); // 5초마다 API 호출
