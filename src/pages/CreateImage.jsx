@@ -345,6 +345,13 @@ const CreateImage = () => {
 
     useEffect(() => {
         fetchQueueStatus();
+
+        // 큐 상태를 주기적으로 업데이트하는 부분 추가
+        const interval = setInterval(() => {
+            fetchQueueStatus(); // 5초마다 큐 상태를 가져옴
+        }, 5000);
+
+        return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
     }, []);
 
     const promptIdRef = useRef(null);
@@ -767,11 +774,12 @@ const CreateImage = () => {
 
                                     {/* 예상 소요 시간 표시 */}
                                     <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500 text-center">
-                                        {result.progress < 100 && remainingTime === ''
+                                        {result.progress < 100 && !remainingTime
                                             ? '생성 대기중입니다.' // 남은 시간이 없고 progress가 100% 미만일 경우
                                             : result.progress >= 100
                                             ? '생성 결과를 불러오는 중입니다.' // progress가 100%일 경우 생성 완료 메시지
-                                            : `예상 소요시간 : ${remainingTime}`}
+                                            : `예상 소요시간 : ${remainingTime}`}{' '}
+                                        {/* 남은 시간이 있을 때만 예상 소요 시간을 표시 */}
                                     </p>
                                 </div>
                             ) : (
