@@ -774,7 +774,7 @@ const CreateImage = () => {
 
                                     {/* 예상 소요 시간 표시 */}
                                     <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500 text-center">
-                                        {result.progress === 0
+                                        {!result.progress
                                             ? '생성 대기중입니다.' // progress가 0일 경우 대기 중 메시지 표시
                                             : result.progress >= 100
                                             ? '생성 결과를 불러오는 중입니다.' // progress가 100%일 경우 생성 완료 메시지
