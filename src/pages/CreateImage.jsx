@@ -46,7 +46,7 @@ const Bubble = ({ text, taskId, isLoading }) => {
 
       return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 해제
     }
-  }, [taskId]);
+  }, [taskId, isLoading]);
 
   return (
     <div className="relative">
