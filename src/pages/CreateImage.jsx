@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import CollectionAddModal from '../components/CollectionAddModal';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 
-const Bubble = ({ text }) => {
+const Bubble = ({ text, taskId }) => {
   const [copySuccess, setCopySuccess] = useState(false);
+  const [remainingCount, setRemainingCount] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 텍스트 복사 처리
   const handleCopy = () => {
@@ -21,6 +23,36 @@ const Bubble = ({ text }) => {
     }, 1000);
   };
 
+  // remaining_count
+  const fetchRemainingCount = async () => {
+    try {
+      const response = await fetch(
+        `http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`
+      );
+      const data = await response.json();
+
+      setRemainingCount(data.remaining_count);
+      if (data.remaining_count > 0) {
+        setIsLoading(true);
+      } else {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Error fetching remaining count:', error);
+    }
+  };
+
+  // 5초마다 API 요청을 반복하는 useEffect
+  useEffect(() => {
+    if (taskId) {
+      const interval = setInterval(() => {
+        fetchRemainingCount();
+      }, 5000); // 5초마다 API 호출
+
+      return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 해제
+    }
+  }, [taskId]);
+
   return (
     <div className="relative">
       <div
@@ -31,7 +63,14 @@ const Bubble = ({ text }) => {
           textAlign: 'justify',
         }}
       >
-        "{text}" 생성 결과
+        {remainingCount > 1 ? (
+          <span>
+            "{text}" {remainingCount}번째로 생성 중...
+          </span>
+        ) : (
+          <span>"{text}" 생성 결과</span>
+        )}
+
         <button onClick={handleCopy} className="ml-2">
           {copySuccess ? (
             // 복사 성공 아이콘
@@ -184,6 +223,19 @@ const CreateImage = () => {
   const [mood, setMood] = useState(''); // 직접 입력
   const [seed, setSeed] = useState('');
   const [isRandomSeed, setIsRandomSeed] = useState(false);
+
+  // 선택된 분위기를 업데이트하는 부분
+  const handleMoodChange = (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === 'custom') {
+      setIsCustomMood(true);
+      setMood(''); // 빈 값으로 초기화
+    } else {
+      setIsCustomMood(false);
+      setMood(selectedValue); // 선택된 분위기로 업데이트
+    }
+    console.log('Selected Mood: ', selectedValue); // 선택된 무드 출력
+  };
 
   // Seed를 랜덤 값으로 설정하기 위한 useEffect
   useEffect(() => {
@@ -342,13 +394,19 @@ const CreateImage = () => {
 
   useEffect(() => {
     fetchQueueStatus();
+
+    // 큐 상태를 주기적으로 업데이트하는 부분 추가
+    const interval = setInterval(() => {
+      fetchQueueStatus(); // 5초마다 큐 상태를 가져옴
+    }, 5000);
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
   }, []);
 
   const promptIdRef = useRef(null);
 
   // 프로그래스바 상태를 업데이트하는 함수
   const fetchProgress = async (taskId) => {
-    const promptId = promptIdRef.current;
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/progress/${taskId}`
@@ -358,6 +416,7 @@ const CreateImage = () => {
       }
 
       const progressData = await response.json();
+      console.log('Progress data received:', progressData);
 
       if (typeof progressData.progress === 'number') {
         setResults((prevResults) =>
@@ -368,37 +427,40 @@ const CreateImage = () => {
           )
         );
 
-        // 서버에서 제공하는 예상 남은 시간을 사용
+        // 서버에서 제공하는 예상 남은 시간이 없을 경우
         if (progressData.estimated_remaining_time) {
-          setRemainingTime(progressData.estimated_remaining_time);
+          setRemainingTime(progressData.estimated_remaining_time); // 남은 시간 설정
+        } else {
+          setRemainingTime('');
         }
 
-        // progress가 100%가 되었을 때만 pollForImages를 호출
+        // progress가 100%에 도달하면 이미지를 한꺼번에 불러오기
         if (progressData.progress >= 100) {
-          setResults((prevResults) =>
-            prevResults.map((result) =>
-              result.task_id === taskId
-                ? { ...result, isLoading: false }
-                : result
-            )
-          );
-          clearInterval(pollingInterval);
+          clearInterval(pollingIntervalRef.current); // 여기서 pollingInterval 대신 pollingIntervalRef.current 사용
+          console.log('Polling stopped as progress reached 100%.');
           setTimeout(() => {
             pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
-          }, 10000);
+          }, 5000);
         }
+      } else {
+        throw new Error('Invalid progress data type received');
       }
     } catch (error) {
       console.error('Error fetching progress:', error);
-      setTimeout(() => fetchProgress(taskId), 10000); // 오류 발생 시 재시도
+      setProgress(0); // 실패 시 기본 값 설정
+      setRemainingTime('');
     }
   };
 
+  // 폴링 변수를 useRef로 선언
+  const pollingIntervalRef = useRef(null);
+
   // 폴링 추가 부분
-  let pollingInterval;
   useEffect(() => {
     if (isLoading && results.length > 0) {
-      pollingInterval = setInterval(() => {
+      if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current); // 중복 폴링 방지
+
+      pollingIntervalRef.current = setInterval(() => {
         results.forEach((result) => {
           if (result.isLoading) {
             fetchProgress(result.task_id); // task_id별로 진행 상황 확인
@@ -406,7 +468,7 @@ const CreateImage = () => {
         });
       }, 10000);
 
-      return () => clearInterval(pollingInterval); // 컴포넌트가 언마운트 될 때 클린업 함수 실행
+      return () => clearInterval(pollingIntervalRef.current); // 컴포넌트 언마운트 시 클린업
     }
   }, [isLoading, results]);
 
@@ -440,6 +502,7 @@ const CreateImage = () => {
     setSeedError('');
 
     const finalMood = mood === '' ? 'not_exist' : mood;
+    console.log('Final Mood: ', finalMood); // 전송 전에 mood 상태 확인
     const finalBackgroundColor =
       backgroundColor === '지정 안함' ? 'not_exist' : backgroundColor;
 
@@ -501,6 +564,7 @@ const CreateImage = () => {
 
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
+      console.log('Data: ', data);
 
       if (data.results.length > 0) {
         setResults((prevResults) =>
@@ -508,12 +572,20 @@ const CreateImage = () => {
             result.id === promptId
               ? {
                   ...result,
-                  images: data.results,
-                  isLoading: false, // 로딩 완료
+                  images: [...result.images, ...data.results],
+                  isLoading: result.images.length + data.results.length < 4, // 이미지가 4개 미만일 때는 로딩 유지
                 }
               : result
           )
         );
+
+        // 모든 이미지 로드 후 로딩 상태 해제
+        const allImagesLoaded = data.results.length >= 4; // 결과 이미지가 4개 이상 생성되었는지 확인
+        if (allImagesLoaded) {
+          setIsLoading(false); // 모든 이미지 로드 후 로딩 상태 해제
+        }
+      } else {
+        console.log('No images found for this prompt');
       }
     } catch (error) {
       console.error('Error occurred while fetching the image:', error);
@@ -613,17 +685,8 @@ const CreateImage = () => {
                 </label>
                 <div className="flex items-start mb-6 w-1/3">
                   <select
-                    value={selectedMood}
-                    onChange={(e) => {
-                      const selectedValue = e.target.value;
-                      if (selectedValue === 'custom') {
-                        setIsCustomMood(true);
-                        setSelectedMood(''); // 빈 값으로 초기화
-                      } else {
-                        setIsCustomMood(false);
-                        setSelectedMood(selectedValue);
-                      }
-                    }}
+                    value={mood} // mood 상태를 바인딩
+                    onChange={handleMoodChange} // 수정된 함수 호출
                     className="p-2 pr-2 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
                   >
                     <option value="custom">직접 입력</option>
@@ -634,7 +697,7 @@ const CreateImage = () => {
                     ))}
                   </select>
 
-                  {/* 분위기 직접 입력 필드 */}
+                  {/* 직접 입력 필드 */}
                   {isCustomMood && (
                     <div className="relative flex items-center">
                       <input
@@ -658,9 +721,7 @@ const CreateImage = () => {
                       {moodErrorMessage && (
                         <p
                           className="text-red-600 font-['pretendard-medium'] ml-2"
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
+                          style={{ whiteSpace: 'nowrap' }}
                         >
                           {moodErrorMessage}
                         </p>
@@ -775,17 +836,25 @@ const CreateImage = () => {
                     <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-[#444655]"
-                        style={{ width: `${result.progress}%` }}
+                        style={{
+                          width: `${result.progress ? result.progress : 0}%`,
+                        }} // progress가 undefined일 때 0으로 설정
                       ></div>
                     </div>
                     <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
-                      {result.progress}% {/* 개별 result의 progress 표시 */}
+                      {result.progress ? `${result.progress}%` : '0%'}{' '}
+                      {/* progress가 undefined일 때 0%로 표시 */}
                     </span>
                   </div>
 
                   {/* 예상 소요 시간 표시 */}
                   <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500 text-center">
-                    예상 소요시간 : {remainingTime}
+                    {!result.progress
+                      ? '생성 대기 중입니다.' // progress가 0일 경우 대기 중 메시지 표시
+                      : result.progress >= 100
+                      ? '생성 결과를 불러오는 중입니다.' // progress가 100%일 경우 생성 완료 메시지
+                      : `예상 소요시간 : ${remainingTime}`}{' '}
+                    {/* 남은 시간이 있을 때만 예상 소요 시간을 표시 */}
                   </p>
                 </div>
               ) : (
