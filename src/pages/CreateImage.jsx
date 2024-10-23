@@ -179,6 +179,18 @@ const CreateImage = () => {
     const [seed, setSeed] = useState('');
     const [isRandomSeed, setIsRandomSeed] = useState(false);
 
+    // 선택된 분위기를 업데이트하는 부분
+    const handleMoodChange = (e) => {
+        const selectedValue = e.target.value;
+        if (selectedValue === 'custom') {
+            setIsCustomMood(true);
+            setMood(''); // 빈 값으로 초기화
+        } else {
+            setIsCustomMood(false);
+            setMood(selectedValue); // 선택된 분위기로 업데이트
+        }
+    };
+
     // Seed를 랜덤 값으로 설정하기 위한 useEffect
     useEffect(() => {
         if (isRandomSeed) {
@@ -599,17 +611,8 @@ const CreateImage = () => {
                                 <label className="text-lg font-['pretendard-bold'] mb-2 text-left">분위기</label>
                                 <div className="flex items-start mb-6 w-1/3">
                                     <select
-                                        value={selectedMood}
-                                        onChange={(e) => {
-                                            const selectedValue = e.target.value;
-                                            if (selectedValue === 'custom') {
-                                                setIsCustomMood(true);
-                                                setSelectedMood(''); // 빈 값으로 초기화
-                                            } else {
-                                                setIsCustomMood(false);
-                                                setSelectedMood(selectedValue);
-                                            }
-                                        }}
+                                        value={mood} // mood 상태를 바인딩
+                                        onChange={handleMoodChange} // 수정된 함수 호출
                                         className="p-2 pr-2 border focus:outline-none focus:border-[#809DEC] rounded-lg mr-2 font-['pretendard-regular']"
                                     >
                                         <option value="custom">직접 입력</option>
@@ -620,7 +623,7 @@ const CreateImage = () => {
                                         ))}
                                     </select>
 
-                                    {/* 분위기 직접 입력 필드 */}
+                                    {/* 직접 입력 필드 */}
                                     {isCustomMood && (
                                         <div className="relative flex items-center">
                                             <input
@@ -644,9 +647,7 @@ const CreateImage = () => {
                                             {moodErrorMessage && (
                                                 <p
                                                     className="text-red-600 font-['pretendard-medium'] ml-2"
-                                                    style={{
-                                                        whiteSpace: 'nowrap',
-                                                    }}
+                                                    style={{ whiteSpace: 'nowrap' }}
                                                 >
                                                     {moodErrorMessage}
                                                 </p>
