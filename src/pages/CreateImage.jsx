@@ -189,6 +189,7 @@ const CreateImage = () => {
             setIsCustomMood(false);
             setMood(selectedValue); // 선택된 분위기로 업데이트
         }
+        console.log('Selected Mood: ', selectedValue); // 선택된 무드 출력
     };
 
     // Seed를 랜덤 값으로 설정하기 위한 useEffect
@@ -441,6 +442,7 @@ const CreateImage = () => {
         setSeedError('');
 
         const finalMood = mood === '' ? 'not_exist' : mood;
+        console.log('Final Mood: ', finalMood); // 전송 전에 mood 상태 확인
         const finalBackgroundColor = backgroundColor === '지정 안함' ? 'not_exist' : backgroundColor;
 
         try {
