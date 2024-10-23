@@ -546,6 +546,14 @@ const CreateImage = () => {
 
   // 이미지 생성 결과 폴링
   const pollForImages = async (promptId) => {
+    if (!promptId) {
+      const storedResults = JSON.parse(localStorage.getItem('results'));
+      if (storedResults && storedResults.length > 0) {
+        promptId = storedResults[0].id;
+        console.log('Restored promptId from localStorage:', promptId);
+      }
+    }
+
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/api/results/${promptId}`,
