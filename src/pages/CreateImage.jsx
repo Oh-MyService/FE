@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import CollectionAddModal from '../components/CollectionAddModal';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
+import { useLocation } from 'react-router-dom';
 
 const Bubble = ({ text, taskId, isLoading }) => {
   const [copySuccess, setCopySuccess] = useState(false);
@@ -413,6 +414,7 @@ const CreateImage = () => {
 
   const promptIdRef = useRef(null);
 
+  const location = useLocation();
   // 프로그래스바 상태를 업데이트하는 함수
   const fetchProgress = async (taskId) => {
     try {
@@ -443,10 +445,8 @@ const CreateImage = () => {
 
         // progress가 100%에 도달하면 이미지를 한꺼번에 불러오기
         if (progressData.progress >= 100) {
-          if (pollingInterval) {
-            clearInterval(pollingInterval); // pollingInterval이 존재하면 클리어
-            setPollingInterval(null); // 상태 초기화
-          }
+          clearInterval(pollingInterval);
+          setPollingInterval(null); // 상태 초기화
           console.log('Polling stopped as progress reached 100%.');
           pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
         }
@@ -465,12 +465,17 @@ const CreateImage = () => {
 
   // 폴링 추가 부분
   useEffect(() => {
+    console.log('Current Path:', location.pathname);
+    console.log('isLoading:', isLoading);
+    console.log('Results:', results);
+
     if (isLoading && results.length > 0) {
       if (pollingInterval) clearInterval(pollingInterval); // 중복 폴링 방지
 
       const newInterval = setInterval(() => {
         results.forEach((result) => {
           if (result.isLoading) {
+            console.log('Polling for task:', result.task_id);
             fetchProgress(result.task_id); // task_id별로 진행 상황 확인
           }
         });
@@ -479,10 +484,13 @@ const CreateImage = () => {
       setPollingInterval(newInterval);
 
       return () => {
-        clearInterval(newInterval);
+        if (newInterval) {
+          clearInterval(newInterval);
+          console.log('Polling cleared');
+        }
       };
     }
-  }, [isLoading, results]);
+  }, [isLoading, results, location.pathname]);
 
   // 생성하기 요청
   const handleSubmit = async (event) => {
