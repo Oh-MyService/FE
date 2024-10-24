@@ -1,12 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import CollectionAddModal from '../components/CollectionAddModal';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 
 const Bubble = ({ text, taskId, isLoading }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [remainingCount, setRemainingCount] = useState(null);
-  const location = useLocation();
 
   // 텍스트 복사 처리
   const handleCopy = () => {
@@ -39,9 +37,11 @@ const Bubble = ({ text, taskId, isLoading }) => {
 
   // 5초마다 API 요청을 반복하는 useEffect
   useEffect(() => {
-    if (location.pathname === '/create-image' && taskId && isLoading) {
+    let interval = null;
+
+    if (taskId && isLoading) {
       fetchRemainingCount();
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         fetchRemainingCount();
       }, 5000);
 
@@ -207,7 +207,6 @@ const formatDate = (dateString) => {
 
 const CreateImage = () => {
   const token = localStorage.getItem('token'); // 토큰 가져오기
-  const location = useLocation();
 
   // 프롬프트 상태 관리
   const [positivePrompt, setPositivePrompt] = useState('');
@@ -463,11 +462,7 @@ const CreateImage = () => {
 
   // 폴링 추가 부분
   useEffect(() => {
-    if (
-      location.pathname === '/create-image' &&
-      isLoading &&
-      results.length > 0
-    ) {
+    if (isLoading && results.length > 0) {
       if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current); // 중복 폴링 방지
 
       pollingIntervalRef.current = setInterval(() => {
@@ -478,7 +473,11 @@ const CreateImage = () => {
         });
       }, 5000);
 
-      return () => clearInterval(pollingIntervalRef.current); // 컴포넌트 언마운트 시 클린업
+      return () => {
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current); // 컴포넌트 언마운트 시 클리어
+        }
+      };
     }
   }, [isLoading, results]);
 
