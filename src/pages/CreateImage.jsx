@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import CollectionAddModal from '../components/CollectionAddModal';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
-import { useLocation } from 'react-router-dom';
 
 const Bubble = ({ text, taskId, isLoading }) => {
   const [copySuccess, setCopySuccess] = useState(false);
@@ -231,7 +230,6 @@ const CreateImage = () => {
       setIsCustomMood(false);
       setMood(selectedValue); // 선택된 분위기로 업데이트
     }
-    console.log('Selected Mood: ', selectedValue); // 선택된 무드 출력
   };
 
   // Seed를 랜덤 값으로 설정하기 위한 useEffect
@@ -290,10 +288,6 @@ const CreateImage = () => {
       const parsedResults = JSON.parse(savedResults);
       const latestResult = parsedResults[0]; // 가장 최근 생성된 결과 사용
       if (latestResult && latestResult.isLoading !== undefined) {
-        console.log(
-          'Restoring isLoading from latest result:',
-          latestResult.isLoading
-        );
         setIsLoading(latestResult.isLoading); 
       }
     }
@@ -430,7 +424,6 @@ const CreateImage = () => {
 
   const promptIdRef = useRef(null);
 
-  const location = useLocation();
   // 프로그래스바 상태를 업데이트하는 함수
   const fetchProgress = async (taskId) => {
     try {
@@ -463,7 +456,6 @@ const CreateImage = () => {
         if (progressData.progress >= 100) {
           clearInterval(pollingInterval);
           setPollingInterval(null); // 상태 초기화
-          console.log('Polling stopped as progress reached 100%.');
           pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
         }
       } else {
@@ -481,17 +473,12 @@ const CreateImage = () => {
 
   // 폴링 추가 부분
   useEffect(() => {
-    console.log('Current Path:', location.pathname);
-    console.log('isLoading:', isLoading);
-    console.log('Results:', results);
-
     if (isLoading && results.length > 0) {
       if (pollingInterval) clearInterval(pollingInterval); // 중복 폴링 방지
 
       const newInterval = setInterval(() => {
         results.forEach((result) => {
           if (result.isLoading) {
-            console.log('Polling for task:', result.task_id);
             fetchProgress(result.task_id); // task_id별로 진행 상황 확인
           }
         });
@@ -502,11 +489,10 @@ const CreateImage = () => {
       return () => {
         if (newInterval) {
           clearInterval(newInterval);
-          console.log('Polling cleared');
         }
       };
     }
-  }, [isLoading, results, location.pathname]);
+  }, [isLoading, results]);
 
   // 생성하기 요청
   const handleSubmit = async (event) => {
@@ -540,7 +526,6 @@ const CreateImage = () => {
     setSeedError('');
 
     const finalMood = mood === '' ? 'not_exist' : mood;
-    console.log('Final Mood: ', finalMood); // 전송 전에 mood 상태 확인
     const finalBackgroundColor =
       backgroundColor === '지정 안함' ? 'not_exist' : backgroundColor;
 
@@ -563,7 +548,6 @@ const CreateImage = () => {
       if (!response.ok) throw new Error('Network response was not ok');
 
       const data = await response.json();
-      console.log(data);
 
       if (data && data.id && data.task_id) {
         const newResult = {
