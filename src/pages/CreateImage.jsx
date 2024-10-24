@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import CollectionAddModal from '../components/CollectionAddModal';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 
 const Bubble = ({ text, taskId, isLoading }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [remainingCount, setRemainingCount] = useState(null);
+  const location = useLocation();
 
   // 텍스트 복사 처리
   const handleCopy = () => {
@@ -29,7 +31,6 @@ const Bubble = ({ text, taskId, isLoading }) => {
         `http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`
       );
       const data = await response.json();
-
       setRemainingCount(data.remaining_count);
     } catch (error) {
       console.error('Error fetching remaining count:', error);
@@ -38,7 +39,8 @@ const Bubble = ({ text, taskId, isLoading }) => {
 
   // 5초마다 API 요청을 반복하는 useEffect
   useEffect(() => {
-    if (taskId && isLoading) {
+    if (location.pathname === '/create-image' && taskId && isLoading) {
+      fetchRemainingCount();
       const interval = setInterval(() => {
         fetchRemainingCount();
       }, 5000);
@@ -205,6 +207,7 @@ const formatDate = (dateString) => {
 
 const CreateImage = () => {
   const token = localStorage.getItem('token'); // 토큰 가져오기
+  const location = useLocation();
 
   // 프롬프트 상태 관리
   const [positivePrompt, setPositivePrompt] = useState('');
@@ -460,7 +463,11 @@ const CreateImage = () => {
 
   // 폴링 추가 부분
   useEffect(() => {
-    if (isLoading && results.length > 0) {
+    if (
+      location.pathname === '/create-image' &&
+      isLoading &&
+      results.length > 0
+    ) {
       if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current); // 중복 폴링 방지
 
       pollingIntervalRef.current = setInterval(() => {
