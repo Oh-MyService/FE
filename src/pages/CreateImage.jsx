@@ -283,6 +283,16 @@ const CreateImage = () => {
     }
   }, []);
 
+  // 컴포넌트가 마운트될 때 로컬 스토리지에서 isLoading 상태 불러오기
+  useEffect(() => {
+    const savedLoadingState = localStorage.getItem('isLoading');
+    if (savedLoadingState !== null) {
+      const parsedLoadingState = JSON.parse(savedLoadingState);
+      console.log('Restoring isLoading from localStorage:', parsedLoadingState);
+      setIsLoading(parsedLoadingState);
+    }
+  }, []);
+
   // useEffect를 통해 컴포넌트가 마운트될 때 로컬 스토리지에서 기록 불러오기
   useEffect(() => {
     const savedResults = localStorage.getItem('results');
@@ -298,7 +308,7 @@ const CreateImage = () => {
         }
       });
     }
-  }, []); // 컴포넌트가 마운트될 때 한번만 실행
+  }, []);
 
   useEffect(() => {
     // isLoading 상태가 false인 경우 버튼을 활성화
