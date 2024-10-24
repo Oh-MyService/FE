@@ -285,11 +285,17 @@ const CreateImage = () => {
 
   // 컴포넌트가 마운트될 때 로컬 스토리지에서 isLoading 상태 불러오기
   useEffect(() => {
-    const savedLoadingState = localStorage.getItem('isLoading');
-    if (savedLoadingState !== null) {
-      const parsedLoadingState = JSON.parse(savedLoadingState);
-      console.log('Restoring isLoading from localStorage:', parsedLoadingState);
-      setIsLoading(parsedLoadingState);
+    const savedResults = localStorage.getItem('results');
+    if (savedResults) {
+      const parsedResults = JSON.parse(savedResults);
+      const latestResult = parsedResults[0]; // 가장 최근 생성된 결과 사용
+      if (latestResult && latestResult.isLoading !== undefined) {
+        console.log(
+          'Restoring isLoading from latest result:',
+          latestResult.isLoading
+        );
+        setIsLoading(latestResult.isLoading); 
+      }
     }
   }, []);
 
