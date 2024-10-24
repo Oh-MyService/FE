@@ -443,7 +443,10 @@ const CreateImage = () => {
 
         // progress가 100%에 도달하면 이미지를 한꺼번에 불러오기
         if (progressData.progress >= 100) {
-          clearInterval(pollingIntervalRef.current); // 여기서 pollingInterval 대신 pollingIntervalRef.current 사용
+          if (pollingInterval) {
+            clearInterval(pollingInterval); // pollingInterval이 존재하면 클리어
+            setPollingInterval(null); // 상태 초기화
+          }
           console.log('Polling stopped as progress reached 100%.');
           pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
         }
@@ -457,15 +460,15 @@ const CreateImage = () => {
     }
   };
 
-  // 폴링 변수를 useRef로 선언
-  const pollingIntervalRef = useRef(null);
+  // 폴링 변수를 useState로 선언
+  const [pollingInterval, setPollingInterval] = useState(null);
 
   // 폴링 추가 부분
   useEffect(() => {
     if (isLoading && results.length > 0) {
-      if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current); // 중복 폴링 방지
+      if (pollingInterval) clearInterval(pollingInterval); // 중복 폴링 방지
 
-      pollingIntervalRef.current = setInterval(() => {
+      const newInterval = setInterval(() => {
         results.forEach((result) => {
           if (result.isLoading) {
             fetchProgress(result.task_id); // task_id별로 진행 상황 확인
@@ -473,10 +476,10 @@ const CreateImage = () => {
         });
       }, 5000);
 
+      setPollingInterval(newInterval);
+
       return () => {
-        if (pollingIntervalRef.current) {
-          clearInterval(pollingIntervalRef.current); // 컴포넌트 언마운트 시 클리어
-        }
+        clearInterval(newInterval);
       };
     }
   }, [isLoading, results]);
