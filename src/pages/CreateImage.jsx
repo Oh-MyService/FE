@@ -270,7 +270,7 @@ const CreateImage = () => {
         // isLoading 상태인 경우 프로그래스 폴링 시작
         parsedResults.forEach((result) => {
             if (result.isLoading) {
-                fetchProgress(result.task_id); // task_id별로 진행 상황 확인
+                fetchProgress(result.task_id, result.id); // task_id별로 진행 상황 확인
             }
         });
 
@@ -451,7 +451,7 @@ const CreateImage = () => {
             pollingIntervalRef.current = setInterval(() => {
                 results.forEach((result) => {
                     if (result.isLoading) {
-                        fetchProgress(result.task_id); // task_id별로 진행 상황 확인
+                        fetchProgress(result.task_id, result.id); // task_id별로 진행 상황 확인
                     }
                 });
             }, 5000);
@@ -528,7 +528,7 @@ const CreateImage = () => {
                 };
                 setResults((prevResults) => [newResult, ...prevResults]);
                 promptIdRef.current = data.id;
-                fetchProgress(data.task_id);
+                fetchProgress(newResult.task_id, newResult.id);
             } else {
                 console.error('id 또는 task_id가 undefined입니다.');
             }
