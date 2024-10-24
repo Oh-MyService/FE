@@ -263,30 +263,19 @@ const CreateImage = () => {
     // useEffect를 통해 컴포넌트가 마운트될 때 로컬 스토리지에서 기록 불러오기
     useEffect(() => {
         const savedResults = localStorage.getItem('results');
-        const parsedResults = savedResults ? JSON.parse(savedResults) : [];
+        if (savedResults) {
+            const parsedResults = JSON.parse(savedResults);
 
-        setResults(parsedResults);
+            setResults(parsedResults);
 
-        // isLoading 상태인 경우 프로그래스 폴링 시작
-        parsedResults.forEach((result) => {
-            if (result.isLoading) {
-                fetchProgress(result.task_id, result.id); // task_id별로 진행 상황 확인
-            }
-        });
-
-        // 완료된 작업들에 대해 결과 이미지를 다시 확인
-        const checkAndFetchCompletedImages = async () => {
-            parsedResults.forEach(async (result) => {
-                if (result.isLoading || result.progress < 100) {
-                    await fetchProgress(result.task_id);
-                } else if (result.images.length === 0) {
-                    await pollForImages(result.id); // 이미지는 아직 불러오지 않은 경우 다시 요청
+            // isLoading 상태인 경우 프로그래스 폴링 시작
+            parsedResults.forEach((result) => {
+                if (result.isLoading) {
+                    fetchProgress(result.task_id, result.id); // task_id별로 진행 상황 확인
                 }
             });
-        };
-
-        checkAndFetchCompletedImages(); // 페이지 로드 시 생성 상태 체크 및 결과 가져오기
-    }, []);
+        }
+    }, []); // 컴포넌트가 마운트될 때 한번만 실행
 
     useEffect(() => {
         // isLoading 상태가 false인 경우 버튼을 활성화
@@ -428,7 +417,7 @@ const CreateImage = () => {
                 if (progressData.progress >= 100) {
                     clearInterval(pollingIntervalRef.current); // 여기서 pollingInterval 대신 pollingIntervalRef.current 사용
                     console.log('Polling stopped as progress reached 100%.');
-                    pollForImages(promptId);
+                    pollForImages(promptId); // prompt_id로 이미지 요청
                 }
             } else {
                 throw new Error('Invalid progress data type received');
@@ -540,10 +529,6 @@ const CreateImage = () => {
 
     // 이미지 생성 결과 폴링
     const pollForImages = async (promptId) => {
-        if (!promptId) {
-            console.error('Invalid promptId: null or undefined');
-            return;
-        }
         try {
             const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
                 headers: {
@@ -551,6 +536,7 @@ const CreateImage = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
+
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
 
