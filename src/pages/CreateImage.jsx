@@ -401,7 +401,7 @@ const CreateImage = () => {
     const promptIdRef = useRef(null);
 
     // 프로그래스바 상태를 업데이트하는 함수
-    const fetchProgress = async (taskId) => {
+    const fetchProgress = async (taskId, promptId) => {
         try {
             const response = await fetch(`http://118.67.128.129:28282/progress/${taskId}`);
             if (!response.ok) {
@@ -428,7 +428,7 @@ const CreateImage = () => {
                 if (progressData.progress >= 100) {
                     clearInterval(pollingIntervalRef.current); // 여기서 pollingInterval 대신 pollingIntervalRef.current 사용
                     console.log('Polling stopped as progress reached 100%.');
-                    pollForImages(promptIdRef.current); // prompt_id로 이미지 요청
+                    pollForImages(promptId);
                 }
             } else {
                 throw new Error('Invalid progress data type received');
