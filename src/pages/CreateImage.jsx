@@ -540,6 +540,10 @@ const CreateImage = () => {
 
     // 이미지 생성 결과 폴링
     const pollForImages = async (promptId) => {
+        if (!promptId) {
+            console.error('Invalid promptId: null or undefined');
+            return;
+        }
         try {
             const response = await fetch(`http://118.67.128.129:28282/api/results/${promptId}`, {
                 headers: {
@@ -547,7 +551,6 @@ const CreateImage = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
 
