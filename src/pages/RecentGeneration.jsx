@@ -108,6 +108,10 @@ const RecentGeneration = () => {
 
     // 프롬프트 정보를 불러오는 함수
     const handleIconClick = async () => {
+        if (showPopup) {
+            setShowPopup(false); // 팝업이 열려 있으면 닫기
+            return;
+        }
         try {
             const response = await fetch(`http://118.67.128.129:28282/api/results/${fullScreenImageId}/prompt`, {
                 method: 'GET',
