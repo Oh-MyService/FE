@@ -367,7 +367,7 @@ const RecentGeneration = () => {
                         <div className="flex space-x-4" style={{ maxWidth: '75vw', maxHeight: '75vh' }}>
                             {/* 원본 이미지 */}
                             <div className="flex flex-col items-start " style={{ width: '25%', height: '100%' }}>
-                                <p className="text-white font-['pretendard-semibold']px-2 py-1 rounded mb-2">
+                                <p className="text-white font-['pretendard-bold']px-2 py-1 rounded mb-2">
                                     Original Image
                                 </p>
                                 <div className="flex-shrink-0 w-full h-full">
@@ -380,7 +380,7 @@ const RecentGeneration = () => {
                             </div>
                             {/* 3x3 타일링된 이미지 */}
                             <div className="flex flex-col items-start" style={{ width: '50%', height: '100%' }}>
-                                <p className="text-white font-['pretendard-semibold']px-2 py-1 rounded mb-2">
+                                <p className="text-white font-['pretendard-bold']px-2 py-1 rounded mb-2">
                                     3×3 Tiled Pattern
                                 </p>
                                 <div className="grid grid-cols-3 gap-0 w-full h-full">
