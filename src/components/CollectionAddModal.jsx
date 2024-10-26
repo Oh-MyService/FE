@@ -186,7 +186,7 @@ const CollectionAddModal = ({ onClose, resultId }) => {
                 <div className="flex flex-col space-y-2 overflow-y-auto max-h-64">
                     {filteredCollections.length === 0 ? (
                         <p className="text-center text-gray-500 font-['pretendard-regular']">
-                            아카이브가 아직 없어요. 아래 버튼으로 만들어 보세요!
+                            아카이브가 없어요. 아래 버튼으로 만들어보세요!
                         </p>
                     ) : (
                         filteredCollections.map((collection, index) => (
