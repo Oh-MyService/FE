@@ -184,47 +184,54 @@ const CollectionAddModal = ({ onClose, resultId }) => {
                     />
                 </div>
                 <div className="flex flex-col space-y-2 overflow-y-auto max-h-64">
-                    {filteredCollections.map((collection, index) => (
-                        <div
-                            key={collection.id}
-                            className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer font-['pretendard-regular']"
-                        >
-                            <span>{collection.name}</span>
-                            {collection.isSelected ? (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 text-blue-500"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M5 13l4 4L19 7"
-                                    />
-                                </svg>
-                            ) : (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 text-green-500"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    onClick={() => handleSelect(index)}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M12 4v16m8-8H4"
-                                    />
-                                </svg>
-                            )}
-                        </div>
-                    ))}
+                    {filteredCollections.length === 0 ? (
+                        <p className="text-center text-gray-500 font-['pretendard-regular']">
+                            아카이브가 아직 없어요. 아래 버튼으로 만들어 보세요!
+                        </p>
+                    ) : (
+                        filteredCollections.map((collection, index) => (
+                            <div
+                                key={collection.id}
+                                className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer font-['pretendard-regular']"
+                            >
+                                <span>{collection.name}</span>
+                                {collection.isSelected ? (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-6 w-6 text-blue-500"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
+                                ) : (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-6 w-6 text-green-500"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        onClick={() => handleSelect(index)}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M12 4v16m8-8H4"
+                                        />
+                                    </svg>
+                                )}
+                            </div>
+                        ))
+                    )}
                 </div>
+
                 <div className="mt-4 flex justify-center">
                     {!isAddingNew ? (
                         <button
