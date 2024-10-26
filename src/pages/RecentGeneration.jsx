@@ -363,9 +363,11 @@ const RecentGeneration = () => {
                     <div
                         className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center z-[1000]"
                         onClick={closeFullScreen}
-                        style={{ top: '-20px' }}
                     >
-                        <div className="flex space-x-4" style={{ maxWidth: '75vw', maxHeight: '75vh' }}>
+                        <div
+                            className="flex space-x-4"
+                            style={{ maxWidth: '75vw', maxHeight: '75vh', transform: 'translateY(-20px)' }}
+                        >
                             {/* 원본 이미지 */}
                             <div className="flex flex-col items-start " style={{ width: '25%', height: '100%' }}>
                                 <p className="text-white font-['pretendard-semibold'] px-2 py-1 rounded mb-2">
