@@ -366,7 +366,7 @@ const RecentGeneration = () => {
                     >
                         <div
                             className="flex space-x-4"
-                            style={{ maxWidth: '75vw', maxHeight: '75vh', transform: 'translateY(-20px)' }}
+                            style={{ maxWidth: '75vw', maxHeight: '75vh', transform: 'translateY(-26px)' }}
                         >
                             {/* 원본 이미지 */}
                             <div className="flex flex-col items-start " style={{ width: '25%', height: '100%' }}>
