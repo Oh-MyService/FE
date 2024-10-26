@@ -362,26 +362,30 @@ const RecentGeneration = () => {
                     >
                         <div className="flex space-x-4" style={{ maxWidth: '80vw', maxHeight: '80vh' }}>
                             {/* 원본 이미지 */}
-                            <div className="flex-shrink-0" style={{ width: '33%', height: '100%' }}>
+                            <div className="relative flex-shrink-0" style={{ width: '25%', height: '100%' }}>
                                 <img
                                     src={fullScreenImage}
                                     alt="Original Image"
                                     className="w-full h-full object-contain"
                                 />
-                                <p className="text-center text-white mt-2">Original Image</p>
+                                <p className="absolute top-2 left-2 text-white bg-black bg-opacity-50 px-2 py-1 rounded">
+                                    Original Image
+                                </p>
                             </div>
                             {/* 3x3 타일링된 이미지 */}
-                            <div className="grid grid-cols-3 gap-0" style={{ width: '67%', height: '100%' }}>
+                            <div className="relative grid grid-cols-3 gap-0" style={{ width: '65%', height: '100%' }}>
                                 {Array.from({ length: 9 }).map((_, index) => (
                                     <img
                                         key={index}
                                         src={fullScreenImage}
-                                        alt="Full Screen Grid"
+                                        alt="Tiled Pattern"
                                         className="w-full h-full object-contain"
                                     />
                                 ))}
+                                <p className="absolute top-2 left-2 text-white bg-black bg-opacity-50 px-2 py-1 rounded">
+                                    3×3 Tiled Pattern
+                                </p>
                             </div>
-                            <p className="text-center text-white mt-2 w-full">3×3 Tiled Pattern</p>
                         </div>
                         <button
                             onClick={(e) => {
