@@ -254,7 +254,7 @@ const CollectionAddModal = ({ onClose, resultId }) => {
                                 className="px-4 py-2 w-28 bg-[#3A57A7] text-white rounded-r-md hover:bg-[#213261] font-['pretendard-medium']"
                                 onClick={addNewCollection}
                             >
-                                생성하기
+                                생성
                             </button>
                         </div>
                     )}

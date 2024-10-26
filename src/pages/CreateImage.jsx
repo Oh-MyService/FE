@@ -783,7 +783,7 @@ const CreateImage = () => {
                             <button
                                 onClick={handleSubmit}
                                 disabled={isLoading} // isLoading이 true일 때 버튼 비활성화
-                                className={`w-36 p-4 font-['pretendard-bold'] text-white rounded text-xl ${
+                                className={`w-36 p-4 font-['pretendard-semibold'] text-white rounded text-xl ${
                                     isLoading ? 'bg-gray-400' : 'bg-[#3A57A7] hover:bg-[#193174]'
                                 }`}
                             >
