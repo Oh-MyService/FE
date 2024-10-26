@@ -364,18 +364,10 @@ const RecentGeneration = () => {
                         className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center z-[1000]"
                         onClick={closeFullScreen}
                     >
-                        <div
-                            className="flex space-x-4 items-center justify-center"
-                            style={{ maxWidth: '75vw', maxHeight: '75vh' }}
-                        >
+                        <div className="flex items-start space-x-4" style={{ maxWidth: '75vw', maxHeight: '75vh' }}>
                             {/* 원본 이미지 */}
-                            <div
-                                className="flex flex-col items-center justify-center"
-                                style={{ width: '25%', height: '100%' }}
-                            >
-                                <p className="text-white font-['pretendard-semibold'] px-2 py-1 rounded mb-2">
-                                    Original Image
-                                </p>
+                            <div className="flex flex-col items-start" style={{ width: '25%', height: '100%' }}>
+                                <p className="text-white font-['pretendard-semibold'] mb-2">Original Image</p>
                                 <div className="flex-shrink-0 w-full h-full">
                                     <img
                                         src={fullScreenImage}
@@ -385,13 +377,8 @@ const RecentGeneration = () => {
                                 </div>
                             </div>
                             {/* 3x3 타일링된 이미지 */}
-                            <div
-                                className="flex flex-col items-center justify-center"
-                                style={{ width: '50%', height: '100%' }}
-                            >
-                                <p className="text-white font-['pretendard-semibold'] px-2 py-1 rounded mb-2">
-                                    3×3 Tiled Pattern
-                                </p>
+                            <div className="flex flex-col items-start" style={{ width: '50%', height: '100%' }}>
+                                <p className="text-white font-['pretendard-semibold'] mb-2">3×3 Tiled Pattern</p>
                                 <div className="grid grid-cols-3 gap-0 w-full h-full">
                                     {Array.from({ length: 9 }).map((_, index) => (
                                         <img
