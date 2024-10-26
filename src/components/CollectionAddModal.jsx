@@ -238,13 +238,13 @@ const CollectionAddModal = ({ onClose, resultId }) => {
                             className="px-4 py-2 bg-[#3A57A7] text-white rounded-full hover:bg-[#213261] font-['pretendard-medium']"
                             onClick={showNewCollectionInput}
                         >
-                            새 아카이브 생성
+                            아카이브 생성
                         </button>
                     ) : (
                         <div className="flex w-full">
                             <input
                                 type="text"
-                                placeholder="새 아카이브 이름"
+                                placeholder="아카이브 이름"
                                 className="p-2 border border-gray-300 rounded-l-md w-full font-['pretendard-medium']"
                                 value={newCollectionName}
                                 onChange={handleNewCollectionNameChange}
@@ -260,7 +260,7 @@ const CollectionAddModal = ({ onClose, resultId }) => {
                     )}
                 </div>
                 {toastMessage && (
-                    <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-[#5571be] text-white px-4 py-2 rounded-md">
+                    <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-[#3A57A7] text-white px-4 py-2 rounded-md font-['pretendard-medium']">
                         {toastMessage}
                     </div>
                 )}
