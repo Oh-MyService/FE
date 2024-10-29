@@ -2,9 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import CollectionAddModal from '../components/CollectionAddModal';
 import { ReactComponent as DLlogo } from '../assets/designovel_icon_black.svg';
 
-const Bubble = ({ text, taskId, isLoading }) => {
+const Bubble = ({ text }) => {
   const [copySuccess, setCopySuccess] = useState(false);
-  const [remainingCount, setRemainingCount] = useState(null);
 
   // 텍스트 복사 처리
   const handleCopy = () => {
@@ -22,33 +21,6 @@ const Bubble = ({ text, taskId, isLoading }) => {
     }, 1000);
   };
 
-  // remaining_count
-  const fetchRemainingCount = async () => {
-    try {
-      const response = await fetch(
-        `http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`
-      );
-      const data = await response.json();
-      setRemainingCount(data.remaining_count);
-    } catch (error) {
-      console.error('Error fetching remaining count:', error);
-    }
-  };
-
-  // 5초마다 API 요청을 반복하는 useEffect
-  useEffect(() => {
-    let interval = null;
-
-    if (taskId && isLoading) {
-      fetchRemainingCount();
-      interval = setInterval(() => {
-        fetchRemainingCount();
-      }, 5000);
-
-      return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 해제
-    }
-  }, [taskId, isLoading]);
-
   return (
     <div className="relative">
       <div
@@ -59,15 +31,7 @@ const Bubble = ({ text, taskId, isLoading }) => {
           textAlign: 'justify',
         }}
       >
-        {remainingCount > 1 ? (
-          <span>
-            "{text}" {remainingCount - 1}번째로 생성 대기 중
-          </span>
-        ) : remainingCount === 1 ? (
-          <span>"{text}" 생성 중</span>
-        ) : (
-          <span>"{text}" 생성 결과</span>
-        )}
+        {<span>"{text}" 생성 결과</span>}
 
         <button onClick={handleCopy} className="ml-2">
           {copySuccess ? (
@@ -205,6 +169,36 @@ const formatDate = (dateString) => {
     .padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
 };
 
+const ProgressAndRemainingCount = ({
+  progress,
+  remainingCount,
+  remainingTime,
+}) => (
+  <div className="mt-4 ml-4 w-2/3">
+    <p className="text-lg font-['pretendard-semibold'] mb-2 text-black">
+      {remainingCount > 1
+        ? `${remainingCount - 1}번째로 생성 대기 중`
+        : '생성 중'}
+    </p>
+    <div className="flex items-center mt-2">
+      <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-[#3A57A7]"
+          style={{
+            width: `${progress}%`,
+          }}
+        ></div>
+      </div>
+      <span className="ml-2 text-sm font-['pretendard-medium'] text-black">
+        {progress}%
+      </span>
+    </div>
+    <p className="mt-2 text-sm font-['pretendard-medium'] text-black">
+      예상 소요 시간 : {remainingTime}
+    </p>
+  </div>
+);
+
 const CreateImage = () => {
   const token = localStorage.getItem('token'); // 토큰 가져오기
 
@@ -233,10 +227,13 @@ const CreateImage = () => {
   const [seedError, setSeedError] = useState('');
 
   const [progress, setProgress] = useState(0); // 프로그래스바 상태 관리
-  const [remainingTime, setRemainingTime] = useState(''); // 남은 시간을 저장할 상태
+  const [remainingCount, setRemainingCount] = useState(null);
+  const [remainingTime, setRemainingTime] = useState('');
 
   // 전체 생성 테스트 수
   const [totalQueueCount, setTotalQueueCount] = useState(0);
+
+  const [taskId, setTaskId] = useState(null);
 
   // 로컬 스토리지에서 불러온 결과 기록 상태 관리
   const [results, setResults] = useState(() => {
@@ -327,6 +324,19 @@ const CreateImage = () => {
   const isTokenExpired = (token) => {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.exp < Date.now() / 1000;
+  };
+
+  // remainingCount 가져오기 함수
+  const fetchRemainingCount = async (taskId) => {
+    try {
+      const response = await fetch(
+        `http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`
+      );
+      const data = await response.json();
+      setRemainingCount(data.remaining_count);
+    } catch (error) {
+      console.error('Error fetching remaining count:', error);
+    }
   };
 
   // 큐 상태를 가져오기
@@ -430,6 +440,7 @@ const CreateImage = () => {
     event.preventDefault();
     setProgress(0);
     setIsLoading(true);
+    fetchRemainingCount();
 
     if (!token) {
       setAlertMessage('로그인이 필요합니다.');
@@ -495,6 +506,19 @@ const CreateImage = () => {
       setAlertMessage('Error occurred while creating prompt.');
     }
   };
+
+  useEffect(() => {
+    let interval = null;
+
+    if (taskId && isLoading) {
+      fetchRemainingCount();
+      interval = setInterval(() => {
+        fetchRemainingCount();
+      }, 5000);
+    }
+
+    return () => clearInterval(interval);
+  }, [taskId, isLoading]);
 
   // 이미지 생성 결과 폴링
   const pollForImages = async (promptId) => {
@@ -661,7 +685,14 @@ const CreateImage = () => {
             </div>
 
             {/* 생성하기 버튼 */}
-            <div className="flex justify-end w-full">
+            <div className="flex item-start w-full">
+              {isLoading && (
+                <ProgressAndRemainingCount
+                  progress={progress}
+                  remainingCount={remainingCount}
+                  remainingTime={remainingTime}
+                />
+              )}
               <button
                 onClick={handleSubmit}
                 disabled={isLoading} // isLoading이 true일 때 버튼 비활성화
@@ -676,7 +707,7 @@ const CreateImage = () => {
         </div>
 
         {/* 생성 결과 섹션 */}
-        <div className="flex flex-col w-1/2 px-4 mt-24 h-[720px]">
+        <div className="flex flex-col w-1/2 px-4 mt-10 h-[720px]">
           <p className="text-lg font-['pretendard-semibold'] mb-2 text-gray-500 text-left">
             지금 {totalQueueCount}명이 생성하고 있어요!
           </p>
@@ -693,11 +724,7 @@ const CreateImage = () => {
                       height="50"
                       className="mt-2 flex-shrink-0"
                     />
-                    <Bubble
-                      text={result.content.positive_prompt}
-                      taskId={result.task_id}
-                      isLoading={isLoading}
-                    />
+                    <Bubble text={result.content.positive_prompt} />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
                     {Array(4)
@@ -743,11 +770,7 @@ const CreateImage = () => {
                       height="50"
                       className="mt-2 flex-shrink-0"
                     />
-                    <Bubble
-                      text={result.content.positive_prompt}
-                      taskId={result.task_id}
-                      isLoading={isLoading}
-                    />
+                    <Bubble text={result.content.positive_prompt} />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
                     {result.images.map((imageResult, idx) => {
