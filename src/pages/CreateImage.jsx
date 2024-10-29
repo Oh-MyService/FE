@@ -183,7 +183,7 @@ const ProgressAndRemainingCount = ({
     <div className="flex items-center mt-2">
       <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
         <div
-          className="h-full bg-[#3A57A7]"
+          className="h-full bg-[#444655]"
           style={{
             width: `${progress || 0}%`,
           }}
@@ -193,7 +193,7 @@ const ProgressAndRemainingCount = ({
         {progress ? `${progress}%` : '0%'}
       </span>
     </div>
-    <p className="mt-2 text-sm font-['pretendard-medium'] text-black">
+    <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500">
       예상 소요 시간 : {remainingTime}
     </p>
   </div>
@@ -697,7 +697,7 @@ const CreateImage = () => {
             </div>
 
             {/* 생성하기 버튼 */}
-            <div className="flex flex-col item-start w-full justify-end relative">
+            <div className="flex flex-col item-start w-full justify-end relative mt-3">
               {isLoading && (
                 <div className="absolute top-0 left-0 w-full">
                   <ProgressAndRemainingCount

@@ -194,7 +194,7 @@ const CollectionName = () => {
       .then((blob) => {
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `image_${imageId}.jpg`;
+        link.download = `image_${imageId}.webp`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
