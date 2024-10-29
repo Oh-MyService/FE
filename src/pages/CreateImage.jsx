@@ -185,12 +185,12 @@ const ProgressAndRemainingCount = ({
         <div
           className="h-full bg-[#3A57A7]"
           style={{
-            width: `${progress}%`,
+            width: `${progress ? progress : 0}%`,
           }}
         ></div>
       </div>
-      <span className="ml-2 text-sm font-['pretendard-medium'] text-black">
-        {progress}%
+      <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
+        {progress ? `${progress}%` : '0%'}{' '}
       </span>
     </div>
     <p className="mt-2 text-sm font-['pretendard-medium'] text-black">
@@ -685,23 +685,29 @@ const CreateImage = () => {
             </div>
 
             {/* 생성하기 버튼 */}
-            <div className="flex item-start w-full">
-              {isLoading && (
-                <ProgressAndRemainingCount
-                  progress={progress}
-                  remainingCount={remainingCount}
-                  remainingTime={remainingTime}
-                />
-              )}
-              <button
-                onClick={handleSubmit}
-                disabled={isLoading} // isLoading이 true일 때 버튼 비활성화
-                className={`w-36 p-4 font-['pretendard-semibold'] text-white rounded text-xl ${
-                  isLoading ? 'bg-gray-300' : 'bg-[#3A57A7] hover:bg-[#193174]'
-                }`}
-              >
-                {isLoading ? '생성 중...' : '생성하기'}
-              </button>
+            <div className="flex flex-row item-start w-full">
+              <div className="flex">
+                {isLoading && (
+                  <ProgressAndRemainingCount
+                    progress={progress}
+                    remainingCount={remainingCount}
+                    remainingTime={remainingTime}
+                  />
+                )}
+              </div>
+              <div className="flex">
+                <button
+                  onClick={handleSubmit}
+                  disabled={isLoading} // isLoading이 true일 때 버튼 비활성화
+                  className={`w-36 p-4 font-['pretendard-semibold'] text-white rounded text-xl ${
+                    isLoading
+                      ? 'bg-gray-300'
+                      : 'bg-[#3A57A7] hover:bg-[#193174]'
+                  }`}
+                >
+                  {isLoading ? '생성 중...' : '생성하기'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -733,31 +739,6 @@ const CreateImage = () => {
                         <SkeletonCard key={idx} />
                       ))}
                   </div>
-                  {/* 프로그래스바 추가 */}
-                  <div className="flex items-center mt-4">
-                    <div className="flex-grow h-2.5 bg-gray-300 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-[#444655]"
-                        style={{
-                          width: `${result.progress ? result.progress : 0}%`,
-                        }} // progress가 undefined일 때 0으로 설정
-                      ></div>
-                    </div>
-                    <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
-                      {result.progress ? `${result.progress}%` : '0%'}{' '}
-                      {/* progress가 undefined일 때 0%로 표시 */}
-                    </span>
-                  </div>
-
-                  {/* 예상 소요 시간 표시 */}
-                  <p className="mt-2 text-sm font-['pretendard-medium'] text-gray-500 text-center">
-                    {!result.progress
-                      ? '생성 대기 중입니다.' // progress가 0일 경우 대기 중 메시지 표시
-                      : result.progress >= 100
-                      ? '생성 결과를 불러오는 중입니다.' // progress가 100%일 경우 생성 완료 메시지
-                      : `예상 소요시간 : ${remainingTime}`}{' '}
-                    {/* 남은 시간이 있을 때만 예상 소요 시간을 표시 */}
-                  </p>
                 </div>
               ) : (
                 <div
