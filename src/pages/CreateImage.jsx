@@ -493,15 +493,15 @@ const CreateImage = () => {
     useEffect(() => {
         let interval = null;
 
-        if (taskId && isLoading) {
-            fetchRemainingCount();
+        if (isLoading && results.length > 0) {
+            fetchRemainingCount(results[0]?.task_id); // 가장 첫 번째 task_id에 대해 남은 대기 수 가져오기
             interval = setInterval(() => {
-                fetchRemainingCount();
+                fetchRemainingCount(results[0]?.task_id);
             }, 5000);
         }
 
         return () => clearInterval(interval);
-    }, [taskId, isLoading]);
+    }, [isLoading, results]);
 
     // 이미지 생성 결과 폴링
     const pollForImages = async (promptId) => {
