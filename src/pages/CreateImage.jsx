@@ -601,7 +601,7 @@ const CreateImage = () => {
                             className="w-full h-40 bg-white text-black rounded-lg py-4 px-4 mb-6 border-3 border-[#3A57A7] focus:outline-none focus:border-[#263f81] font-['pretendard-medium']"
                             placeholder="ex) a floral pattern with small, curious kittens"
                         />
-                        <div className="p-4 border-3 border-[#3A57A7] rounded-lg mb-6 w-full">
+                        <div className="p-4 border-3 border-[#3A57A7] rounded-lg w-full">
                             {/* CFG Scale */}
                             <div className="flex flex-col mb-6 w-2/3">
                                 <label className="text-lg font-['pretendard-bold'] mb-2 whitespace-nowrap text-left">
@@ -623,7 +623,7 @@ const CreateImage = () => {
                             </div>
 
                             {/* Seed 입력 및 랜덤 체크박스 */}
-                            <div className="flex flex-col w-full">
+                            <div className="flex flex-col mb-6 w-full">
                                 <div className="flex flex-row">
                                     <label className="text-lg font-['pretendard-bold'] mb-2 mr-4">Seed</label>
                                     <div className="flex items-center">
@@ -657,7 +657,7 @@ const CreateImage = () => {
                         </div>
 
                         {/* 생성하기 버튼 */}
-                        <div className="flex flex-col item-start w-full justify-end relative">
+                        <div className="flex flex-col item-start w-full justify-end mt-6 relative">
                             {isLoading && (
                                 <div className="absolute top-0 left-0 w-full">
                                     <ProgressAndRemainingCount
