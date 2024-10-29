@@ -311,11 +311,18 @@ const CreateImage = () => {
     };
 
     // remainingCount 가져오기 함수
+
     const fetchRemainingCount = async (taskId) => {
         try {
             const response = await fetch(`http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`);
             const data = await response.json();
-            setRemainingCount(data.remaining_count);
+
+            // 결과를 results에 반영
+            setResults((prevResults) =>
+                prevResults.map((result) =>
+                    result.task_id === taskId ? { ...result, remaining_count: data.remaining_count } : result
+                )
+            );
         } catch (error) {
             console.error('Error fetching remaining count:', error);
         }
@@ -653,7 +660,7 @@ const CreateImage = () => {
                             {isLoading ? (
                                 <ProgressAndRemainingCount
                                     progress={results[0]?.progress}
-                                    remainingCount={remainingCount}
+                                    remainingCount={results[0]?.remaining_count}
                                     remainingTime={remainingTime}
                                 />
                             ) : null}
