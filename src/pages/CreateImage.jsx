@@ -326,7 +326,7 @@ const CreateImage = () => {
   };
 
   // remainingCount 가져오기 함수
-  const fetchRemainingCount = async (taskId) => {
+  const fetchRemainingCount = async () => {
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`
@@ -375,7 +375,7 @@ const CreateImage = () => {
   const promptIdRef = useRef(null);
 
   // 프로그래스바 상태를 업데이트하는 함수
-  const fetchProgress = async () => {
+  const fetchProgress = async (taskId) => {
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/progress/${taskId}`
