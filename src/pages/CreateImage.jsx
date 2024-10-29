@@ -657,7 +657,7 @@ const CreateImage = () => {
                         </div>
 
                         {/* 생성하기 버튼 */}
-                        <div className="flex flex-col item-start w-full justify-end mt-6 relative">
+                        <div className="flex flex-col item-start w-full justify-end relative">
                             {isLoading && (
                                 <div className="absolute top-0 left-0 w-full">
                                     <ProgressAndRemainingCount
