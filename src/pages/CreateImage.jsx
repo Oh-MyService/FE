@@ -397,20 +397,23 @@ const CreateImage = () => {
 
     // 폴링 추가 부분
     useEffect(() => {
-        // 상태가 변경되면 프로그레스바와 대기 상태를 업데이트
-        if (isLoading && results.length > 0) {
+        if (isLoading) {
             const interval = setInterval(() => {
-                results.forEach((result) => {
-                    if (result.isLoading) {
-                        fetchProgress(result.task_id);
-                        fetchRemainingCount(result.task_id);
-                    }
-                });
+                const updatedResults = JSON.parse(localStorage.getItem('results')) || [];
+                setResults(updatedResults);
+
+                // isLoading 상태를 업데이트
+                const isAnyLoading = updatedResults.some((result) => result.isLoading);
+                setIsLoading(isAnyLoading);
             }, 1000);
 
-            return () => clearInterval(interval); // 컴포넌트 언마운트 시 클리어
+            return () => clearInterval(interval);
         }
-    }, [isLoading, results]);
+    }, [isLoading]);
+
+    useEffect(() => {
+        localStorage.setItem('results', JSON.stringify(results));
+    }, [results]);
 
     // 생성하기 요청
     const handleSubmit = async (event) => {
