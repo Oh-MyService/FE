@@ -623,7 +623,7 @@ const CreateImage = () => {
                             </div>
 
                             {/* Seed 입력 및 랜덤 체크박스 */}
-                            <div className="flex flex-col mb-6 w-full">
+                            <div className="flex flex-col w-full">
                                 <div className="flex flex-row">
                                     <label className="text-lg font-['pretendard-bold'] mb-2 mr-4">Seed</label>
                                     <div className="flex items-center">
@@ -657,9 +657,9 @@ const CreateImage = () => {
                         </div>
 
                         {/* 생성하기 버튼 */}
-                        <div className="flex flex-col item-start w-full justify-end mt-6 relative">
+                        <div className="flex flex-col item-start w-full justify-end relative">
                             {isLoading && (
-                                <div className="absolute top-[-10px] left-0 w-full">
+                                <div className="absolute top-0 left-0 w-full">
                                     <ProgressAndRemainingCount
                                         progress={results[0]?.progress}
                                         remainingCount={results[0]?.remaining_count}
