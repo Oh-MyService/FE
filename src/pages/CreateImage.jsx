@@ -369,9 +369,6 @@ const CreateImage = () => {
                     )
                 );
 
-                // 남은 대기 수 업데이트
-                fetchRemainingCount(taskId);
-
                 // 서버에서 제공하는 예상 남은 시간이 없을 경우
                 if (progressData.estimated_remaining_time) {
                     setRemainingTime(progressData.estimated_remaining_time); // 남은 시간 설정
@@ -401,28 +398,23 @@ const CreateImage = () => {
     // 폴링 추가 부분
     useEffect(() => {
         if (isLoading && results.length > 0) {
-            if (pollingInterval) clearInterval(pollingInterval);
+            if (pollingInterval) clearInterval(pollingInterval); // 중복 폴링 방지
+
             const newInterval = setInterval(() => {
-                const updatedResults = JSON.parse(localStorage.getItem('results')) || [];
-
-                // 로컬 저장소에서 불러온 데이터를 상태에 반영
-                setResults((prevResults) => {
-                    const isUpdated = JSON.stringify(prevResults) !== JSON.stringify(updatedResults);
-                    return isUpdated ? updatedResults : prevResults;
+                results.forEach((result) => {
+                    if (result.isLoading) {
+                        fetchProgress(result.task_id); // task_id별로 진행 상황 확인
+                    }
                 });
-
-                // 프로그레스 바 업데이트 및 로딩 종료 조건
-                const isAnyLoading = updatedResults.some((result) => result.isLoading);
-                if (!isAnyLoading) {
-                    clearInterval(newInterval); // 로딩이 완료되면 폴링 중지
-                    setIsLoading(false);
-                }
-            }, 1000); // 1초 간격으로 폴링
+            }, 1000);
 
             setPollingInterval(newInterval);
 
-            return () => clearInterval(newInterval);
-            // 컴포넌트 언마운트 시 인터벌 클리어
+            return () => {
+                if (newInterval) {
+                    clearInterval(newInterval);
+                }
+            };
         }
     }, [isLoading, results]);
 
@@ -431,6 +423,7 @@ const CreateImage = () => {
         event.preventDefault();
         setProgress(0);
         setIsLoading(true);
+        fetchRemainingCount();
 
         if (!token) {
             setAlertMessage('로그인이 필요합니다.');
@@ -485,12 +478,12 @@ const CreateImage = () => {
                     images: [],
                     isLoading: true,
                 };
-
-                // 로컬 스토리지 및 상태 업데이트
-                const updatedResults = [newResult, ...results];
-                setResults(updatedResults);
-                localStorage.setItem('results', JSON.stringify(updatedResults));
+                setResults((prevResults) => [newResult, ...prevResults]);
+                promptIdRef.current = data.id;
                 fetchProgress(data.task_id);
+                fetchRemainingCount(data.task_id);
+            } else {
+                console.error('id 또는 task_id가 undefined입니다.');
             }
         } catch (error) {
             console.error('Error occurred:', error);
