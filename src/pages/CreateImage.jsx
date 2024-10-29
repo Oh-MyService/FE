@@ -397,24 +397,18 @@ const CreateImage = () => {
 
     // 폴링 추가 부분
     useEffect(() => {
+        // 상태가 변경되면 프로그레스바와 대기 상태를 업데이트
         if (isLoading && results.length > 0) {
-            if (pollingInterval) clearInterval(pollingInterval); // 중복 폴링 방지
-
-            const newInterval = setInterval(() => {
+            const interval = setInterval(() => {
                 results.forEach((result) => {
                     if (result.isLoading) {
-                        fetchProgress(result.task_id); // task_id별로 진행 상황 확인
+                        fetchProgress(result.task_id);
+                        fetchRemainingCount(result.task_id);
                     }
                 });
             }, 1000);
 
-            setPollingInterval(newInterval);
-
-            return () => {
-                if (newInterval) {
-                    clearInterval(newInterval);
-                }
-            };
+            return () => clearInterval(interval); // 컴포넌트 언마운트 시 클리어
         }
     }, [isLoading, results]);
 
@@ -423,7 +417,6 @@ const CreateImage = () => {
         event.preventDefault();
         setProgress(0);
         setIsLoading(true);
-        fetchRemainingCount();
 
         if (!token) {
             setAlertMessage('로그인이 필요합니다.');
@@ -481,7 +474,6 @@ const CreateImage = () => {
                 setResults((prevResults) => [newResult, ...prevResults]);
                 promptIdRef.current = data.id;
                 fetchProgress(data.task_id);
-                fetchRemainingCount(data.task_id);
             } else {
                 console.error('id 또는 task_id가 undefined입니다.');
             }
