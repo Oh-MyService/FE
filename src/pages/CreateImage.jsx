@@ -451,7 +451,6 @@ const CreateImage = () => {
     setRemainingCount(null);
     setRemainingTime('');
     setIsLoading(true);
-    fetchRemainingCount();
 
     if (!token) {
       setAlertMessage('로그인이 필요합니다.');
@@ -480,7 +479,7 @@ const CreateImage = () => {
 
     try {
       const formData = new FormData();
-      formData.append('positive_prompt', positivePrompt); // 필수 입력 필드
+      formData.append('positive_prompt', positivePrompt);
       formData.append('cfg_scale', cfgScale || 7);
       formData.append('seed', seed);
 
@@ -509,7 +508,7 @@ const CreateImage = () => {
         setResults((prevResults) => [newResult, ...prevResults]);
         promptIdRef.current = data.id;
         fetchProgress(data.task_id);
-        fetchRemainingCount(data.task_id);
+        setTaskId(data.task_id);
       } else {
         console.error('id 또는 task_id가 undefined입니다.');
       }
@@ -517,15 +516,21 @@ const CreateImage = () => {
       console.error('Error occurred:', error);
       setAlertMessage('Error occurred while creating prompt.');
     }
-  };
+    };
+    
+    useEffect(() => {
+      if (taskId) {
+        fetchRemainingCount();
+      }
+    }, [taskId]);
 
   useEffect(() => {
     let interval = null;
 
     if (isLoading && results.length > 0) {
-      fetchRemainingCount(results[0]?.task_id); // 가장 첫 번째 task_id에 대해 남은 대기 수 가져오기
+      fetchRemainingCount(); // 가장 첫 번째 task_id에 대해 남은 대기 수 가져오기
       interval = setInterval(() => {
-        fetchRemainingCount(results[0]?.task_id);
+        fetchRemainingCount();
       }, 5000);
     }
 
