@@ -326,7 +326,7 @@ const CreateImage = () => {
   };
 
   // remainingCount 가져오기 함수
-  const fetchRemainingCount = async () => {
+  const fetchRemainingCount = async (taskId) => {
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/api/prompts/count_wait/${taskId}`
@@ -509,6 +509,7 @@ const CreateImage = () => {
         promptIdRef.current = data.id;
         fetchProgress(data.task_id);
         setTaskId(data.task_id);
+        fetchRemainingCount(data.task_id);
       } else {
         console.error('id 또는 task_id가 undefined입니다.');
       }
@@ -516,26 +517,21 @@ const CreateImage = () => {
       console.error('Error occurred:', error);
       setAlertMessage('Error occurred while creating prompt.');
     }
-    };
-    
-    useEffect(() => {
-      if (taskId) {
-        fetchRemainingCount();
-      }
-    }, [taskId]);
+  };
 
   useEffect(() => {
     let interval = null;
 
-    if (isLoading && results.length > 0) {
-      fetchRemainingCount(); // 가장 첫 번째 task_id에 대해 남은 대기 수 가져오기
+    if (isLoading && taskId) {
+      fetchRemainingCount(taskId);
+
       interval = setInterval(() => {
-        fetchRemainingCount();
+        fetchRemainingCount(taskId);
       }, 5000);
     }
 
     return () => clearInterval(interval);
-  }, [isLoading, results]);
+  }, [isLoading, taskId]);
 
   // 이미지 생성 결과 폴링
   const pollForImages = async (promptId) => {
