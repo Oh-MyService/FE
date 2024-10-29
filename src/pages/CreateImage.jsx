@@ -163,7 +163,7 @@ const formatDate = (dateString) => {
         .padStart(2, '0')}`;
 };
 
-const ProgressAndRemainingCount = ({ remainingCount, remainingTime }) => (
+const ProgressAndRemainingCount = ({ progress, remainingCount, remainingTime }) => (
     <div className="mt-4 ml-4 w-2/3">
         <p className="text-lg font-['pretendard-semibold'] mb-2 text-black">
             {remainingCount > 1 ? `${remainingCount - 1}번째로 생성 대기 중` : '생성 중'}
@@ -173,12 +173,12 @@ const ProgressAndRemainingCount = ({ remainingCount, remainingTime }) => (
                 <div
                     className="h-full bg-[#3A57A7]"
                     style={{
-                        width: `${results[0]?.progress || 0}%`, // result.progress 값 사용
+                        width: `${progress || 0}%`, // result.progress 값 사용
                     }}
                 ></div>
             </div>
             <span className="ml-2 text-sm font-['pretendard-medium'] text-gray-500">
-                {results[0]?.progress ? `${results[0].progress}%` : '0%'}
+                {progress ? `${progress}%` : '0%'}
             </span>
         </div>
         <p className="mt-2 text-sm font-['pretendard-medium'] text-black">예상 소요 시간 : {remainingTime}</p>
@@ -652,6 +652,7 @@ const CreateImage = () => {
                         <div className="flex flex-col item-start w-full justify-end mt-6">
                             {isLoading ? (
                                 <ProgressAndRemainingCount
+                                    progress={results[0]?.progress}
                                     remainingCount={remainingCount}
                                     remainingTime={remainingTime}
                                 />
