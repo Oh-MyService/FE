@@ -655,23 +655,25 @@ const CreateImage = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* 생성하기 버튼 */}
 
-                        <div className="flex flex-col item-start w-full justify-end mt-6">
-                            {isLoading ? (
-                                <ProgressAndRemainingCount
-                                    progress={results[0]?.progress}
-                                    remainingCount={results[0]?.remaining_count}
-                                    remainingTime={remainingTime}
-                                />
-                            ) : null}
+                        {/* 생성하기 버튼 */}
+                        <div className="flex flex-col item-start w-full justify-end mt-6 relative">
+                            {isLoading && (
+                                <div className="absolute top-0 left-0 w-full">
+                                    <ProgressAndRemainingCount
+                                        progress={results[0]?.progress}
+                                        remainingCount={results[0]?.remaining_count}
+                                        remainingTime={remainingTime}
+                                    />
+                                </div>
+                            )}
                             <button
                                 onClick={handleSubmit}
                                 disabled={isLoading}
                                 className={`w-36 p-4 mt-4 font-['pretendard-semibold'] text-white rounded text-xl ${
                                     isLoading ? 'bg-gray-300' : 'bg-[#3A57A7] hover:bg-[#193174]'
                                 }`}
-                                style={{ alignSelf: 'flex-end' }} // 버튼을 오른쪽에 고정
+                                style={{ alignSelf: 'flex-end', position: 'relative', zIndex: 1 }} // 버튼의 위치 고정
                             >
                                 {isLoading ? '생성 중...' : '생성하기'}
                             </button>
