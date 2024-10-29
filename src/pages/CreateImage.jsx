@@ -375,7 +375,7 @@ const CreateImage = () => {
   const promptIdRef = useRef(null);
 
   // 프로그래스바 상태를 업데이트하는 함수
-  const fetchProgress = async (taskId) => {
+  const fetchProgress = async () => {
     try {
       const response = await fetch(
         `http://118.67.128.129:28282/progress/${taskId}`
