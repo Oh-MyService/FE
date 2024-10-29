@@ -481,6 +481,7 @@ const CreateImage = () => {
                 setResults((prevResults) => [newResult, ...prevResults]);
                 promptIdRef.current = data.id;
                 fetchProgress(data.task_id);
+                fetchRemainingCount(data.task_id);
             } else {
                 console.error('id 또는 task_id가 undefined입니다.');
             }
