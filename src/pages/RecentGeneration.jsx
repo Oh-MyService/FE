@@ -360,13 +360,11 @@ const RecentGeneration = () => {
                     ))
                 )}
                 {fullScreenImage && (
-                    <div
-                        className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center z-[1000]"
-                        onClick={closeFullScreen}
-                    >
+                    <div className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center z-[1000]">
                         <div
                             className="flex space-x-4"
                             style={{ maxWidth: '75vw', maxHeight: '75vh', transform: 'translateY(-26px)' }}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             {/* 원본 이미지 */}
                             <div className="flex flex-col items-start " style={{ width: '25%', height: '100%' }}>
