@@ -360,10 +360,7 @@ const RecentGeneration = () => {
                     ))
                 )}
                 {fullScreenImage && (
-                    <div
-                        className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center z-[1000]"
-                        onClick={closeFullScreen}
-                    >
+                    <div className="fixed inset-0 bg-black bg-opacity-85 flex items-center justify-center z-[1000]">
                         <div
                             className="flex space-x-4"
                             style={{ maxWidth: '75vw', maxHeight: '75vh', transform: 'translateY(-26px)' }}
@@ -405,7 +402,7 @@ const RecentGeneration = () => {
                                 e.stopPropagation();
                                 handleIconClick();
                             }}
-                            className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full"
+                            className="absolute top-4 right-12 text-white bg-black bg-opacity-50 p-2 rounded-full"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
