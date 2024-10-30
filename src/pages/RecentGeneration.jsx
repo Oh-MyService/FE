@@ -426,13 +426,13 @@ const RecentGeneration = () => {
                                 e.stopPropagation();
                                 closeFullScreen(); // 새 닫기 아이콘 클릭 시 풀스크린 닫기
                             }}
-                            className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full"
+                            className="absolute top-4 mt-1 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                strokeWidth="1.5"
+                                strokeWidth="2"
                                 stroke="currentColor"
                                 className="size-6"
                             >
