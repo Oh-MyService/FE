@@ -398,6 +398,8 @@ const RecentGeneration = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* 옵션 버튼 */}
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
