@@ -464,20 +464,6 @@ const RecentGeneration = () => {
                                         </tr>
                                         <tr>
                                             <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
-                                                background color
-                                            </td>
-                                            <td className="py-1 text-sm font-['pretendard-medium']">
-                                                {promptData.ai_option.background_color}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="py-1 text-base font-['pretendard-semibold'] pr-2">mood</td>
-                                            <td className="py-1 text-sm font-['pretendard-medium']">
-                                                {promptData.ai_option.mood}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="py-1 text-base font-['pretendard-semibold'] pr-2">
                                                 cfg scale
                                             </td>
                                             <td className="py-1 text-sm font-['pretendard-medium']">
