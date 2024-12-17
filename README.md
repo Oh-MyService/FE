@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+## 💡프로젝트 소개
+**생성형 AI를 활용한 심리스 원단 패턴디자인 생성 웹 서비스 연구개발** 이라는 주제로, <br/>
+기업 디자이노블과 함께 진행한 산학협력 프로젝트입니다.
+<br/>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 개요
+FE 팀은 생성형 AI를 사용하는 것에 익숙치 않거나 어려움을 느끼는 사용자들이 <br/>
+손쉽게 심리스 패턴을 제작하고 관리할 수 있는 웹페이지 UX/UI를 기획/디자인하고 개발하고자 하였습니다.
 
-## Available Scripts
+### 주요 개발 기능
 
-In the project directory, you can run:
+#### ✔️ 패턴 생성
+- CFG scale과 sampling step수를 조절할 수 있게 옵션 형태로 제공합니다.
+- 사용자가 원하는 내용의 프롬프트를 작성하여 생성 요청하면 AI가 생성한 심리스 패턴을 4개씩 보여줍니다.
+- 패턴 생성 중 사용자의 이탈을 방지하기 위해 현재 생성 중인 인원수와 생성 요청시에 진행률을 시각적으로 보여줍니다.
+- 생성 결과에서 사용자가 원하는 패턴을 아카이브 하거나 로컬에 저장할 수 있는 버튼이 있습니다.
+- 생성 결과에서 사용자가 작성한 프롬프트 내용을 다시 보여주고 복사할 수 있는 버튼이 있습니다.
 
-### `npm start`
+#### ✔️ 마이페이지
+- 마이페이지 중 최근 생성 패턴에서는 일자별로 사용자가 생성했던 패턴의 결과들을 모아보고 아카이브 하거나 로컬에 저장할 수 있습니다.
+- 마이페이지 중 아카이브에서는 생성한 패턴들 중 자신이 원하는대로 분류하여 관리할 수 있습니다.
+- 모든 패턴은 클릭시 전체 화면 모드로 확대되어 원본 이미지와 3x3 타일링 이미지가 표시됩니다.
+- 전체 화면 모드에서 오른쪽 상단의 옵션 정보 버튼을 통해 해당 패턴의 프롬프트, 옵션 등의 정보를 확인할 수 있습니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<br/>
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 💡기술 스택
+![figma](https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=FFFFFF) 
+![react](https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=FFFFFF) 
+![tailwindCSS](https://img.shields.io/badge/tailwindCSS-06B6D4?style=for-the-badge&logo=tailwindCSS&logoColor=FFFFFF) 
+![swagger](https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white)
+![fastAPI](https://img.shields.io/badge/fastAPI-009688?style=for-the-badge&logo=fastAPI&logoColor=white)
